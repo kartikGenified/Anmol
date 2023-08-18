@@ -3,8 +3,8 @@ import {View, StyleSheet, Text,Image} from 'react-native';
 import DotHorizontalList from '../../components/molecules/DotHorizontalList';
 import  {useGetAppThemeDataMutation}  from '../../apiServices/appTheme/AppThemeApi';
 import { useSelector, useDispatch } from 'react-redux'
-import { setPrimaryThemeColor,setSecondaryThemeColor,setIcon,setIconDrawer,setTernaryThemeColor,setOptLogin,setPasswordLogin,setButtonThemeColor} from '../../../redux/slices/appThemeSlice';
-import { setManualApproval,setAutoApproval } from '../../../redux/slices/appUserSlice';
+import { setPrimaryThemeColor,setSecondaryThemeColor,setIcon,setIconDrawer,setTernaryThemeColor,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades} from '../../../redux/slices/appThemeSlice';
+import { setManualApproval,setAutoApproval,setRegistrationRequired} from '../../../redux/slices/appUserSlice';
 const Introduction = ({navigation}) => {
     const [imageIndex, setImageIndex] = useState(0)
     const dispatch = useDispatch()
@@ -40,6 +40,8 @@ const Introduction = ({navigation}) => {
             dispatch(setButtonThemeColor(getAppThemeData.body.theme.color_shades["700"]))
             dispatch(setManualApproval(getAppThemeData.body.approval_flow_options.Manual.users))
             dispatch(setAutoApproval(getAppThemeData.body.approval_flow_options.AutoApproval.users))
+            dispatch(setRegistrationRequired(getAppThemeData.body.registration_options.Registration.users))
+            dispatch(setColorShades(getAppThemeData.body.theme.color_shades))
 
 
 

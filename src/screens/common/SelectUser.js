@@ -23,7 +23,7 @@ const SelectUser = ({navigation}) => {
 
   useEffect(() => {
     
-    getUsers(slug);
+    getUsers();
   }, []);
   useEffect(() => {
     if (getUsersData) {
@@ -62,6 +62,8 @@ const SelectUser = ({navigation}) => {
     // console.log(useSelector(state => state.apptheme.passwordLogin))
     const manualApproval = useSelector(state => state.appusers.manualApproval)
     const autoApproval = useSelector(state => state.appusers.autoApproval)
+    const registrationRequired = useSelector(state => state.appusers.registrationRequired)
+    console.log("registration required",registrationRequired)
 
   const width = Dimensions.get('window').width;
     
@@ -121,6 +123,7 @@ const SelectUser = ({navigation}) => {
                   passwordLogin={passwordLogin}
                   autoApproval={autoApproval}
                   manualApproval={manualApproval}
+                  registrationRequired={registrationRequired}
                   key={index}
                   color={ternaryThemeColor}
                   image={item.user_type_logo}

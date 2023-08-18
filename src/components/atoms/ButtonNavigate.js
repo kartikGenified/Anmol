@@ -13,11 +13,26 @@ const ButtonNavigate = props => {
   // prop to navigate to another page
   const content = props.content;
   // prop to display text inside the button
+
+  const handleButtonPress=()=>{
+
+    if(content==="Register")
+  {
+    props.handleOperation()
+  }
+  else{
+    console.log('buttonpressed');
+    navigateTo &&  navigation.navigate(navigateTo)
+  }
+  
+  }
+
+  
+
   return (
     <TouchableOpacity
       onPress={() => {
-        console.log('buttonpressed');
-        navigation.navigate(navigateTo)
+       handleButtonPress()
       }}
       style={{
         padding: 10,

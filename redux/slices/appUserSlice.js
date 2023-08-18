@@ -3,7 +3,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   value: [],
   manualApproval : [],
-  autoApproval : []
+  autoApproval : [],
+  registrationRequired : []
+  
 }
 
 export const appUserSlice = createSlice({
@@ -22,11 +24,14 @@ export const appUserSlice = createSlice({
     },
     setAutoApproval : (state,action) =>{
       state.autoApproval = action.payload
+    },
+    setRegistrationRequired : (state,action) =>{
+      state.registrationRequired = action.payload
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setAppUsers, deleteAppUsers,setManualApproval,setAutoApproval} = appUserSlice.actions
+export const { setAppUsers, deleteAppUsers,setManualApproval,setAutoApproval,setRegistrationRequired} = appUserSlice.actions
 
 export default appUserSlice.reducer

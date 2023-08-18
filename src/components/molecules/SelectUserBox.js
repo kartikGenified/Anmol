@@ -2,7 +2,8 @@ import React from 'react';
 import {View, StyleSheet,TouchableOpacity} from 'react-native';
 import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
-import {SvgUri} from 'react-native-svg'
+import { SvgUri } from 'react-native-svg';
+
 const SelectUserBox = (props) => {
     // const image = BaseUrlImages+props.image
     const image = 'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/atom.svg'
@@ -12,32 +13,45 @@ const SelectUserBox = (props) => {
     // const passwordLogin = props.passwordLogin
     // const autoApproval = props.autoApproval
     const manualApproval = props.manualApproval
+    const registrationRequired = props.registrationRequired
 
-    const checkApprovalFlow=()=>{
-        if(manualApproval.includes(props.content))
+
+    const checkRegistrationRequired=()=>{
+        if(registrationRequired.includes(props.content))
         {
-            handleNavigation(true)
+            checkApprovalFlow(true)
         }
         else{
-            handleNavigation(false)
+            checkApprovalFlow(false)
+        }
+    }
+
+    const checkApprovalFlow=(registrationRequired)=>{
+        if(manualApproval.includes(props.content))
+        {
+            handleNavigation(true,registrationRequired)
+        }
+        else{
+            handleNavigation(false,registrationRequired)
         }
         
     }
 
-    const handleNavigation=(needsApproval)=>{
+    const handleNavigation=(needsApproval,registrationRequired)=>{
+        console.log("Needs Approval",needsApproval)
         if(otpLogin.includes(props.content)
         ){
-            props.navigation.navigate('OtpLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id})
+            props.navigation.navigate('OtpLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
         }
         else{
-            props.navigation.navigate('PasswordLogin',{needsApproval:needsApproval})
+            props.navigation.navigate('PasswordLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
         }
 
     }
 
     return (
         <TouchableOpacity onPress={()=>{
-            handleNavigation()
+            checkRegistrationRequired()
         }} style={{...styles.container,backgroundColor:color}}>
             
             {image && <SvgUri color="white" uri = {image} style={styles.image}></SvgUri>}

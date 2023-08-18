@@ -13,7 +13,7 @@ const SelectLanguage = () => {
     const secondaryThemeColor = useSelector((state)=>state.apptheme.secondaryThemeColor) ? useSelector((state)=>state.apptheme.secondaryThemeColor) : "#FFB533"
     const icon = useSelector((state)=>state.apptheme.icon) ? useSelector((state)=>state.apptheme.icon) : require('../../../assets/images/demoIcon.png')
     
-    console.log(useSelector((state)=>state.apptheme.primaryThemeColor),useSelector((state)=>state.apptheme.secondaryThemeColor))
+    // console.log(useSelector((state)=>state.apptheme.primaryThemeColor),useSelector((state)=>state.apptheme.secondaryThemeColor))
     const setSelectedLanguage=(language)=>{
         setLanguage(language)
         console.log(language)    
@@ -32,7 +32,7 @@ const SelectLanguage = () => {
             <View style={{height:"50%",width:'100%',alignItems:"center",justifyContent:"center"}}>
             <SelectLanguageBox selectedLanguage={language}   setSelectedLanguage={setSelectedLanguage} languageHindi = 'हिन्दी' languageEnglish = 'Hindi' image = {require('../../../assets/images/languageHindi.png')}></SelectLanguageBox>
             <SelectLanguageBox selectedLanguage={language} setSelectedLanguage={setSelectedLanguage} languageHindi = 'English' languageEnglish = 'English' image = {require('../../../assets/images/languageEnglish.png')}></SelectLanguageBox>
-            <ButtonNavigate backgroundColor="#FB774F" style={{color:'white',fontSize:16}} content="Continue" navigateTo="SelectUser"></ButtonNavigate>
+            {language && <ButtonNavigate backgroundColor="#FB774F" style={{color:'white',fontSize:16}} content="Continue" navigateTo="SelectUser"></ButtonNavigate>}
             </View>
         </LinearGradient>
     );

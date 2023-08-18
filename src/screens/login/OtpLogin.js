@@ -1,21 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Dimensions, Image, ScrollView,KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {BaseUrl} from '../../utils/BaseUrl';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetAppUsersDataMutation} from '../../apiServices/appUsers/AppUsersApi';
-import SelectUserBox from '../../components/molecules/SelectUserBox';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import CustomTextInput from '../../components/organisms/CustomTextInput';
 import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';
-
 import ButtonNavigateArrow from '../../components/atoms/ButtonNavigateArrow';
+import { useGetLoginOtpMutation } from '../../apiServices/login/otpBased/SendOtpApi';
+import ButtonNavigate from '../../components/atoms/ButtonNavigate';
+import ErrorModal from '../../components/modals/ErrorModal';
 
-const OtpLogin = ({navigation}) => {
-  
-  const width = Dimensions.get('window').width;
 
+const OtpLogin = ({navigation, route}) => {
+  const [mobile, setMobile] = useState()
+  const [name, setName] = useState()
+  const [success, setSuccess] = useState(false)
+  const [message, setMessage] = useState()
+  const [error,setError] = useState(false)
   // fetching theme for the screen-----------------------
 
   const primaryThemeColor = useSelector(
@@ -33,32 +44,81 @@ const OtpLogin = ({navigation}) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
-    const buttonThemeColor = useSelector(
-      state => state.apptheme.ternaryThemeColor,
-    )
-      ? useSelector(state => state.apptheme.ternaryThemeColor)
-      : '#ef6110';
+  const buttonThemeColor = useSelector(
+    state => state.apptheme.ternaryThemeColor,
+  )
+    ? useSelector(state => state.apptheme.ternaryThemeColor)
+    : '#ef6110';
 
   const icon = useSelector(state => state.apptheme.icon)
     ? useSelector(state => state.apptheme.icon)
     : require('../../../assets/images/demoIcon.png');
 
-   
-    // ------------------------------------------------
-    
+  // ------------------------------------------------
+
+  // send otp for login--------------------------------
+  const [sendOtpFunc, {
+    data:sendOtpData,
+    error:sendOtpError,
+    isLoading:sendOtpIsLoading,
+    isError:sendOtpIsError
+  }] = useGetLoginOtpMutation()
+
+  const needsApproval = route.params.needsApproval;
+  const user_type_id = route.params.userId;
+  const user_type = route.params.userType;
+  const registrationRequired = route.params.registrationRequired
+  const width = Dimensions.get('window').width;
+  const navigationParams = {"needsApproval":needsApproval,"user_type_id":user_type_id,"user_type":user_type,"mobile":mobile,"name":name}
   
-    const getMobile=(data)=>{
-        // console.log(data)
+  useEffect(()=>{
+    if(sendOtpData){
+      console.log("data",sendOtpData)
+      if(sendOtpData.success===true)
+      {
+        navigation.navigate('VerifyOtp',{navigationParams})
+      }
+      else
+      {
+        console.log("Trying to open error modal")
+      }
     }
-    const getName=(data)=>{
-        // console.log(data)
+    else if(sendOtpError)
+    {
+      console.log("err",sendOtpError)
+      setError(true)
+      setMessage(sendOtpError.data.message)
     }
+     
+    
 
+  },[sendOtpData,sendOtpError])
+  
 
+  const getMobile = data => {
+    // console.log(data)
+    setMobile(data)
+  };
+  const getName = data => {
+    // console.log(data)
+    setName(data)
+  };
+  const handleButtonPress=()=>{
+    
+    sendOtpFunc({mobile,name,user_type,user_type_id})
+  }
+  const handleNavigationToRegister=()=>{
+    navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:user_type, userId:user_type_id})
+  }
+  const modalClose=()=>{
+    setError(false)
+  }
   return (
     <LinearGradient
       colors={[primaryThemeColor, secondaryThemeColor]}
       style={styles.container}>
+
+      {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
       <View
         style={{
           height: 140,
@@ -74,9 +134,14 @@ const OtpLogin = ({navigation}) => {
             height: width + 60,
             top: -(width / 2),
           }}>
-            <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-            <Image style={{height:20,width:20,resizeMode:"contain", right:80}} source={require('../../../assets/images/blackBack.png')}></Image>
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Image
+              style={{height: 20, width: 20, resizeMode: 'contain', right: 80}}
+              source={require('../../../assets/images/blackBack.png')}></Image>
+          </TouchableOpacity>
           <Image
             style={{
               height: 110,
@@ -87,39 +152,82 @@ const OtpLogin = ({navigation}) => {
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
         </View>
       </View>
-      
-        <View style={{alignItems:'center',justifyContent:"center",width:'100%'}}>
+
+      <View
+        style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
         <View
-        style={{
-          ...styles.banner,
-          backgroundColor: ternaryThemeColor,
-          elevation: 10,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.5,
-          shadowRadius: 2,
-        }}></View>
-        </View>
-        <ScrollView style={{width:'100%'}}>
+          style={{
+            ...styles.banner,
+            backgroundColor: ternaryThemeColor,
+            elevation: 10,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 2},
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+          }}></View>
+      </View>
+      <ScrollView style={{width: '100%'}}>
         <KeyboardAvoidingView>
-        <View style={{alignItems:"center",justifyContent:"center",marginTop:10}}>
-            <PoppinsText style={{color:'white',fontSize:22}} content = "Welcome"></PoppinsText>
-            <PoppinsTextMedium style={{color:'white', fontSize:16}} content = "Login To Your Account"></PoppinsTextMedium>
-        </View>
-        
-        <View style={{width:"100%",alignItems:"center",justifyContent:"center",marginTop:10}}>
-            <CustomTextInputNumeric sendData={getMobile} title="Mobile No" image={require('../../../assets/images/whitePhone.png')}></CustomTextInputNumeric>
-            <CustomTextInput sendData={getName} title="Name" image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
-        </View>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}>
+            <PoppinsText
+              style={{color: 'white', fontSize: 22}}
+              content="Welcome"></PoppinsText>
+            <PoppinsTextMedium
+              style={{color: 'white', fontSize: 16}}
+              content="Login To Your Account"></PoppinsTextMedium>
+          </View>
+
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}>
+            <CustomTextInputNumeric
+              sendData={getMobile}
+              title="Mobile No"
+              image={require('../../../assets/images/whitePhone.png')}></CustomTextInputNumeric>
+            <CustomTextInput
+              sendData={getName}
+              title="Name"
+              image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
+          </View>
         </KeyboardAvoidingView>
-        <View style={{width:"100%",alignItems:"center",justifyContent:"center",marginTop:20}}>
-        <ButtonNavigateArrow backgroundColor={buttonThemeColor} style={{color:'white',fontSize:16}} content="Login" navigateTo=""></ButtonNavigateArrow>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+          }}>
+          {<ButtonNavigateArrow
+          success={success}
+            handleOperation={handleButtonPress}
+            backgroundColor={buttonThemeColor}
+            style={{color: 'white', fontSize: 16}}
+            content="Login"
+            navigateTo="VerifyOtp"
+            navigationParams={navigationParams}
+            ></ButtonNavigateArrow>}
         </View>
-        </ScrollView>
-     
-      
-        
-      
+       {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
+        <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium>
+        <ButtonNavigate
+              handleOperation={handleNavigationToRegister}
+              backgroundColor={buttonThemeColor}
+              style={{color: 'white', fontSize: 16}}
+              content="Register"
+              >
+        </ButtonNavigate>
+
+        </View>}
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -128,14 +236,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   semicircle: {
     backgroundColor: 'white',
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection:"row"
+    flexDirection: 'row',
   },
   banner: {
     height: 184,
@@ -144,12 +252,12 @@ const styles = StyleSheet.create({
   },
   userListContainer: {
     width: '100%',
-    height:600,
+    height: 600,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:20
+    marginTop: 20,
   },
 });
 

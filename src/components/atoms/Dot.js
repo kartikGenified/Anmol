@@ -14,7 +14,7 @@ const Dot = (props) => {
 }
 
 const styles = StyleSheet.create({
-    componentStyle:{height:12,width:12,borderRadius:6, margin:2,borderWidth:0.2,borderColor:'grey' }
+    componentStyle:{height:10,width:10,borderRadius:5, margin:2,borderWidth:0.2,borderColor:'grey' }
 })
 
 export default Dot;

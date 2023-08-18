@@ -14,7 +14,7 @@ const CustomTextInputNumeric = (props) => {
     }
 
     return (
-        <View style={{width:'80%',height:80,marginTop:10,marginBottom:10}}>
+        <View style={{width:'80%',height:80,marginTop:10,marginBottom:10,alignItems:'flex-start'}}>
         <PoppinsTextMedium style={{color:'white',fontSize:20,fontWeight:'500'}} content={title}></PoppinsTextMedium>
         <View style={{borderBottomWidth:1.4,borderColor:'white',flexDirection:"row",width:"100%"}}>
         <TextInput keyboardType='number-pad' placeholderTextColor='white' onChangeText={(val)=>{handleData(val)}} value={content} style={{width:'80%',height:50,color:'white',fontSize:16}}></TextInput>

@@ -5,6 +5,11 @@ import SelectLanguage from '../screens/common/SelectLanguage';
 import SelectUser from '../screens/common/SelectUser';
 import OtpLogin from '../screens/login/OtpLogin';
 import PasswordLogin from '../screens/login/PasswordLogin';
+import VerifyOtp from '../screens/login/VerifyOtp';
+import RegisterUser from '../screens/register/RegisterUser';
+import Dashboard from '../screens/dashboard/Dashboard';
+import DrawerNavigator from './DrawerNavigator';
+
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -37,6 +42,21 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 }  name="PasswordLogin" component={PasswordLogin}></Stack.Screen>
+                <Stack.Screen  options={
+                    {
+                        headerShown:false
+                    }
+                }  name="VerifyOtp" component={VerifyOtp}></Stack.Screen>
+                 <Stack.Screen  options={
+                    {
+                        headerShown:false
+                    }
+                }  name="RegisterUser" component={RegisterUser}></Stack.Screen>
+                <Stack.Screen  options={
+                    {
+                        headerShown:false
+                    }
+                }  name="Dashboard" component={DrawerNavigator}></Stack.Screen>
                 </Stack.Navigator>
             </NavigationContainer>
     )
