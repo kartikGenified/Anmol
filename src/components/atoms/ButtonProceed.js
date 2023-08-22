@@ -4,7 +4,7 @@ import PoppinsText from '../electrons/customFonts/PoppinsText';
 import {useNavigation} from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
-const ButtonNavigate = props => {
+const ButtonProceed = props => {
   const navigation = useNavigation();
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -22,14 +22,8 @@ const ButtonNavigate = props => {
   
   const handleButtonPress=()=>{
 
-    if(content==="Register")
-  {
+    
     props.handleOperation()
-  }
-  else{
-    console.log('buttonpressed');
-    navigateTo &&  navigation.navigate(navigateTo)
-  }
   
   }
 
@@ -46,15 +40,16 @@ const ButtonNavigate = props => {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: backgroundColor,
+
         margin: 10,
         paddingLeft: 20,
         paddingRight: 20,
       }}>
-      <PoppinsText style={style} content={content}></PoppinsText>
+      <PoppinsText style={{...style,marginLeft:4,marginRight:4}} content={content}></PoppinsText>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({});
 
-export default ButtonNavigate;
+export default ButtonProceed;

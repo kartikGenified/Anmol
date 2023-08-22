@@ -10,8 +10,7 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {BaseUrl} from '../../utils/BaseUrl';
-import LinearGradient from 'react-native-linear-gradient';
-import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
+import LinearGradient from 'react-native-linear-gradient';import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import CustomTextInput from '../../components/organisms/CustomTextInput';
 import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';

@@ -9,6 +9,10 @@ import VerifyOtp from '../screens/login/VerifyOtp';
 import RegisterUser from '../screens/register/RegisterUser';
 import Dashboard from '../screens/dashboard/Dashboard';
 import DrawerNavigator from './DrawerNavigator';
+import QrCodeScanner from '../screens/camera/QrCodeScanner';
+import CongratulateOnScan from '../screens/points/redeemOrPoints';
+import ActivateWarranty from '../screens/waranty/ActivateWarranty';
+
 
 const Stack = createNativeStackNavigator()
 
@@ -16,11 +20,28 @@ const StackNavigator=()=>{
     return(
         <NavigationContainer>
                 <Stack.Navigator>
+                
                 <Stack.Screen options={
                     {
                         headerShown:false
                     }
                 } name="Introduction" component={Introduction}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ActivateWarranty" component={ActivateWarranty}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="CongratulateOnScan" component={CongratulateOnScan}></Stack.Screen>
+                <Stack.Screen  options={
+                    {
+                        headerShown:false
+                    }
+                }  name="QrCodeScanner" component={QrCodeScanner}></Stack.Screen>
+               
                 <Stack.Screen  options={
                     {
                         headerShown:false
@@ -57,6 +78,7 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 }  name="Dashboard" component={DrawerNavigator}></Stack.Screen>
+                
                 </Stack.Navigator>
             </NavigationContainer>
     )

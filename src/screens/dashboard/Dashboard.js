@@ -11,12 +11,14 @@ import DrawerHeader from '../../components/headers/DrawerHeader';
 import DashboardDataBox from '../../components/molecules/DashboardDataBox';
 import KYCVerificationComponent from '../../components/organisms/KYCVerificationComponent';
 import DashboardSupportBox from '../../components/molecules/DashboardSupportBox';
-
-
-const Dashboard = () => {
+import { useGetWorkflowMutation } from '../../apiServices/workflow/GetWorkflowByTenant';
+import { useSelector ,useDispatch} from 'react-redux';
+import { setProgram,setWorkflow } from '../../../redux/slices/appWorkflowSlice';
+const Dashboard = ({navigation}) => {
 
     const [dashboardItems, setDashboardItems] = useState()
-
+    const userId = useSelector((state)=>state.appusersdata.userId)
+    console.log("user id is from dashboard",userId)
     const [getDashboardFunc,{
         data:getDashboardData,
         error:getDashboardError,
@@ -31,6 +33,14 @@ const Dashboard = () => {
         isError:getBannerIsError
     }] =useGetAppUserBannerDataMutation()
 
+    const [getWorkflowFunc,{
+      data:getWorkflowData,
+      error:getWorkflowError,
+      isLoading:getWorkflowIsLoading,
+      isError:getWorkflowIsError
+  }] =useGetWorkflowMutation()
+
+    const dispatch = useDispatch()
 
     useEffect(()=>{
         const getDashboardData=async()=>{
@@ -45,6 +55,7 @@ const Dashboard = () => {
                   console.log(typeof token)
                   token && getDashboardFunc(token)
                   token && getBannerFunc(token)
+                  token && getWorkflowFunc({userId,token})
                 } else {
                   console.log('No credentials stored');
                 }
@@ -66,16 +77,29 @@ const Dashboard = () => {
             console.log(getDashboardError)
         }
     },[getDashboardData,getDashboardError])
+    
+    useEffect(()=>{
+      if(getBannerData)
+      {
+          console.log(getBannerData.body["0"])
+      }
+      else{
+          console.log(getBannerError)
+      }
+  },[getBannerError,getBannerData])
 
     useEffect(()=>{
-        if(getBannerData)
+        if(getWorkflowData)
         {
-            console.log(getBannerData.body["0"])
+            console.log(getWorkflowData)
+            dispatch(setProgram(getWorkflowData.body[0].program))
+            dispatch(setWorkflow(getWorkflowData.body[0].workflow_id))
+            
         }
         else{
-            console.log(getBannerError)
+            console.log(getWorkflowError)
         }
-    },[getBannerError,getBannerData])
+    },[getWorkflowData,getWorkflowError])
 
     const platformMarginScroll = Platform.OS ==='ios' ? 0:0
     
@@ -94,7 +118,7 @@ const Dashboard = () => {
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
 
           </ScrollView>
-          {dashboardItems && <DashboardMenuBox  data={dashboardItems}></DashboardMenuBox>}  
+          {dashboardItems && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}  
             <View style={{width:'100%',alignItems:"center",justifyContent:"center",marginBottom:20}}>
           <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>
             </View>

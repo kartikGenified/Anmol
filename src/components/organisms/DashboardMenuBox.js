@@ -6,8 +6,16 @@ import { BaseUrl } from '../../utils/BaseUrl';
 
 const DashboardMenuBox=(props)=>{
     const data = props.data
+    const navigation = props.navigation
     const handleMenuItemPress=(data)=>{
         console.log(data)
+        if(data==="Scan QR Code")
+        {
+            navigation.navigate('QrCodeScanner')
+        }
+        else{
+            navigation.navigate('ActivateWarranty')
+        }
     }
 
     return(

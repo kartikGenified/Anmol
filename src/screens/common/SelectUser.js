@@ -27,7 +27,7 @@ const SelectUser = ({navigation}) => {
   }, []);
   useEffect(() => {
     if (getUsersData) {
-      console.log(getUsersData.body);
+      console.log("type of users",getUsersData.body);
       dispatch(setAppUsers(getUsersData.body))
       setListUsers(getUsersData.body);
     } else {

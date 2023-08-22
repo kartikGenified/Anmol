@@ -2,26 +2,29 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   userId:'',
-  userType:''
+  userType:'',
+  name:'',
   
 }
 
 export const appUserDataSlice = createSlice({
-  name: 'appusers',
+  name: 'appusersdata',
   initialState,
   reducers: {
     
     setAppUserId: (state, action) => {
-      state.value = action.payload
+      state.userId = action.payload
     },
     setAppUserType:(state, action) =>{
-        state.value = action.payload
+        state.userType = action.payload
     },
-   
+    setAppUserName:(state, action) =>{
+      state.name = action.payload
+  },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setAppUserId, setAppUserType} = appUserDataSlice.actions
+export const { setAppUserId, setAppUserType,setAppUserName} = appUserDataSlice.actions
 
 export default appUserDataSlice.reducer

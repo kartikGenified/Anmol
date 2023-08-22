@@ -4,7 +4,7 @@ import PoppinsText from '../electrons/customFonts/PoppinsText';
 import {useNavigation} from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
-const ButtonNavigate = props => {
+const ButtonSquare = props => {
   const navigation = useNavigation();
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -41,14 +41,13 @@ const ButtonNavigate = props => {
        handleButtonPress()
       }}
       style={{
-        padding: 10,
-        borderRadius: 10,
+        padding: 4,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: backgroundColor,
         margin: 10,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 40,
+        paddingRight: 40,
       }}>
       <PoppinsText style={style} content={content}></PoppinsText>
     </TouchableOpacity>
@@ -57,4 +56,4 @@ const ButtonNavigate = props => {
 
 const styles = StyleSheet.create({});
 
-export default ButtonNavigate;
+export default ButtonSquare;

@@ -7,13 +7,14 @@ import ButtonNavigate from '../../components/atoms/ButtonNavigate';
 import { useSelector, useDispatch } from 'react-redux'
 import { BaseUrl } from '../../utils/BaseUrl';
 
+
 const SelectLanguage = () => {
     const [language, setLanguage] = useState()
     const primaryThemeColor = useSelector((state)=>state.apptheme.primaryThemeColor) ? useSelector((state)=>state.apptheme.primaryThemeColor) : "#FF9B00"
     const secondaryThemeColor = useSelector((state)=>state.apptheme.secondaryThemeColor) ? useSelector((state)=>state.apptheme.secondaryThemeColor) : "#FFB533"
     const icon = useSelector((state)=>state.apptheme.icon) ? useSelector((state)=>state.apptheme.icon) : require('../../../assets/images/demoIcon.png')
     
-    // console.log(useSelector((state)=>state.apptheme.primaryThemeColor),useSelector((state)=>state.apptheme.secondaryThemeColor))
+    console.log(useSelector((state)=>state.apptheme.primaryThemeColor))
     const setSelectedLanguage=(language)=>{
         setLanguage(language)
         console.log(language)    
@@ -21,7 +22,8 @@ const SelectLanguage = () => {
     
 
     return (
-        <LinearGradient colors={[primaryThemeColor,secondaryThemeColor]} style={{flex:1,height:'100%',width:'100%'}}>
+        
+        <LinearGradient colors={[primaryThemeColor,secondaryThemeColor]} style={{height:'100%',width:'100%'}}>
             <View style={{height:'20%',width:'100%',alignItems:'center',justifyContent:"center"}}>
                 <Image style={{height:110,width:140,resizeMode:'contain'}} source={{uri:`${BaseUrl}/api/images/${icon}`}}></Image>
             </View>
@@ -35,6 +37,7 @@ const SelectLanguage = () => {
             {language && <ButtonNavigate backgroundColor="#FB774F" style={{color:'white',fontSize:16}} content="Continue" navigateTo="SelectUser"></ButtonNavigate>}
             </View>
         </LinearGradient>
+        
     );
 }
 

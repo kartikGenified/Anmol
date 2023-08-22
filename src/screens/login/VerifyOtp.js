@@ -20,14 +20,16 @@ import ButtonNavigateArrow from '../../components/atoms/ButtonNavigateArrow';
 import {useGetLoginOtpMutation} from '../../apiServices/login/otpBased/SendOtpApi';
 import {useGetAppLoginMutation} from '../../apiServices/login/otpBased/OtpLoginApi';
 import {useVerifyOtpMutation} from '../../apiServices/login/otpBased/VerifyOtpApi';
+import { setAppUserId,setAppUserName,setAppUserType } from '../../../redux/slices/appUserDataSlice';
 import OtpInput from '../../components/organisms/OtpInput';
 import * as Keychain from 'react-native-keychain';
 
 
 const VerifyOtp = ({navigation, route}) => {
   const [mobile, setMobile] = useState(route.params.navigationParams.mobile);
-  const [otp, setOtp] = useState();
+  const [otp, setOtp] = useState('');
 
+  const dispatch = useDispatch()
   // fetching theme for the screen-----------------------
 
   const primaryThemeColor = useSelector(
@@ -113,13 +115,29 @@ const VerifyOtp = ({navigation, route}) => {
     }
   }, [sendOtpData, sendOtpError]);
 
+  const saveUserDetails=(data)=>{
+    
+    try{
+  console.log("Saving user details",data)
+  dispatch(setAppUserId(data.user_type_id))
+  dispatch(setAppUserName(data.name))
+  dispatch(setAppUserType(data.user_type))
+      }
+catch(e){
+  console.log("error",e)
+}
+}
+
   useEffect(() => {
     if (verifyOtpData) {
-      console.log(verifyOtpData)
+      console.log("user Login Data",verifyOtpData)
       if(verifyOtpData.success)
       {
+        console.log(verifyOtpData.body.user_type_id,verifyOtpData.body.name,verifyOtpData.body.user_type)
+    
         console.log("successfullyLoggedIn")
         saveToken(verifyOtpData.body.token)
+        saveUserDetails(verifyOtpData.body)
         navigation.navigate('Dashboard')
       }
     } else {
