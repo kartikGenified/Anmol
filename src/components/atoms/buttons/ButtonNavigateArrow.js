@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity,Image} from 'react-native';
-import PoppinsText from '../electrons/customFonts/PoppinsText';
+import PoppinsText from '../../electrons/customFonts/PoppinsText';
 
 const ButtonNavigateArrow = props => {
   
@@ -40,7 +40,7 @@ const ButtonNavigateArrow = props => {
         width:"60%"
       }}>
       <PoppinsText style={style} content={content}></PoppinsText>
-      <Image style={{height:20,width:20,resizeMode:"contain",marginLeft:20}} source={require('../../../assets/images/whiteArrowRight.png')}></Image>
+      <Image style={{height:20,width:20,resizeMode:"contain",marginLeft:20}} source={require('../../../../assets/images/whiteArrowRight.png')}></Image>
     </TouchableOpacity>
   );
 };

@@ -6,8 +6,8 @@ import LinearGradient from 'react-native-linear-gradient';import PoppinsTextMedi
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import CustomTextInput from '../../components/organisms/CustomTextInput';
 import { usePasswordLoginMutation } from '../../apiServices/login/passwordBased/PasswordLoginApi';
-import ButtonNavigateArrow from '../../components/atoms/ButtonNavigateArrow';
-import ButtonNavigate from '../../components/atoms/ButtonNavigate';
+import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
+import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet,Text} from 'react-native';
 import PoppinsText from '../electrons/customFonts/PoppinsText';
-import ButtonModal from '../atoms/ButtonModal';
+import ButtonModal from '../atoms/buttons/ButtonModal';
 
 const Win = (props) => {
     const title = props.title

@@ -14,9 +14,9 @@ import LinearGradient from 'react-native-linear-gradient';import PoppinsTextMedi
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import CustomTextInput from '../../components/organisms/CustomTextInput';
 import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';
-import ButtonNavigateArrow from '../../components/atoms/ButtonNavigateArrow';
+import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
 import { useGetLoginOtpMutation } from '../../apiServices/login/otpBased/SendOtpApi';
-import ButtonNavigate from '../../components/atoms/ButtonNavigate';
+import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import ErrorModal from '../../components/modals/ErrorModal';
 
 

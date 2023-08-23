@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import CongratulationActionBox from '../../components/atoms/CongratulationActionBox';
 import Win from '../../components/molecules/Win';
-import ButtonSquare from '../../components/atoms/ButtonSquare';
+import ButtonSquare from '../../components/atoms/buttons/ButtonSquare';
 
 const CongratulateOnScan = ({navigation}) => {
     const buttonThemeColor = useSelector(

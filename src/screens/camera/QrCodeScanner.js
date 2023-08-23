@@ -19,7 +19,7 @@ import ScannedListItem from '../../components/atoms/ScannedListItem';
 import * as Keychain from 'react-native-keychain';
 import {useVerifyQrMutation} from '../../apiServices/qrScan/VerifyQrApi';
 import ErrorModal from '../../components/modals/ErrorModal';
-import ButtonProceed from '../../components/atoms/ButtonProceed';
+import ButtonProceed from '../../components/atoms/buttons/ButtonProceed';
 import { useAddQrMutation } from '../../apiServices/qrScan/AddQrApi';
 import { useSelector } from 'react-redux';
 
@@ -36,7 +36,7 @@ const QrCodeScanner = ({navigation}) => {
   const userId = useSelector((state)=>state.appusersdata.userId)
   const userType = useSelector((state)=>state.appusersdata.userType)
   const userName=useSelector((state)=>state.appusersdata.name)
-  const workflowProgram = useSelector((state)=>{state.appWorkflow.program})
+  const workflowProgram = useSelector((state)=>state.appWorkflow.program)
   console.log("Workflow Program is ",workflowProgram);
   // console.log("Selector state",useSelector((state)=>state.appusersdata.userId))
   const [

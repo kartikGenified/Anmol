@@ -3,7 +3,7 @@ import {View, StyleSheet, Image,Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import SelectLanguageBox from '../../components/molecules/SelectLanguageBox';
-import ButtonNavigate from '../../components/atoms/ButtonNavigate';
+import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import { useSelector, useDispatch } from 'react-redux'
 import { BaseUrl } from '../../utils/BaseUrl';
 

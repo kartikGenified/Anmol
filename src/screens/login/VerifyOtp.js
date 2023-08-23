@@ -16,7 +16,7 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import CustomTextInput from '../../components/organisms/CustomTextInput';
 import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';
-import ButtonNavigateArrow from '../../components/atoms/ButtonNavigateArrow';
+import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
 import {useGetLoginOtpMutation} from '../../apiServices/login/otpBased/SendOtpApi';
 import {useGetAppLoginMutation} from '../../apiServices/login/otpBased/OtpLoginApi';
 import {useVerifyOtpMutation} from '../../apiServices/login/otpBased/VerifyOtpApi';
