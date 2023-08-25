@@ -1,9 +1,13 @@
 import React, {useState,useEffect} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
-
+import { useSelector } from 'react-redux';
 const ErrorModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const ternaryThemeColor = useSelector(
+    state => state.apptheme.ternaryThemeColor,
+  )
+    ? useSelector(state => state.apptheme.ternaryThemeColor)
+    : 'grey';
   useEffect(()=>{
     if(props.openModal===true)
     {
@@ -34,7 +38,7 @@ const ErrorModal = (props) => {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{props.message}</Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={{...styles.button,backgroundColor:ternaryThemeColor}}
               onPress={() => closeModal()}>
               <Text style={styles.textStyle}>Hide</Text>
             </Pressable>
@@ -50,10 +54,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+   
   },
   modalView: {
-    margin: 20,
+   
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
@@ -75,9 +79,7 @@ const styles = StyleSheet.create({
   buttonOpen: {
     backgroundColor: '#F194FF',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
+  
   textStyle: {
     color: 'white',
     fontWeight: 'bold',

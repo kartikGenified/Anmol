@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   program:[],
-  workflow:''
+  workflow:'',
+  leftProgram:[],
+  isGenuinityOnly:false
   
 }
 
@@ -17,10 +19,16 @@ export const appWorkflowSlice = createSlice({
     setWorkflow: (state, action) => {
         state.workflow = action.payload
       },
+    setleftProgram:(state, action) =>{
+        state.leftProgram = action.payload
+    },
+    setIsGenuinityOnly:(state)=>{
+      state.isGenuinityOnly =true
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setProgram,setWorkflow} = appWorkflowSlice.actions
+export const { setProgram,setWorkflow,setleftProgram,setIsGenuinityOnly} = appWorkflowSlice.actions
 
 export default appWorkflowSlice.reducer

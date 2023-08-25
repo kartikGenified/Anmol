@@ -6,7 +6,7 @@ import CongratulationActionBox from '../../components/atoms/CongratulationAction
 import Win from '../../components/molecules/Win';
 import ButtonSquare from '../../components/atoms/buttons/ButtonSquare';
 
-const CongratulateOnScan = ({navigation}) => {
+const CongratulateOnScan = ({navigation,route}) => {
     const buttonThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
       )
@@ -14,6 +14,60 @@ const CongratulateOnScan = ({navigation}) => {
         : '#ef6110';
 
     const height = Dimensions.get('window').height;
+    const workflowProgram = route.params.workflowProgram
+
+    const handleWorkflowNavigation=()=>{
+        console.log("scccess")
+    
+        if(workflowProgram[0]==="Static Coupon")
+        {
+        
+        navigation.navigate('CongratulateOnScan',{
+          workflowProgram:workflowProgram.slice(1)
+        })
+        }
+        else if (workflowProgram[0]==="Warranty")
+        {
+        navigation.navigate('ActivateWarranty',{
+          workflowProgram:workflowProgram.slice(1)
+        })
+    
+    
+        }
+        else if (workflowProgram[0]==="Points On Product")
+    {
+      console.log(workflowProgram.slice(1))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(1)
+    })
+
+    }
+    else if (workflowProgram[0]==="Cashback")
+    {
+      console.log(workflowProgram.slice(1))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(1)
+    })
+
+    }
+    else if (workflowProgram[0]==="Wheel")
+    {
+      console.log(workflowProgram.slice(1))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(1)
+    })
+
+    }
+        else{
+        navigation.navigate('Genuinity',{
+          workflowProgram:workflowProgram.slice(1)
+        })
+    
+    
+    
+        }
+    
+      }
     return (
         <View style={{flex:1,alignItems:"center",justifyContent:"center",backgroundColor:buttonThemeColor}}>
             
@@ -66,7 +120,7 @@ const CongratulateOnScan = ({navigation}) => {
                 </View>
                 <View style={{flexDirection:"row",alignItems:'center',justifyContent:"center"}}>
                     <ButtonSquare style={{color:'white'}} content="Cancel"></ButtonSquare>
-                    <ButtonSquare style={{color:'white'}} content="Okay"></ButtonSquare>
+                    <ButtonSquare handleOperation={handleWorkflowNavigation} style={{color:'white'}} content="Okay"></ButtonSquare>
 
                 </View>
             </View>

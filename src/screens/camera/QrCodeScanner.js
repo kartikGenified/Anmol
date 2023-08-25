@@ -21,7 +21,9 @@ import {useVerifyQrMutation} from '../../apiServices/qrScan/VerifyQrApi';
 import ErrorModal from '../../components/modals/ErrorModal';
 import ButtonProceed from '../../components/atoms/buttons/ButtonProceed';
 import { useAddQrMutation } from '../../apiServices/qrScan/AddQrApi';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { setQrData } from '../../../redux/slices/qrCodeDataSlice';
+import {useCheckGenuinityMutation } from '../../apiServices/workflow/genuinity/GetGenuinityApi';
 
 
 const QrCodeScanner = ({navigation}) => {
@@ -37,6 +39,7 @@ const QrCodeScanner = ({navigation}) => {
   const userType = useSelector((state)=>state.appusersdata.userType)
   const userName=useSelector((state)=>state.appusersdata.name)
   const workflowProgram = useSelector((state)=>state.appWorkflow.program)
+  const dispatch = useDispatch()
   console.log("Workflow Program is ",workflowProgram);
   // console.log("Selector state",useSelector((state)=>state.appusersdata.userId))
   const [
@@ -58,21 +61,40 @@ const QrCodeScanner = ({navigation}) => {
     },
   ] = useAddQrMutation();
 
+  const [checkGenuinityFunc,{
+    data:checkGenuinityData,
+    error:checkGenuinityError,
+    isLoading:checkGenuinityIsLoading,
+    isError:checkGenuinityIsError
+  }] =useCheckGenuinityMutation()
+
   const height = Dimensions.get('window').height;
   const platform = Platform.OS === 'ios' ? "1":"2"
   const platformMargin = Platform.OS === 'ios' ? -60 : -160;
   
+  useEffect(()=>{
+    if(checkGenuinityData)
+    {
+      console.log("genuinity check",checkGenuinityData)
+      
+      
+    }
+    else if(checkGenuinityError){
+      console.log("Error",checkGenuinityError)
+      
+    }
+  },[checkGenuinityData,checkGenuinityError])
   const modalClose = () => {
     setError(false);
   };
   const onSuccess = e => {
-    // console.log(e.data)
+    // console.log("Qr data is ------",JSON.stringify(e))
     const qrData = e.data.split('=')[1];
-    console.log(typeof qrData);
+    // console.log(typeof qrData);
 
     const requestData = {unique_code: qrData};
     const verifyQR = async data => {
-      console.log('qrData', data);
+      // console.log('qrData', data);
       try {
         // Retrieve the credentials
 
@@ -83,8 +105,9 @@ const QrCodeScanner = ({navigation}) => {
           );
           setSavedToken(credentials.username)
           const token = credentials.username
-          // console.log(token)
+         
           data &&   verifyQrFunc({token, data});
+          
         } else {
           console.log('No credentials stored');
         }
@@ -96,25 +119,27 @@ const QrCodeScanner = ({navigation}) => {
   };
 
   const addQrDataToList = data => {
-    console.log(addedQrList);
-    if (addedQrList.length === 0) {
-      console.log('From if');
-      setAddedQrList([data]);
-    } else {
-      // console.log("Form else",addedQrList)
-      addedQrList &&
-        addedQrList.map((item, index) => {
-          if (item.unique_code !== data.unique_code) {
-            console.log('Indside if');
-            setAddedQrList([...addedQrList, data]);
-          } else {
-            console.log('Indside else');
-
-            setError(true);
-            setMessage('This Qr is already added to the list');
-          }
-        });
+    const qrId = data.id
+    const token = savedToken
+    checkGenuinityFunc({qrId,token})
+    if(addedQrList.length===0)
+    {
+      setAddedQrList([...addedQrList,data])
     }
+    else
+    {
+      const existingObject = addedQrList.find(obj => obj.unique_code === data.unique_code);
+      if(!existingObject)
+      {
+        setAddedQrList([...addedQrList,data])
+      }
+      else{
+        setError(true);
+        setMessage('This Qr is already added to the list');
+      }
+
+    }
+    
   };
 
   const deleteQrFromList = code => {
@@ -124,9 +149,71 @@ const QrCodeScanner = ({navigation}) => {
     setAddedQrList(removedList);
   };
 
+
+  const handleWorkflowNavigation=(index,slice)=>{
+    console.log("scccess")
+
+    if(workflowProgram[index]==="Static Coupon")
+    {
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+    
+    }
+    else if (workflowProgram[index]==="Warranty")
+    {
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('ActivateWarranty',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+
+    }
+    else if (workflowProgram[index]==="Points On Product")
+    {
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+
+    }
+    else if (workflowProgram[index]==="Cashback")
+    {
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+
+    }
+    else if (workflowProgram[index]==="Wheel")
+    {
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('CongratulateOnScan',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+
+    }
+    else if (workflowProgram[index]==="Genuinity+")
+    {
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('GenuinityScratch',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+
+    }
+    else{
+      console.log(workflowProgram.slice(slice))
+    navigation.navigate('Genuinity',{
+      workflowProgram:workflowProgram.slice(slice)
+    })
+
+    }
+
+  }
+
   useEffect(() => {
     if (verifyQrData) {
-      console.log(verifyQrData.body);
+      console.log("Verify qr data",verifyQrData.body);
       addQrDataToList(verifyQrData.body);
     } else {
       console.log(verifyQrError);
@@ -135,11 +222,20 @@ const QrCodeScanner = ({navigation}) => {
 
   useEffect(() => {
     if (addQrData) {
-      console.log(addQrData);
+      console.log("Add qr data",addQrData.body);
       if(addQrData.success)
       {
-        navigation.navigate('CongratulateOnScan')
-        console.log("scccess")
+        dispatch(setQrData(addQrData.body))
+
+        if (checkGenuinityData.body)
+        {
+          handleWorkflowNavigation(1,2)
+     
+        }
+        else{
+          handleWorkflowNavigation(0,1)
+     
+        }
       }
     
     } else {
@@ -177,6 +273,7 @@ const QrCodeScanner = ({navigation}) => {
     }
    token && addQrFunc({token,requestData})
 
+   
     })
 
     
@@ -188,6 +285,8 @@ const QrCodeScanner = ({navigation}) => {
       onRead={onSuccess}
       reactivate={true}
       vibrate={true}
+      reactivateTimeout={2000}
+      fadeIn={true}
       flashMode={
         !flash
           ? RNCamera.Constants.FlashMode.off
@@ -373,14 +472,14 @@ const QrCodeScanner = ({navigation}) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <ScannedListItem
+                    {!error &&<ScannedListItem
                       handleDelete={deleteQrFromList}
                       unique_code={item.unique_code}
                       index={index}
                       serialNo={item.batch_running_code}
                       productName={item.created_by_name}
                       productCode={item.product_code}
-                      batchCode={item.batch_code}></ScannedListItem>
+                      batchCode={item.batch_code}></ScannedListItem>}
                   </View>
                 )}
                 keyExtractor={item => item.id}

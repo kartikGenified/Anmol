@@ -389,6 +389,8 @@ PODS:
     - React-Core
   - react-native-date-picker (4.2.14):
     - React-Core
+  - react-native-geolocation (3.0.6):
+    - React-Core
   - react-native-image-picker (5.6.1):
     - React-Core
   - react-native-safe-area-context (4.7.1):
@@ -600,6 +602,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -697,6 +700,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
+  react-native-geolocation:
+    :path: "../node_modules/@react-native-community/geolocation"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
@@ -790,6 +795,7 @@ SPEC CHECKSUMS:
   React-logger: c5b527272d5f22eaa09bb3c3a690fee8f237ae95
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-date-picker: 8847cb359cf259ddae5ed165217e15573a654519
+  react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
   react-native-image-picker: 5fcac5a5ffcb3737837f0617d43fd767249290de
   react-native-safe-area-context: 9697629f7b2cda43cf52169bb7e0767d330648c2
   react-native-webview: c2b70afb1d910cdd8810375aecc6c2894e2ba061

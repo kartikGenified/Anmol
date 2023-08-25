@@ -5,9 +5,7 @@ import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
 
 const SelectLanguageBox = (props) => {
     const [selected, setSelected] = useState(false)
-    const languageHindi =props.languageHindi
-    const languageEnglish = props.languageEnglish
-    const image = props.image
+    
     useEffect(()=>{
         const uncheck=(language)=>{
             // console.log("selected language is ",language)
@@ -18,6 +16,9 @@ const SelectLanguageBox = (props) => {
         }
         uncheck(props.selectedLanguage)
     },[props.selectedLanguage])
+    const languageHindi =props.languageHindi
+    const languageEnglish = props.languageEnglish
+    const image = props.image
     const setlanguage=()=>{
         setSelected(!selected)
         props.setSelectedLanguage(languageEnglish)

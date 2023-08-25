@@ -1,30 +1,42 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {View, StyleSheet,TextInput,TouchableOpacity} from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import DateIcon from 'react-native-vector-icons/MaterialIcons'
 import PoppinsText from '../../electrons/customFonts/PoppinsText';
+import moment from 'moment';
 
 const InputDate = (props) => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
-
+    const [selected, setSelected] = useState(false)
+    console.log(moment(date).format('DD/MM/YYYY'))
     const data =props.data
+   
+
     return (
         <TouchableOpacity onPress={()=>{
             setOpen(true)
-        }} style={{height:54,width:200,backgroundColor:'#0000000D',borderRadius:2,borderColor:'#DDDDDD',alignItems:'center',justifyContent:"center",flexDirection:'row'}}>
-            <PoppinsText content={data}></PoppinsText>
+        }} style={{height:54,width:'86%',backgroundColor:'#0000000D',borderRadius:2,borderColor:'#DDDDDD',alignItems:'center',justifyContent:"center",flexDirection:'row',margin:20}}>
+           
+           {selected ? (<PoppinsText style={{position:'absolute',left:20}} content={moment(date).format('DD/MM/YYYY')}></PoppinsText>) : (<PoppinsText style={{position:'absolute',left:20}} content={data}></PoppinsText>)
+            
+           }
+            <View style={{position:"absolute",right:10}}>
             <DateIcon name="date-range" color="#DDDDDD" size={30}></DateIcon>
+            </View>
             <DatePicker
         modal
         open={open}
         date={date}
+        mode='date'
         onConfirm={(date) => {
+          setSelected(true)
           setOpen(false)
           setDate(date)
         }}
         onCancel={() => {
           setOpen(false)
+          setSelected(false)
         }}
       />
         </TouchableOpacity>

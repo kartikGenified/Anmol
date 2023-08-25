@@ -3,6 +3,8 @@ import appUserSlice from './slices/appUserSlice'
 import appThemeSlice from './slices/appThemeSlice'
 import appUserDataSlice from './slices/appUserDataSlice'
 import appWorkflowSlice from './slices/appWorkflowSlice'
+import formSlice from './slices/formSlice'
+import qrCodeDataSlice from './slices/qrCodeDataSlice'
 import { baseApi } from '../src/apiServices/baseApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
@@ -13,6 +15,8 @@ export const store = configureStore({
     apptheme:appThemeSlice,
     appusersdata:appUserDataSlice,
     appWorkflow:appWorkflowSlice,
+    form:formSlice,
+    qrData: qrCodeDataSlice
 
   },
   middleware: (getDefaultMiddleware) =>

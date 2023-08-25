@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {SafeAreaView, Text, View,StyleSheet} from 'react-native';
 
 import {
@@ -19,7 +19,13 @@ const OtpInput = (propData) => {
     value,
     setValue,
   });
-
+  useEffect(() => {
+    return () => {
+      if (value.length === 4) {
+        propData.getOtpFromComponent(value);
+      }
+    };
+  }, [value, propData]);
   if(
     value.length===4
   )

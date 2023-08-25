@@ -10,9 +10,13 @@ import RegisterUser from '../screens/register/RegisterUser';
 import Dashboard from '../screens/dashboard/Dashboard';
 import DrawerNavigator from './DrawerNavigator';
 import QrCodeScanner from '../screens/camera/QrCodeScanner';
-import CongratulateOnScan from '../screens/points/redeemOrPoints';
+import CongratulateOnScan from '../screens/points/CongratulateOnScan';
 import ActivateWarranty from '../screens/waranty/ActivateWarranty';
-
+import Genuinity from '../screens/genuinity/Genuinity';
+import GenuineProduct from '../screens/genuinity/GenuineProduct';
+import Notification from '../screens/notification/Notification';
+import GenuinityScratch from '../screens/genuinity/GenuinityScratch';
+import Profile from '../screens/profile/Profile';
 
 const Stack = createNativeStackNavigator()
 
@@ -20,7 +24,11 @@ const StackNavigator=()=>{
     return(
         <NavigationContainer>
                 <Stack.Navigator>
-                
+                {/* <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="Profile" component={Profile}></Stack.Screen> */}
                 <Stack.Screen options={
                     {
                         headerShown:false
@@ -30,7 +38,30 @@ const StackNavigator=()=>{
                     {
                         headerShown:false
                     }
+                } name="GenuinityScratch" component={GenuinityScratch}></Stack.Screen>
+                
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
                 } name="ActivateWarranty" component={ActivateWarranty}></Stack.Screen>
+                
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="Notification" component={Notification}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="GenuineProduct" component={GenuineProduct}></Stack.Screen>
+                
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="Genuinity" component={Genuinity}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false

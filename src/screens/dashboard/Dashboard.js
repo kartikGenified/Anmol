@@ -12,8 +12,11 @@ import DashboardDataBox from '../../components/molecules/DashboardDataBox';
 import KYCVerificationComponent from '../../components/organisms/KYCVerificationComponent';
 import DashboardSupportBox from '../../components/molecules/DashboardSupportBox';
 import { useGetWorkflowMutation } from '../../apiServices/workflow/GetWorkflowByTenant';
+import { useGetFormMutation } from '../../apiServices/workflow/GetForms';
 import { useSelector ,useDispatch} from 'react-redux';
-import { setProgram,setWorkflow } from '../../../redux/slices/appWorkflowSlice';
+import { setProgram,setWorkflow,setIsGenuinityOnly} from '../../../redux/slices/appWorkflowSlice';
+import { setWarrantyForm } from '../../../redux/slices/formSlice';
+
 const Dashboard = ({navigation}) => {
 
     const [dashboardItems, setDashboardItems] = useState()
@@ -39,7 +42,12 @@ const Dashboard = ({navigation}) => {
       isLoading:getWorkflowIsLoading,
       isError:getWorkflowIsError
   }] =useGetWorkflowMutation()
-
+    const [getFormFunc,{
+      data:getFormData,
+      error:getFormError,
+      isLoading:getFormIsLoading,
+      isError:getFormIsError
+  }] =useGetFormMutation()
     const dispatch = useDispatch()
 
     useEffect(()=>{
@@ -52,10 +60,12 @@ const Dashboard = ({navigation}) => {
                     'Credentials successfully loaded for user ' + credentials.username
                   );
                   const token = credentials.username
+                  const form_type = "2"
                   console.log(typeof token)
                   token && getDashboardFunc(token)
                   token && getBannerFunc(token)
                   token && getWorkflowFunc({userId,token})
+                  token && getFormFunc({form_type,token})
                 } else {
                   console.log('No credentials stored');
                 }
@@ -91,6 +101,10 @@ const Dashboard = ({navigation}) => {
     useEffect(()=>{
         if(getWorkflowData)
         {
+          if(getWorkflowData.length===1 && getWorkflowData[0]==="Genuinity")
+          {
+            dispatch(setIsGenuinityOnly())
+          }
             console.log(getWorkflowData)
             dispatch(setProgram(getWorkflowData.body[0].program))
             dispatch(setWorkflow(getWorkflowData.body[0].workflow_id))
@@ -100,6 +114,17 @@ const Dashboard = ({navigation}) => {
             console.log(getWorkflowError)
         }
     },[getWorkflowData,getWorkflowError])
+    useEffect(()=>{
+      if(getFormData)
+      {
+          console.log("Form Fields",getFormData.body)
+          dispatch(setWarrantyForm(getFormData.body.template))
+          
+      }
+      else{
+          console.log("Form Field Error",getFormError)
+      }
+  },[getFormData,getFormError])
 
     const platformMarginScroll = Platform.OS ==='ios' ? 0:0
     

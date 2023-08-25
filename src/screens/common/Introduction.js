@@ -90,7 +90,9 @@ const Introduction = ({navigation}) => {
             <DotHorizontalList no = {descriptionImages.length} primaryColor="white" secondaryColor="#0085A2" selectedNo = {imageIndex} ></DotHorizontalList>
             
             <View style={{width:"100%",height:'100%'}}>
-                <Text onPress={()=>{console.log("skipped")}} style={{fontSize:18,color:"#0087A2",position:"absolute",left:40,bottom:20,fontWeight:'600'}}>Skip</Text>
+                <Text onPress={()=>{console.log("skipped")
+            navigation.navigate('SelectLanguage')
+            }} style={{fontSize:18,color:"#0087A2",position:"absolute",left:40,bottom:20,fontWeight:'600'}}>Skip</Text>
                 <Text onPress={()=>{handleNext()}} style={{fontSize:18,color:"#0087A2",position:"absolute",right:40,bottom:20,fontWeight:'600'}}>Next</Text>
             </View>
             </View>

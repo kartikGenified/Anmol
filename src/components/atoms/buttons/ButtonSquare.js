@@ -22,14 +22,9 @@ const ButtonSquare = props => {
   
   const handleButtonPress=()=>{
 
-    if(content==="Register")
-  {
+    
     props.handleOperation()
-  }
-  else{
-    console.log('buttonpressed');
-    navigateTo &&  navigation.navigate(navigateTo)
-  }
+  
   
   }
 
