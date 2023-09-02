@@ -17,7 +17,7 @@ import GenuineProduct from '../screens/genuinity/GenuineProduct';
 import Notification from '../screens/notification/Notification';
 import GenuinityScratch from '../screens/genuinity/GenuinityScratch';
 import Profile from '../screens/profile/Profile';
-
+import Passbook from '../screens/passbook/Passbook';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{

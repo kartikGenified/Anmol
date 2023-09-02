@@ -13,7 +13,7 @@ const GenuineProduct = ({navigation,route}) => {
     : '#ef6110';
 // const productList=route.params.productList
 const workflowProgram = route.params.workflowProgram
-console.log("Workflow",workflowProgram)
+// console.log("Workflow",workflowProgram)
   const height = Dimensions.get('window').height;
   
   const handleWorkflowNavigation=()=>{
@@ -28,7 +28,7 @@ console.log("Workflow",workflowProgram)
     }
     else if (workflowProgram[0]==="Points On Product")
     {
-      console.log(workflowProgram.slice(1))
+      // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
       workflowProgram:workflowProgram.slice(1)
     })
@@ -36,7 +36,7 @@ console.log("Workflow",workflowProgram)
     }
     else if (workflowProgram[0]==="Cashback")
     {
-      console.log(workflowProgram.slice(1))
+      // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
       workflowProgram:workflowProgram.slice(1)
     })
@@ -44,7 +44,7 @@ console.log("Workflow",workflowProgram)
     }
     else if (workflowProgram[0]==="Wheel")
     {
-      console.log(workflowProgram.slice(1))
+      // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
       workflowProgram:workflowProgram.slice(1)
     })

@@ -15,7 +15,7 @@ import { useGetWorkflowMutation } from '../../apiServices/workflow/GetWorkflowBy
 import { useGetFormMutation } from '../../apiServices/workflow/GetForms';
 import { useSelector ,useDispatch} from 'react-redux';
 import { setProgram,setWorkflow,setIsGenuinityOnly} from '../../../redux/slices/appWorkflowSlice';
-import { setWarrantyForm } from '../../../redux/slices/formSlice';
+import { setWarrantyForm,setWarrantyFormId} from '../../../redux/slices/formSlice';
 
 const Dashboard = ({navigation}) => {
 
@@ -119,6 +119,7 @@ const Dashboard = ({navigation}) => {
       {
           console.log("Form Fields",getFormData.body)
           dispatch(setWarrantyForm(getFormData.body.template))
+          dispatch(setWarrantyFormId(getFormData.body.form_template_id))
           
       }
       else{

@@ -12,6 +12,9 @@ const ImageInput = (props) => {
         const result = await launchImageLibrary();
         console.log(result.assets[0].uri)
         setImage(result.assets[0])
+        let tempJsonData ={...props.jsonData,"value":result.assets[0].uri}
+        console.log(tempJsonData)
+        props.handleData(tempJsonData)
       };
     return (
         <View style={{width:'100%',alignItems:"center",justifyContent:"center"}}>

@@ -41,7 +41,7 @@ const GenuinityScratch = ({navigation,route}) => {
 
   
 
-  console.log("Qr data", qrData)
+  // console.log("Qr data", qrData)
   const modalClose = () => {
     setError(false);
   };
@@ -49,14 +49,14 @@ const GenuinityScratch = ({navigation,route}) => {
   useEffect(()=>{
     if(claimGenuinityData)
     {
-      console.log("response from",claimGenuinityData.body)
+      // console.log("response from",claimGenuinityData.body)
       if(claimGenuinityData.success === true)
       {
         navigation.navigate('Genuinity',{workflowProgram:workflowProgram})
       }
     }
     else if(claimGenuinityError){
-      console.log("Error",claimGenuinityError)
+      // console.log("Error",claimGenuinityError)
       claimGenuinityError && setError(true)
       claimGenuinityError && setMessage(claimGenuinityError.data.message)
     }
@@ -74,7 +74,7 @@ const GenuinityScratch = ({navigation,route}) => {
     }
     else if (workflowProgram[0]==="Points On Product")
     {
-      console.log(workflowProgram.slice(1))
+      // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
       workflowProgram:workflowProgram.slice(1)
     })
@@ -82,7 +82,7 @@ const GenuinityScratch = ({navigation,route}) => {
     }
     else if (workflowProgram[0]==="Cashback")
     {
-      console.log(workflowProgram.slice(1))
+      // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
       workflowProgram:workflowProgram.slice(1)
     })
@@ -90,7 +90,7 @@ const GenuinityScratch = ({navigation,route}) => {
     }
     else if (workflowProgram[0]==="Wheel")
     {
-      console.log(workflowProgram.slice(1))
+      // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
       workflowProgram:workflowProgram.slice(1)
     })
@@ -193,8 +193,8 @@ const GenuinityScratch = ({navigation,route}) => {
         state: addressData.address.state,
         district: addressData.address.state_district,
         city: addressData.address.county,
-        area: addressData.address.neighbourhood,
-        known_name: addressData.address.neighbourhood,
+        area: addressData.address.county,
+        known_name: addressData.address.county,
         lat: addressData.lat.slice(0,8),
         log: addressData.lon.slice(0,8),
       };
@@ -226,7 +226,7 @@ const GenuinityScratch = ({navigation,route}) => {
       //   setError(true);
       //   setMessage('Scratch Code Could Not Be Empty');
       // }
-      console.log(data)
+      // console.log(data)
     };
     return (
       <View

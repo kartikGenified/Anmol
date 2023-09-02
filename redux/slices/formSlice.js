@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  warrantyForm:{}
-  
+  warrantyForm:{},
+  warrantyFormId:''
 }
 
 export const formSlice = createSlice({
@@ -14,10 +14,13 @@ export const formSlice = createSlice({
     setWarrantyForm: (state, action) => {
         state.warrantyForm = action.payload
       },
+      setWarrantyFormId: (state, action) => {
+        state.warrantyFormId = action.payload
+      },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setWarrantyForm} = formSlice.actions
+export const { setWarrantyForm, setWarrantyFormId} = formSlice.actions
 
 export default formSlice.reducer

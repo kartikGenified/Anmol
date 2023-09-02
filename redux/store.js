@@ -5,6 +5,7 @@ import appUserDataSlice from './slices/appUserDataSlice'
 import appWorkflowSlice from './slices/appWorkflowSlice'
 import formSlice from './slices/formSlice'
 import qrCodeDataSlice from './slices/qrCodeDataSlice'
+import getProductSlice from './slices/getProductSlice'
 import { baseApi } from '../src/apiServices/baseApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
@@ -16,7 +17,8 @@ export const store = configureStore({
     appusersdata:appUserDataSlice,
     appWorkflow:appWorkflowSlice,
     form:formSlice,
-    qrData: qrCodeDataSlice
+    qrData: qrCodeDataSlice,
+    productData:getProductSlice
 
   },
   middleware: (getDefaultMiddleware) =>

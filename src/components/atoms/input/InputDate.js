@@ -11,7 +11,12 @@ const InputDate = (props) => {
     const [selected, setSelected] = useState(false)
     console.log(moment(date).format('DD/MM/YYYY'))
     const data =props.data
-   
+    
+    const handleInputEnd=()=>{
+      let tempJsonData ={...props.jsonData,"value":moment(date).format('DD/MM/YYYY')}
+      console.log(tempJsonData)
+      props.handleData(tempJsonData)
+  }
 
     return (
         <TouchableOpacity onPress={()=>{
@@ -33,6 +38,7 @@ const InputDate = (props) => {
           setSelected(true)
           setOpen(false)
           setDate(date)
+          handleInputEnd()
         }}
         onCancel={() => {
           setOpen(false)
