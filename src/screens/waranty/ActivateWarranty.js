@@ -87,7 +87,18 @@ const ActivateWarranty = ({navigation, route}) => {
   useEffect(() => {
     if (activateWarrantyData) {
       console.log('activate warranty data is', activateWarrantyData);
-    } else {
+      if(activateWarrantyData.success)
+      {
+        handleWorkflowNavigation()
+      }
+      else{
+        alert("Warranty status false")
+      }
+    } else if(activateWarrantyError) {
+      if(activateWarrantyError.status===409)
+      {
+        handleWorkflowNavigation()
+      }
       console.log(activateWarrantyError);
     }
   }, [activateWarrantyData, activateWarrantyError]);
@@ -229,25 +240,30 @@ const ActivateWarranty = ({navigation, route}) => {
     if (workflowProgram[0] === 'Static Coupon') {
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
+        rewardType:"Static Coupon"
       });
     } else if (workflowProgram[0] === 'Warranty') {
       navigation.navigate('ActivateWarranty', {
         workflowProgram: workflowProgram.slice(1),
+        
       });
     } else if (workflowProgram[0] === 'Points On Product') {
       console.log(workflowProgram.slice(1));
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
+        rewardType:"Points On Product"
       });
     } else if (workflowProgram[0] === 'Cashback') {
       console.log(workflowProgram.slice(1));
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
+        rewardType:'Cashback'
       });
     } else if (workflowProgram[0] === 'Wheel') {
       console.log(workflowProgram.slice(1));
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
+        rewardType:"Wheel"
       });
     } else if (workflowProgram[0] === 'Genuinity') {
       navigation.navigate('Genuinity', {

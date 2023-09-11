@@ -120,7 +120,7 @@ const QrCodeScanner = ({navigation}) => {
     const form_type = '2';
     const token =savedToken
     const body = {product_id: productDataData.body.product_id, qr_id: qr_id};
-      // console.log('Product Data is ', productDataData.body.product_id);
+      console.log('Product Data is ', productDataData);
       console.log("productdata", token,body)
       dispatch(setProductData(productDataData.body));
       setProductId(productDataData.body.product_id);
@@ -275,8 +275,13 @@ const QrCodeScanner = ({navigation}) => {
         dispatch(setQrData(addQrData.body));
         console.log("check Genuinity and warranty",checkGenuinityData,checkWarrantyData)
 
-        if(checkGenuinityData.body){
-          if(checkWarrantyData.body)
+        if(checkGenuinityData){
+          
+          if(checkGenuinityData.body){
+          console.log("check warranty data",checkWarrantyData)
+          if(checkWarrantyError)
+          {
+          if(checkWarrantyError.data.body)
           {
             handleWorkflowNavigation("Genuinity+","Warranty")
           }
@@ -284,8 +289,46 @@ const QrCodeScanner = ({navigation}) => {
             handleWorkflowNavigation("Genuinity+")
           }
         }
-        else if(checkWarrantyData.body){
+        else if(checkWarrantyData)
+        {
           if(checkWarrantyData.body)
+        {
+          handleWorkflowNavigation("Genuinity+","Warranty")
+        }
+        else{
+          handleWorkflowNavigation("Genuinity+")
+        }
+        }
+        }
+        else
+        {
+          if(checkWarrantyError)
+          {
+          if(checkWarrantyError.data.body)
+          {
+            handleWorkflowNavigation("Warranty")
+          }
+          else{
+            handleWorkflowNavigation()
+          }
+        }
+        else if(checkWarrantyData)
+        {
+          if(checkWarrantyData.body)
+        {
+          handleWorkflowNavigation("Warranty")
+        }
+        else{
+          handleWorkflowNavigation()
+        }
+        }
+        }
+      }
+        else if(checkWarrantyError){
+          if(checkWarrantyError.data.body){
+            if(checkGenuinityData)
+          {
+          if(checkGenuinityData.body)
           {
             handleWorkflowNavigation("Genuinity+","Warranty")
           }
@@ -293,10 +336,12 @@ const QrCodeScanner = ({navigation}) => {
             handleWorkflowNavigation("Warranty")
           }
         }
-        else{
-          handleWorkflowNavigation()
-        }
         
+      }
+      }
+      else{
+        handleWorkflowNavigation()
+      }
        
       }
     } else {

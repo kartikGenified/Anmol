@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {View, StyleSheet, TouchableOpacity, Image,ScrollView,Dimensions} from 'react-native';
 import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import CongratulationActionBox from '../../components/atoms/CongratulationActionBox';
 import Win from '../../components/molecules/Win';
 import ButtonSquare from '../../components/atoms/buttons/ButtonSquare';
+import { useGetCouponOnCategoryMutation } from '../../apiServices/workflow/rewards/GetCouponApi';
+import * as Keychain from 'react-native-keychain';
+import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 
 const CongratulateOnScan = ({navigation,route}) => {
     const buttonThemeColor = useSelector(
@@ -12,18 +15,69 @@ const CongratulateOnScan = ({navigation,route}) => {
       )
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : '#ef6110';
+        
+      //  data from scanning qr code 
+    const qrData = useSelector(state=>state.qrData.qrData)
+    console.log(qrData)
+      // product data recieved from scanned product
+    const productData = useSelector(state => state.productData.productData);
 
     const height = Dimensions.get('window').height;
+    // workflow for the given user
     const workflowProgram = route.params.workflowProgram
+    const rewardType = route.params.rewardType
 
+     const [getCouponOnCategoryFunc,{
+      data:getCouponOnCategoryData,
+      error:getCouponOnCategoryError,
+      isLoading:getCouponOnCategoryIsLoading,
+      isError:getCouponOnCategoryIsError
+     }] =useGetCouponOnCategoryMutation()
+
+    const fetchRewardsAccToWorkflow=async()=>{
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        console.log(
+          'Credentials successfully loaded for user ' + credentials.username,
+        );
+
+        const token = credentials.username;
+
+        const params ={
+          token:token,
+          catId:productData.category_id,
+          qr_code:qrData.unique_code
+        }
+        getCouponOnCategoryFunc(params)
+      } else {
+        console.log('No credentials stored');
+      }
+    }
+
+    useEffect(()=>{
+      fetchRewardsAccToWorkflow()
+    },[])
+    useEffect(()=>{
+      if(getCouponOnCategoryData)
+      {
+        console.log("getCouponOnCategoryData",getCouponOnCategoryData)
+      }
+      else if(getCouponOnCategoryError)
+      {
+        console.log("getCouponOnCategoryError",getCouponOnCategoryError)
+      }
+    },[getCouponOnCategoryData,getCouponOnCategoryError])
+
+
+    console.log("workflowProgram",workflowProgram)
     const handleWorkflowNavigation=()=>{
         console.log("scccess")
     
         if(workflowProgram[0]==="Static Coupon")
         {
-        
         navigation.navigate('CongratulateOnScan',{
-          workflowProgram:workflowProgram.slice(1)
+          workflowProgram:workflowProgram.slice(1),
+          rewardType:"Static Coupon"
         })
         }
         else if (workflowProgram[0]==="Warranty")
@@ -38,7 +92,8 @@ const CongratulateOnScan = ({navigation,route}) => {
     {
       console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:"Points On Product"
     })
 
     }
@@ -46,7 +101,8 @@ const CongratulateOnScan = ({navigation,route}) => {
     {
       console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:"Cashback"
     })
 
     }
@@ -54,12 +110,13 @@ const CongratulateOnScan = ({navigation,route}) => {
     {
       console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:"Wheel"
     })
 
     }
         else{
-        navigation.navigate('Genuinity',{
+        navigation.navigate('Dashboard',{
           workflowProgram:workflowProgram.slice(1)
         })
     
@@ -97,8 +154,8 @@ const CongratulateOnScan = ({navigation,route}) => {
             <PoppinsTextMedium style={{color:'#333333',fontSize:20,fontWeight:'500',width:'60%',marginTop:6}} content="You have successfully perform the action"></PoppinsTextMedium>
             {/* action box ---------------------------------------------- */}
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginTop:10}}>   
-            <CongratulationActionBox title="Product Scanned" data="5" primaryColor={buttonThemeColor} secondaryColor={buttonThemeColor}></CongratulationActionBox>
-            <CongratulationActionBox primaryColor={buttonThemeColor} secondaryColor={buttonThemeColor}></CongratulationActionBox>
+            {getCouponOnCategoryData && <CongratulationActionBox title="Product Scanned" data={[qrData].length} primaryColor={buttonThemeColor} secondaryColor={buttonThemeColor}></CongratulationActionBox>}
+            {/* {getCouponOnCategoryData &&<CongratulationActionBox title="Points Earned" data={productData.consumer_points} primaryColor={buttonThemeColor} secondaryColor={buttonThemeColor}></CongratulationActionBox>} */}
             </View>
             {/* -------------------------------------------------------- */}
 
@@ -109,13 +166,21 @@ const CongratulateOnScan = ({navigation,route}) => {
                 <View style={{height:48,width:160,backgroundColor:buttonThemeColor,borderWidth:1,borderStyle:'dotted',borderColor:'white',borderRadius:2,position:"absolute",top:-20,alignItems:"center",justifyContent:"center"}}>
                     <PoppinsTextMedium style={{fontSize:16,fontWeight:'800',color:"white"}} content="You Have Won"></PoppinsTextMedium>
                 </View>
-                <Win title="1 Zomato Coupon"></Win>
+
+                {/* reward user according to the workflow ------------------------*/}
+
+                {
+                  rewardType==="Static Coupon" && getCouponOnCategoryData && <Win data={getCouponOnCategoryData.body} title={getCouponOnCategoryData.body.brand}></Win>
+
+                }
+                {
+                  getCouponOnCategoryError && <PoppinsText content={getCouponOnCategoryError.data.message}></PoppinsText>
+                }
             </View>
             </View>
             </ScrollView>
             <View style={{width:'100%',height:80,backgroundColor:"white"}}>
                 <View style={{alignItems:"center",justifyContent:"center",width:"100%"}}>
-                    <PoppinsTextMedium style={{fontWeight:"800",fontSize:18}} content="View Scanned List"></PoppinsTextMedium>
                    
                 </View>
                 <View style={{flexDirection:"row",alignItems:'center',justifyContent:"center"}}>

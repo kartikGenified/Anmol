@@ -23,14 +23,16 @@ const workflowProgram = route.params.workflowProgram
     {
     
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:"Static Coupon"
     })
     }
     else if (workflowProgram[0]==="Points On Product")
     {
       // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:'Points On Product'
     })
 
     }
@@ -38,7 +40,8 @@ const workflowProgram = route.params.workflowProgram
     {
       // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:'Cashback'
     })
 
     }
@@ -46,7 +49,8 @@ const workflowProgram = route.params.workflowProgram
     {
       // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:'Wheel'
     })
 
     }

@@ -3,6 +3,7 @@ import {View, StyleSheet,TouchableOpacity,Image} from 'react-native';
 import { useSelector } from 'react-redux';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
+import DisplayOnlyTextInput from '../../components/atoms/DisplayOnlyTextInput';
 
 const Profile = ({navigation}) => {
     const ternaryThemeColor = useSelector(
@@ -121,7 +122,8 @@ const Profile = ({navigation}) => {
             </View>
             <ProfileHeader></ProfileHeader>
             <View style={{borderTopRightRadius:30,borderTopLeftRadius:30,backgroundColor:"white",height:'80%',marginTop:10,alignItems:'center',justifyContent:"center"}}>
-            <ProfileData></ProfileData>
+            {/* <ProfileData></ProfileData> */}
+            <DisplayOnlyTextInput data="nishank@gmail.com" title="Email ID" photo={require('../../../assets/images/eye.png')}></DisplayOnlyTextInput>
             </View>
         </View>
     );

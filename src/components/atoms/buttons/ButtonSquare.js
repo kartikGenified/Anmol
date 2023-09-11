@@ -36,7 +36,7 @@ const ButtonSquare = props => {
        handleButtonPress()
       }}
       style={{
-        padding: 4,
+        padding: 8,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: backgroundColor,

@@ -49,7 +49,7 @@ const GenuinityScratch = ({navigation,route}) => {
   useEffect(()=>{
     if(claimGenuinityData)
     {
-      // console.log("response from",claimGenuinityData.body)
+      console.log("response from",claimGenuinityData)
       if(claimGenuinityData.success === true)
       {
         navigation.navigate('Genuinity',{workflowProgram:workflowProgram})
@@ -69,14 +69,16 @@ const GenuinityScratch = ({navigation,route}) => {
     {
     
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:"Static Coupon"
     })
     }
     else if (workflowProgram[0]==="Points On Product")
     {
       // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:'Points On Product'
     })
 
     }
@@ -84,7 +86,8 @@ const GenuinityScratch = ({navigation,route}) => {
     {
       // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:'Cashback'
     })
 
     }
@@ -92,7 +95,8 @@ const GenuinityScratch = ({navigation,route}) => {
     {
       // console.log(workflowProgram.slice(1))
     navigation.navigate('CongratulateOnScan',{
-      workflowProgram:workflowProgram.slice(1)
+      workflowProgram:workflowProgram.slice(1),
+      rewardType:'Wheel'
     })
 
     }
@@ -188,15 +192,15 @@ const GenuinityScratch = ({navigation,route}) => {
         product_id: Number(qrData.id),
         product_code: qrData.product_code,
         platform_id: Number(platform),
-        pincode: addressData.address.postcode,
+        pincode: addressData.address.postcode===undefined ? "N/A":addressData.address.postcode,
         platform: 'mobile',
-        state: addressData.address.state,
-        district: addressData.address.state_district,
-        city: addressData.address.county,
-        area: addressData.address.county,
-        known_name: addressData.address.county,
-        lat: addressData.lat.slice(0,8),
-        log: addressData.lon.slice(0,8),
+        state: addressData.address.state===undefined ? "N/A":addressData.address.state,
+        district: addressData.address.state_district===undefined ? "N/A":addressData.address.state_district,
+        city: addressData.address.county===undefined ? "N/A":addressData.address.county,
+        area: addressData.address.county===undefined ? "N/A":addressData.address.county,
+        known_name: addressData.address.county===undefined ? "N/A":addressData.address.county,
+        lat: addressData.lat.slice(0,8)===undefined ? "N/A":addressData.lat.slice(0,8),
+        log: addressData.lon.slice(0,8)===undefined ? "N/A":addressData.lon.slice(0,8),
       };
       // const data = {
       //   scratch_code: qrData.scratch_code,

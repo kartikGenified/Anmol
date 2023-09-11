@@ -10,13 +10,14 @@ import RegisterUser from '../screens/register/RegisterUser';
 import Dashboard from '../screens/dashboard/Dashboard';
 import DrawerNavigator from './DrawerNavigator';
 import QrCodeScanner from '../screens/camera/QrCodeScanner';
-import CongratulateOnScan from '../screens/points/CongratulateOnScan';
+import CongratulateOnScan from '../screens/Rewards/CongratulateOnScan';
 import ActivateWarranty from '../screens/waranty/ActivateWarranty';
 import Genuinity from '../screens/genuinity/Genuinity';
 import GenuineProduct from '../screens/genuinity/GenuineProduct';
 import Notification from '../screens/notification/Notification';
 import GenuinityScratch from '../screens/genuinity/GenuinityScratch';
 import Profile from '../screens/profile/Profile';
+import EditProfile from '../screens/profile/EditProfile';
 import Passbook from '../screens/passbook/Passbook';
 const Stack = createNativeStackNavigator()
 
@@ -28,7 +29,13 @@ const StackNavigator=()=>{
                     {
                         headerShown:false
                     }
+                } name="EditProfile" component={EditProfile}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
                 } name="Profile" component={Profile}></Stack.Screen> */}
+                
                 <Stack.Screen options={
                     {
                         headerShown:false

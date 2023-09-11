@@ -98,10 +98,12 @@ const OtpLogin = ({navigation, route}) => {
     // console.log(data)
     setMobile(data)
   };
+
   const getName = data => {
     // console.log(data)
     setName(data)
   };
+  
   const handleButtonPress=()=>{
     
     sendOtpFunc({mobile,name,user_type,user_type_id})

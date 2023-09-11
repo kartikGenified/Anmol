@@ -41,21 +41,23 @@ container:{
     flexDirection:"row",
     alignItems:"center",
     justifyContent:"center",
-    height:74,
+    height:90,
     width:'90%',
     borderRadius:20,
     marginTop:20,
     
     
+    
 },
 button:{
-    height:26,
+    height:30,
     width:'80%',
     padding:4,
     alignItems:"center",
     justifyContent:"center",
     marginTop:4,
-    borderRadius:16
+    borderRadius:16,
+    
 }
 
 })

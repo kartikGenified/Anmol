@@ -5,7 +5,7 @@ export const productApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getProductData: builder.mutation({
       query({productCode , userType, token}) {
-        console.log("token product code and userType is",token,typeof productCode, typeof userType);
+        console.log("token product code and userType is",token, productCode,  userType);
         return {
           method: 'GET',
           url: `api/tenant/productPoints/?product_code=${productCode}&user_type=${userType}`,
