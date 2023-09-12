@@ -13,14 +13,16 @@ const Genuinity = ({navigation,route}) => {
       {
       
       navigation.navigate('CongratulateOnScan',{
-        workflowProgram:workflowProgram.slice(1)
+        workflowProgram:workflowProgram.slice(1),
+        rewardType:"Static Coupon"
       })
       }
       else if (workflowProgram[0]==="Points On Product")
       {
         // console.log(workflowProgram.slice(1))
       navigation.navigate('CongratulateOnScan',{
-        workflowProgram:workflowProgram.slice(1)
+        workflowProgram:workflowProgram.slice(1),
+        rewardType:'Points On Product'
       })
   
       }
@@ -28,7 +30,8 @@ const Genuinity = ({navigation,route}) => {
       {
         // console.log(workflowProgram.slice(1))
       navigation.navigate('CongratulateOnScan',{
-        workflowProgram:workflowProgram.slice(1)
+        workflowProgram:workflowProgram.slice(1),
+        rewardType:'Cashback'
       })
   
       }
@@ -36,7 +39,8 @@ const Genuinity = ({navigation,route}) => {
       {
         // console.log(workflowProgram.slice(1))
       navigation.navigate('CongratulateOnScan',{
-        workflowProgram:workflowProgram.slice(1)
+        workflowProgram:workflowProgram.slice(1),
+        rewardType:'Wheel'
       })
   
       }

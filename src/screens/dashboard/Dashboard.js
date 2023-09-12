@@ -16,6 +16,10 @@ import { useGetFormMutation } from '../../apiServices/workflow/GetForms';
 import { useSelector ,useDispatch} from 'react-redux';
 import { setProgram,setWorkflow,setIsGenuinityOnly} from '../../../redux/slices/appWorkflowSlice';
 import { setWarrantyForm,setWarrantyFormId} from '../../../redux/slices/formSlice';
+import { setLocation } from '../../../redux/slices/userLocationSlice';
+import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
+
 
 const Dashboard = ({navigation}) => {
 
@@ -49,6 +53,39 @@ const Dashboard = ({navigation}) => {
       isError:getFormIsError
   }] =useGetFormMutation()
     const dispatch = useDispatch()
+
+
+    useEffect(()=>{
+      let lat=''
+      let lon=''
+      Geolocation.getCurrentPosition((res)=>{
+          lat = res.coords.latitude
+          lon = res.coords.longitude
+          getLocation(JSON.stringify(lat),JSON.stringify(lon))
+      })
+      const getLocation=(lat,lon)=>{
+          if(lat!=='' && lon!=='')
+          {
+              console.log("latitude and longitude",lat,lon)
+              try{
+                  axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${lat}+&lon=${lon}&format=json`,{headers:{
+                      'Content-Type': 'application/json'
+                  }}).then((res)=>{console.log("Addres Data",res.data)
+                  dispatch(setLocation(res.data))
+                })
+              }
+              catch(e)
+              {
+                  console.log("Error in fetching location",e)
+              }
+          
+  
+          }
+          else{
+              console.log("latitude and longitude",lat,lon)
+          }
+      }
+    },[])
 
     useEffect(()=>{
         const getDashboardData=async()=>{
