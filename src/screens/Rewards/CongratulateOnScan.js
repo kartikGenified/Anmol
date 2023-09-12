@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  Platform
+  Platform,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
@@ -18,9 +18,14 @@ import {
   useCheckUserPointMutation,
   useUserPointsEntryMutation,
 } from '../../apiServices/workflow/rewards/GetPointsApi';
+import {
+  useGetallWheelsByUserIdMutation,
+  useCreateWheelHistoryMutation,
+} from '../../apiServices/workflow/rewards/GetWheelApi';
+import { useCheckQrCodeAlreadyRedeemedMutation,useAddCashbackEnteriesMutation } from '../../apiServices/workflow/rewards/GetCashbackApi';
 import * as Keychain from 'react-native-keychain';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
-import { slug } from '../../utils/Slug';
+import {slug} from '../../utils/Slug';
 const CongratulateOnScan = ({navigation, route}) => {
   const buttonThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -36,7 +41,7 @@ const CongratulateOnScan = ({navigation, route}) => {
   const userData = useSelector(state => state.appusersdata.userData);
   // getting location from redux state
   const location = useSelector(state => state.userLocation.location);
-  console.log('Location', location, userData, productData, qrData);
+  // console.log('Location', location, userData, productData, qrData);
   const height = Dimensions.get('window').height;
   // workflow for the given user
   const workflowProgram = route.params.workflowProgram;
@@ -74,6 +79,40 @@ const CongratulateOnScan = ({navigation, route}) => {
     },
   ] = useUserPointsEntryMutation();
 
+  const [
+    getAllWheelsByUserIdFunc,
+    {
+      data: getAllWheelsByUserIdData,
+      error: getAllWheelsByUserIdError,
+      isLoading: getAllWheelsByUserIdIsLoading,
+      isError: getAllWheelsByUserIdIsError,
+    },
+  ] = useGetallWheelsByUserIdMutation();
+
+  const [
+    createWheelHistoryFunc,
+    {
+      data: createWheelHistoryData,
+      error: createWheelHistoryError,
+      isLoading: createWheelHistoryIsLoading,
+      isError: createWheelHistoryIsError,
+    },
+  ] = useCreateWheelHistoryMutation();
+
+  const [checkQrCodeAlreadyRedeemedFunc,{
+    data:checkQrCodeAlreadyRedeemedData,
+    error:checkQrCodeAlreadyRedeemedError,
+    isLoading:checkQrCodeAlreadyRedeemedIsLoading,
+    isError:checkQrCodeAlreadyRedeemedIsError
+  }] = useCheckQrCodeAlreadyRedeemedMutation()
+
+  const [addCashbackEnteriesFunc,{
+    data:addCashbackEnteriesData,
+    error:addCashbackEnteriesError,
+    isLoading:addCashbackEnteriesIsLoading,
+    isError:addCashbackEnteriesIsError
+  }] = useAddCashbackEnteriesMutation()
+
   const fetchRewardsAccToWorkflow = async () => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
@@ -96,6 +135,20 @@ const CongratulateOnScan = ({navigation, route}) => {
           qr_code: qrData.id,
         };
         checkUserPointFunc(params);
+      } else if (rewardType === 'Wheel') {
+        const params = {
+          token: token,
+          id: userData.id.toString(),
+        };
+        getAllWheelsByUserIdFunc(params);
+      }
+      else if (rewardType ==="Cashback")
+      {
+        const params= {
+          token:token,
+          qrId:qrData.id
+        }
+        checkQrCodeAlreadyRedeemedFunc(params)
       }
     } else {
       console.log('No credentials stored');
@@ -104,12 +157,142 @@ const CongratulateOnScan = ({navigation, route}) => {
 
   useEffect(() => {
     fetchRewardsAccToWorkflow();
-  }, []);
+  }, [rewardType]);
+
+  useEffect(()=>{
+    if(addCashbackEnteriesData)
+    {
+      console.log("addCashbackEnteriesData",addCashbackEnteriesData)
+      if(addCashbackEnteriesData.success)
+      {
+        setTimeout(() => {
+          handleWorkflowNavigation();
+        }, 1000);
+      }
+    }
+    else if(addCashbackEnteriesError)
+    {
+      console.log("addCashbackEnteriesError",addCashbackEnteriesError)
+    }
+  },[addCashbackEnteriesData,addCashbackEnteriesError])
+
+  useEffect(() => {
+    if (getAllWheelsByUserIdData) {
+      console.log(
+        'getAllWheelsByUserIdData',
+        getAllWheelsByUserIdData.body.data,
+      );
+      createWheelHistory(getAllWheelsByUserIdData.body.data)
+    } else if (getAllWheelsByUserIdError) {
+      console.log('getAllWheelsByUserIdError', getAllWheelsByUserIdError);
+    }
+  }, [getAllWheelsByUserIdData, getAllWheelsByUserIdError]);
+
+  const createWheelHistory = async (data) => {
+    console.log("wheel history data",data)
+    const credentials = await Keychain.getGenericPassword();
+    const token = credentials.username;
+    const params = {
+      token: token,
+      body: {
+        wc_id: data[0].wc_id,
+        w_id: data[0].id,
+        qr_id: qrData.id,
+      },
+    };
+    createWheelHistoryFunc(params);
+  };
+
+  useEffect(()=>{
+    if(createWheelHistoryData)
+    {
+    console.log("createWheelHistoryData",createWheelHistoryData)
+    // if(createWheelHistoryData.success)
+    // {
+    //   setTimeout(() => {
+    //     handleWorkflowNavigation();
+    //   }, 1000);
+    // }
+    }
+    else if(createWheelHistoryError)
+    {
+      console.log("createWheelHistoryError",createWheelHistoryError)
+      // if(createWheelHistoryError.status===409)
+      // {
+      //   setTimeout(() => {
+      //     handleWorkflowNavigation();
+      //   }, 1000);
+      // }
+    }
+  },[createWheelHistoryData,createWheelHistoryError])
+
+  useEffect(()=>{
+    if(checkQrCodeAlreadyRedeemedData){
+      console.log("checkQrCodeAlreadyRedeemedData",checkQrCodeAlreadyRedeemedData)
+      if(!checkQrCodeAlreadyRedeemedData.body)
+      {
+        addCashbackEnteries()
+    }
+    else if(checkQrCodeAlreadyRedeemedError)
+    {
+      console.log(checkQrCodeAlreadyRedeemedError)
+    }
+  }},[checkQrCodeAlreadyRedeemedData,checkQrCodeAlreadyRedeemedError])
+
+  const addCashbackEnteries=async()=>{
+    const credentials = await Keychain.getGenericPassword();
+    const token = credentials.username;
+    const params ={
+      "body":{
+      "app_user_id":userData.id.toString(),
+      "user_type_id":userData.user_type_id,
+      "user_type":userData.user_type,
+      "product_id":productData.product_id,
+      "product_code":productData.product_code,
+      "platform_id":Number(platform),
+      "pincode":location.address.postcode,
+      "platform":'mobile',
+      "state":location.address.state,
+      "district":location.address.state_district,
+      "city":location.address.county,
+      "area":location.address.county,
+      "known_name":location.address.county,
+      "lat":location.lat.substring(0, 10),
+      "log":location.lon.substring(0, 10),
+      "method_id":1,
+      "method":'Cashback',
+      "cashback":"10"
+  },
+  
+  "token":token,
+  "qrId":qrData.id,
+  
+  }
+  addCashbackEnteriesFunc(params)
+  }
+  
+
   useEffect(() => {
     if (getCouponOnCategoryData) {
       console.log('getCouponOnCategoryData', getCouponOnCategoryData);
+      if (getCouponOnCategoryData.success) {
+        setTimeout(() => {
+          handleWorkflowNavigation();
+        }, 1000);
+      }
     } else if (getCouponOnCategoryError) {
       console.log('getCouponOnCategoryError', getCouponOnCategoryError);
+      if (getCouponOnCategoryError.status === 409) {
+        setTimeout(() => {
+          handleWorkflowNavigation();
+        }, 1000);
+      }
+      else if(getCouponOnCategoryError.data.message==="No Active Coupons Exist")
+      {
+        setTimeout(() => {
+          handleWorkflowNavigation();
+        }, 1000);
+      }
     }
   }, [getCouponOnCategoryData, getCouponOnCategoryError]);
 
@@ -117,56 +300,62 @@ const CongratulateOnScan = ({navigation, route}) => {
     if (checkUserPointData) {
       console.log('checkUserPointData', checkUserPointData);
       if (!checkUserPointData.body) {
-        const submitPoints=async()=>{
+        const submitPoints = async () => {
           const credentials = await Keychain.getGenericPassword();
-          const token = credentials.username
+          const token = credentials.username;
           const body = {
-            data:{
+            data: {
               app_user_id: userData.id.toString(),
-            user_type_id: userData.user_type_id,
-            user_type: userData.user_type,
-            product_id: productData.product_id,
-            product_code: productData.product_code,
-            platform_id: Number(platform),
-            pincode: location.address.postcode,
-            platform: 'mobile',
-            state: location.address.state,
-            district: location.address.state_district,
-            city: location.address.county,
-            area: location.address.county,
-            known_name: location.address.county,
-            lat: location.lat.substring(0,10),
-            log: location.lon.substring(0,10),
-            method_id: 1,
-            method:  'point on product',
-            points: productData.consumer_points,
-            type: 'point on product',
+              user_type_id: userData.user_type_id,
+              user_type: userData.user_type,
+              product_id: productData.product_id,
+              product_code: productData.product_code,
+              platform_id: Number(platform),
+              pincode: location.address.postcode,
+              platform: 'mobile',
+              state: location.address.state,
+              district: location.address.state_district,
+              city: location.address.county,
+              area: location.address.county,
+              known_name: location.address.county,
+              lat: location.lat.substring(0, 10),
+              log: location.lon.substring(0, 10),
+              method_id: 1,
+              method: 'point on product',
+              points: productData.consumer_points,
+              type: 'point on product',
             },
             qrId: Number(qrData.id),
             tenant_id: slug,
             token: token,
           };
-          console.log(body)
-          userPointEntryFunc(body)
-        }
-        submitPoints()
-
+          console.log(body);
+          userPointEntryFunc(body);
+        };
+        submitPoints();
       }
     } else if (checkUserPointError) {
       console.log('checkUserPointError', checkUserPointError);
     }
   }, [checkUserPointData, checkUserPointError]);
 
-  useEffect(()=>{
-    if(userPointEntryData)
-    {
-      console.log("userPointEntryData",userPointEntryData)
+  useEffect(() => {
+    if (userPointEntryData) {
+      console.log('userPointEntryData', userPointEntryData);
+      if (userPointEntryData.success) {
+        setTimeout(() => {
+          handleWorkflowNavigation();
+        }, 1000);
+      }
+    } else if (userPointEntryError) {
+      if (userPointEntryError.status === 409) {
+        setTimeout(() => {
+          handleWorkflowNavigation();
+        }, 1000);
+      }
+      console.log('userPointEntryError', userPointEntryError);
     }
-    else if(userPointEntryError)
-    {
-      console.log("userPointEntryError",userPointEntryError)
-    }
-  },[userPointEntryData,userPointEntryError])
+  }, [userPointEntryData, userPointEntryError]);
   console.log('workflowProgram', workflowProgram);
   const handleWorkflowNavigation = () => {
     console.log('scccess');
@@ -258,22 +447,29 @@ const CongratulateOnScan = ({navigation, route}) => {
           position: 'absolute',
           bottom: 0,
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         }}>
-        <ScrollView style={{width: '100%', height: '100%', marginTop: 30}}>
+        <ScrollView
+          style={{
+            width: '100%',
+            height: '100%',
+            marginTop: 10,
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+          }}>
           <View
             style={{
               width: '100%',
               height: height - 100,
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               marginTop: 10,
               backgroundColor: 'white',
             }}>
             {/* actions pperformed container----------------------------------- */}
             <View
               style={{
-                height: '50%',
+                padding: 20,
                 width: '90%',
                 backgroundColor: 'white',
                 borderRadius: 20,
@@ -326,13 +522,13 @@ const CongratulateOnScan = ({navigation, route}) => {
             {/* rewards container---------------------------------------------- */}
             <View
               style={{
-                height: '50%',
+                padding: 10,
                 width: '90%',
                 backgroundColor: '#DDDDDD',
                 borderRadius: 4,
                 marginTop: 50,
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
               }}>
               <View
                 style={{
@@ -343,10 +539,9 @@ const CongratulateOnScan = ({navigation, route}) => {
                   borderStyle: 'dotted',
                   borderColor: 'white',
                   borderRadius: 2,
-                  position: 'absolute',
-                  top: -20,
                   alignItems: 'center',
                   justifyContent: 'center',
+                  bottom: 30,
                 }}>
                 <PoppinsTextMedium
                   style={{fontSize: 16, fontWeight: '800', color: 'white'}}
@@ -355,14 +550,33 @@ const CongratulateOnScan = ({navigation, route}) => {
 
               {/* reward user according to the workflow ------------------------*/}
 
-              {rewardType === 'Static Coupon' && getCouponOnCategoryData && (
+              {getCouponOnCategoryData && (
                 <Win
-                  data={getCouponOnCategoryData.body}
+                  data="Coupons Earned"
                   title={getCouponOnCategoryData.body.brand}></Win>
               )}
+              {userPointEntryData && (
+                <Win
+                  data="Points Earned"
+                  title={userPointEntryData.body.points}></Win>
+              )}
+              {
+                rewardType==="Wheel" && <Win
+                data="Wheel"
+                title="You have got a spin wheel"></Win>
+              }
+              {
+                addCashbackEnteriesData && <Win
+                data="Cashback"
+                title={addCashbackEnteriesData.body.cashback}></Win>
+              }
               {getCouponOnCategoryError && (
                 <PoppinsText
-                  content={getCouponOnCategoryError.data.message}></PoppinsText>
+                  content={`Coupons For This ${getCouponOnCategoryError.data.message}`}></PoppinsText>
+              )}
+              {userPointEntryError && (
+                <PoppinsText
+                  content={`Points For This ${userPointEntryError.data.message}`}></PoppinsText>
               )}
             </View>
           </View>

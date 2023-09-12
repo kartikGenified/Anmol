@@ -29,7 +29,7 @@ const Introduction = ({navigation}) => {
         if(getAppThemeData)
         {
             
-            // console.log("data",getAppThemeData)
+            console.log("getAppThemeData",getAppThemeData)
             dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["600"]))
             dispatch(setSecondaryThemeColor(getAppThemeData.body.theme.color_shades["200"]))
             dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["400"]))

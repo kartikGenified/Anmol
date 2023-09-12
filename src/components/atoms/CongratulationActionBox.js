@@ -11,10 +11,10 @@ const CongratulationActionBox = (props) => {
     return (
         <View style={{height:90,width:150,alignItems:'center',justifyContent:"center",borderRadius:10,margin:10,opacity:0.8}}>
             <View style={{height:'50%',width:'100%',backgroundColor:primaryColor,alignItems:'center',justifyContent:"center",borderTopLeftRadius:10,borderTopRightRadius:10}}>
-            <PoppinsText style={{fontSize:16,color:'black',fontWeight:'800',textAlign:'center'}} content ={title}></PoppinsText></View>
+            <PoppinsText style={{fontSize:16,color:'white',fontWeight:'800',textAlign:'center'}} content ={title}></PoppinsText></View>
             
             <View style={{height:'50%',width:'100%',backgroundColor:secondaryColor,alignItems:'center',justifyContent:"center",borderTopWidth:0.8,borderBottomRightRadius:10,borderBottomLeftRadius:10,borderColor:"white"}}>
-            <PoppinsText style={{fontSize:16,color:'black',fontWeight:'800',textAlign:'center'}} content ={data}></PoppinsText>
+            <PoppinsText style={{fontSize:16,color:'white',fontWeight:'800',textAlign:'center'}} content ={data}></PoppinsText>
 
             </View>
             

@@ -260,9 +260,17 @@ const QrCodeScanner = ({navigation}) => {
   useEffect(() => {
     if (verifyQrData) {
       console.log('Verify qr data', verifyQrData.body);
+      if(verifyQrData.body.qr_status==="1" || verifyQrData.body.qr_status==="2")
+      {
       addQrDataToList(verifyQrData.body);
+      }
+      // else if(verifyQrData.body.qr_status==="2")
+      // {
+      //   setError(true);
+      //   setMessage('This Qr is already Scanned');
+      // }
     } else {
-      console.log(verifyQrError);
+      console.log('Verify qr error', verifyQrError);
     }
   }, [verifyQrData, verifyQrError]);
   // --------------------------------------------------------
@@ -345,7 +353,7 @@ const QrCodeScanner = ({navigation}) => {
        
       }
     } else {
-      console.log(addQrError);
+      console.log("addQrError",addQrError);
     }
   }, [addQrData, addQrError]);
   // --------------------------------------------------------

@@ -9,7 +9,7 @@ const DashboardMenuBox=(props)=>{
     const navigation = props.navigation
     const handleMenuItemPress=(data)=>{
         console.log(data)
-        if(data==="Scan QR Code")
+        if(data==="Scan QR Code" || data==="Scan and Win")
         {
             navigation.navigate('QrCodeScanner')
         }

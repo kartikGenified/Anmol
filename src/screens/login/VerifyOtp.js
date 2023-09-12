@@ -20,7 +20,7 @@ import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateAr
 import {useGetLoginOtpMutation} from '../../apiServices/login/otpBased/SendOtpApi';
 import {useGetAppLoginMutation} from '../../apiServices/login/otpBased/OtpLoginApi';
 import {useVerifyOtpMutation} from '../../apiServices/login/otpBased/VerifyOtpApi';
-import { setAppUserId,setAppUserName,setAppUserType,setUserData } from '../../../redux/slices/appUserDataSlice';
+import { setAppUserId,setAppUserName,setAppUserType,setUserData,setId} from '../../../redux/slices/appUserDataSlice';
 import OtpInput from '../../components/organisms/OtpInput';
 import * as Keychain from 'react-native-keychain';
 
@@ -123,6 +123,7 @@ const VerifyOtp = ({navigation, route}) => {
   dispatch(setAppUserName(data.name))
   dispatch(setAppUserType(data.user_type))
   dispatch(setUserData(data))
+  // dispatch(setId())
       }
 catch(e){
   console.log("error",e)
