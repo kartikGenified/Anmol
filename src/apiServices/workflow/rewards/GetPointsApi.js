@@ -15,9 +15,35 @@ export const GetForms = baseApi.injectEndpoints({
         };
       },
     }),
+    fetchUserPointsHistory: builder.mutation({
+      query: (params) => {
+        return {
+          method: "POST",
+          url: `api/app/userPointsEnteries?app_user_id=${params.userId}`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
+    allUserPointsEntry: builder.mutation({
+      query: params => {
+        return {
+          method: 'GET',
+          url: `api/app/userPoints?user_id=${params.userId}`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
     userPointsEntry: builder.mutation({
       query: body => {
-        console.log("body",body)
+        console.log('body', body);
         return {
           method: 'POST',
           url: `api/app/userPointsEnteries/add?qr_id=${body.qrId}`,
@@ -33,4 +59,4 @@ export const GetForms = baseApi.injectEndpoints({
   }),
 });
 
-export const {useCheckUserPointMutation,useUserPointsEntryMutation} = GetForms;
+export const {useCheckUserPointMutation, useUserPointsEntryMutation,useAllUserPointsEntryMutation,useFetchUserPointsHistoryMutation} = GetForms;

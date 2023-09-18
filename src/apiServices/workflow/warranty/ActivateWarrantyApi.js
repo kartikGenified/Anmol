@@ -4,7 +4,7 @@ export const ActivateWarrantyApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     activateWarranty: builder.mutation({
       query({token, body}) {
-        console.log(token, 'and warrantydata is',  body.warranty_image[0]);
+        console.log(token, 'and warrantydata is',  body);
         return {
           method: 'POST',
           url: `api/app/warranty/add`,

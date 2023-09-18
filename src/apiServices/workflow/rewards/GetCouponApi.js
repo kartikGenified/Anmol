@@ -16,7 +16,20 @@ export const GetForms = baseApi.injectEndpoints({
         };
       },
     }),
+    getAllRedeemedCoupons: builder.mutation({
+      query: (params) => {
+        return {
+          method: "GET",
+          url: `api/app/couponRedemption/`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const {useGetCouponOnCategoryMutation} = GetForms;
+export const {useGetCouponOnCategoryMutation,useGetAllRedeemedCouponsMutation} = GetForms;

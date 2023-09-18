@@ -35,7 +35,9 @@ const EditProfile = () => {
        </View>
 
         </View>
-        <View style={{height:'96%',width:"100%",borderRadius:40,alignItems:"center",justifyContent:"center",backgroundColor:"white",marginTop:20}}></View>
+        <View style={{height:'96%',width:"100%",borderRadius:40,alignItems:"center",justifyContent:"center",backgroundColor:"white",marginTop:20}}>
+            {/* data goes here */}
+        </View>
         </View>
 
     );

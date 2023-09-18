@@ -217,26 +217,33 @@ const QrCodeScanner = ({navigation}) => {
         console.log(updatedWorkflowProgram.slice(1));
         navigation.navigate('CongratulateOnScan', {
             workflowProgram: updatedWorkflowProgram.slice(1),
+            rewardType:updatedWorkflowProgram[0]
         });
     } else if (updatedWorkflowProgram[0] === 'Warranty') {
         console.log(updatedWorkflowProgram.slice(1));
         navigation.navigate('ActivateWarranty', {
             workflowProgram: updatedWorkflowProgram.slice(1),
+            rewardType:updatedWorkflowProgram[0]
+
         });
     } else if (updatedWorkflowProgram[0] === 'Points On Product' || updatedWorkflowProgram[0] === 'Cashback' || updatedWorkflowProgram[0] === 'Wheel') {
         console.log(updatedWorkflowProgram.slice(1));
         navigation.navigate('CongratulateOnScan', {
             workflowProgram: updatedWorkflowProgram.slice(1),
+            rewardType:updatedWorkflowProgram[0]
+            
         });
     } else if (updatedWorkflowProgram[0] === 'Genuinity+') {
         console.log(updatedWorkflowProgram.slice(1));
         navigation.navigate('GenuinityScratch', {
             workflowProgram: updatedWorkflowProgram.slice(1),
+            rewardType:updatedWorkflowProgram[0]
         });
     } else if (updatedWorkflowProgram[0] === 'Genuinity'){
         console.log(updatedWorkflowProgram.slice(1));
         navigation.navigate('Genuinity', {
             workflowProgram: updatedWorkflowProgram.slice(1),
+            rewardType:updatedWorkflowProgram[0]
         });
     }
     else{

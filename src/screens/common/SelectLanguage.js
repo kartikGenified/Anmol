@@ -19,7 +19,7 @@ const SelectLanguage = () => {
         setLanguage(language)
         console.log(language)    
     }
-    
+    http://103.153.58.83:5000/api/images/images-1691486775689-218266578.png
 
     return (
         

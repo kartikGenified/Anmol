@@ -21,7 +21,7 @@ const Introduction = ({navigation}) => {
 
       // calling API to fetch themes for the app
       useEffect(()=>{
-        getAppTheme("paramount cables")
+        getAppTheme("ozone-overseas")
       },[])
 
       // fetching data and checking for errors from the API-----------------------
@@ -49,7 +49,9 @@ const Introduction = ({navigation}) => {
 
         }
         else{
-            // console.log("error",getAppThemeError)
+            getAppTheme("ozone-overseas")
+            console.log("getAppThemeIsError",getAppThemeIsError)
+            console.log("getAppThemeError",getAppThemeError)
         }
       },[getAppThemeData,getAppThemeError])
 
@@ -91,7 +93,7 @@ const Introduction = ({navigation}) => {
             
             <View style={{width:"100%",height:'100%'}}>
                 <Text onPress={()=>{console.log("skipped")
-            navigation.navigate('SelectLanguage')
+            {getAppThemeData && navigation.navigate('SelectLanguage')}
             }} style={{fontSize:18,color:"#0087A2",position:"absolute",left:40,bottom:20,fontWeight:'600'}}>Skip</Text>
                 <Text onPress={()=>{handleNext()}} style={{fontSize:18,color:"#0087A2",position:"absolute",right:40,bottom:20,fontWeight:'600'}}>Next</Text>
             </View>

@@ -38,7 +38,7 @@ function BottomNavigator({navigation}) {
     <Qrcode name="qrcode" size={24} color={ternaryThemeColor}></Qrcode>
     <PoppinsTextMedium style={{marginTop:4,fontSize:12,fontWeight:platformFontWeight}} content="Scan QR Code"></PoppinsTextMedium>
     </TouchableOpacity>
-    <TouchableOpacity style={{alignItems:"center",justifyContent:"center",position:'absolute',right:30}}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('Passbook')}} style={{alignItems:"center",justifyContent:"center",position:'absolute',right:30}}>
     <Book name="book" size={24} color={ternaryThemeColor}></Book>
     <PoppinsTextMedium style={{marginTop:4,fontSize:12,fontWeight:platformFontWeight}} content="Passbook"></PoppinsTextMedium>
     </TouchableOpacity>

@@ -35,18 +35,20 @@ const CongratulateOnScan = ({navigation, route}) => {
 
   //  data from scanning qr code
   const qrData = useSelector(state => state.qrData.qrData);
-  console.log(qrData);
   // product data recieved from scanned product
   const productData = useSelector(state => state.productData.productData);
+
   const userData = useSelector(state => state.appusersdata.userData);
+  console.log("userData",productData);
+
   // getting location from redux state
   const location = useSelector(state => state.userLocation.location);
   // console.log('Location', location, userData, productData, qrData);
   const height = Dimensions.get('window').height;
   // workflow for the given user
   const workflowProgram = route.params.workflowProgram;
-  const rewardType = route.params.rewardType;
-  console.log('rewardType', rewardType);
+  const rewardType = route.params.rewardType
+  console.log('rewardType', rewardType,workflowProgram);
   const platform = Platform.OS === 'ios' ? '1' : '2';
 
   const [
@@ -363,36 +365,48 @@ const CongratulateOnScan = ({navigation, route}) => {
     if (workflowProgram[0] === 'Static Coupon') {
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
-        rewardType: 'Static Coupon',
+        rewardType:workflowProgram[0] 
+        
       });
     } else if (workflowProgram[0] === 'Warranty') {
       navigation.navigate('ActivateWarranty', {
         workflowProgram: workflowProgram.slice(1),
+        rewardType:workflowProgram[0]
       });
     } else if (workflowProgram[0] === 'Points On Product') {
       console.log(workflowProgram.slice(1));
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
-        rewardType: 'Points On Product',
+        rewardType:workflowProgram[0] 
+        
       });
     } else if (workflowProgram[0] === 'Cashback') {
       console.log(workflowProgram.slice(1));
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
-        rewardType: 'Cashback',
+        rewardType:workflowProgram[0]
+      
       });
     } else if (workflowProgram[0] === 'Wheel') {
       console.log(workflowProgram.slice(1));
       navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
-        rewardType: 'Wheel',
+        rewardType:workflowProgram[0] 
+       
       });
     } else {
-      navigation.navigate('Dashboard', {
+      navigation.navigate('CongratulateOnScan', {
         workflowProgram: workflowProgram.slice(1),
+
       });
     }
   };
+  const navigateDashboard=()=>{
+    navigation.navigate('Dashboard')
+  }
+  const navigateQrScanner=()=>{
+    navigation.navigate('QrCodeScanner')
+  }
   return (
     <View
       style={{
@@ -465,6 +479,8 @@ const CongratulateOnScan = ({navigation, route}) => {
               justifyContent: 'flex-start',
               marginTop: 10,
               backgroundColor: 'white',
+              borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
             }}>
             {/* actions pperformed container----------------------------------- */}
             <View
@@ -478,6 +494,8 @@ const CongratulateOnScan = ({navigation, route}) => {
                 borderWidth: 1,
                 borderColor: '#DDDDDD',
                 marginTop: 50,
+                borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
               }}>
               <Image
                 style={{
@@ -558,10 +576,10 @@ const CongratulateOnScan = ({navigation, route}) => {
               {userPointEntryData && (
                 <Win
                   data="Points Earned"
-                  title={userPointEntryData.body.points}></Win>
+                  title={productData[`${userData.user_type}_points`]}></Win>
               )}
               {
-                rewardType==="Wheel" && <Win
+                createWheelHistoryData && <Win
                 data="Wheel"
                 title="You have got a spin wheel"></Win>
               }
@@ -574,7 +592,7 @@ const CongratulateOnScan = ({navigation, route}) => {
                 <PoppinsText
                   content={`Coupons For This ${getCouponOnCategoryError.data.message}`}></PoppinsText>
               )}
-              {userPointEntryError && (
+              {userPointEntryError  && (
                 <PoppinsText
                   content={`Points For This ${userPointEntryError.data.message}`}></PoppinsText>
               )}
@@ -596,11 +614,12 @@ const CongratulateOnScan = ({navigation, route}) => {
             }}>
             <ButtonSquare
               style={{color: 'white'}}
-              content="Cancel"></ButtonSquare>
+              content="Cancel"
+              handleOperation={navigateDashboard}></ButtonSquare>
             <ButtonSquare
-              handleOperation={handleWorkflowNavigation}
               style={{color: 'white'}}
-              content="Okay"></ButtonSquare>
+              content="Okay"
+              handleOperation={navigateQrScanner}></ButtonSquare>
           </View>
         </View>
       </View>

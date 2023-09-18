@@ -99,7 +99,7 @@ const ActivateWarranty = ({navigation, route}) => {
       {
         handleWorkflowNavigation()
       }
-      console.log(activateWarrantyError);
+      console.log("activateWarrantyError",activateWarrantyError);
     }
   }, [activateWarrantyData, activateWarrantyError]);
 

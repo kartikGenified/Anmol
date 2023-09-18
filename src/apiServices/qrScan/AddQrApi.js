@@ -18,10 +18,23 @@ export const AddQrApi = baseApi.injectEndpoints({
                    
                 }
             }
-        })
+        }),
+        fetchAllQrScanedList: builder.mutation({
+            query: (body) => {
+              return {
+                method: "GET",
+                url: `api/app/qrScanHistory/${body.query_params}`,
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + body.token,
+                  slug: slug,
+                },
+              };
+            },
+          }),
     })
 });
 
 
-export const {useAddQrMutation} = AddQrApi
+export const {useAddQrMutation,useFetchAllQrScanedListMutation} = AddQrApi
 

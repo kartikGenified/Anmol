@@ -19,6 +19,11 @@ import GenuinityScratch from '../screens/genuinity/GenuinityScratch';
 import Profile from '../screens/profile/Profile';
 import EditProfile from '../screens/profile/EditProfile';
 import Passbook from '../screens/passbook/Passbook';
+import ScannedHistory from '../screens/historyPages/ScannedHistory';
+import PointHistory from '../screens/historyPages/PointHistory';
+import RedeemedHistory from '../screens/historyPages/RedeemedHistory';
+import CashbackHistory from '../screens/historyPages/CashbackHistory';
+import CouponHistory from '../screens/historyPages/CouponHistory';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -36,11 +41,42 @@ const StackNavigator=()=>{
                     }
                 } name="Profile" component={Profile}></Stack.Screen> */}
                 
+                
                 <Stack.Screen options={
                     {
                         headerShown:false
                     }
                 } name="Introduction" component={Introduction}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="RedeemedHistory" component={RedeemedHistory}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="CouponHistory" component={CouponHistory}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="CashbackHistory" component={CashbackHistory}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="PointHistory" component={PointHistory}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ScannedHistory" component={ScannedHistory}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="Passbook" component={Passbook}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false
