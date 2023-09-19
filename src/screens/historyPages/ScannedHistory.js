@@ -137,7 +137,9 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         const time = props.time
         const amount =props.amount
         return(
-            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8}}>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('ScannedDetails')
+            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8}}>
                 <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD'}}>
                     <Image style={{height:50,width:50,resizeMode:"contain"}} source={require('../../../assets/images/box.png')}></Image>
                 </View>
@@ -154,7 +156,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                     <Image style={{height:24,width:24,resizeMode:"contain"}} source={require('../../../assets/images/wallet.png')}></Image>
                     <PoppinsTextMedium style={{color:"#91B406",fontSize:18}} content={` + ${amount}`}></PoppinsTextMedium>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
     return (
@@ -178,7 +180,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Point Balance"></PoppinsTextMedium>
             </View>
             <Header></Header>
-            {
+            {/* {
                  fetchAllQrScanedListData && distinctDateArr && fetchAllQrScanedListData && <FlatList
                     data={fetchAllQrScanedListData.body.data}
                     renderItem={({item,index}) => {
@@ -207,32 +209,10 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                     }}
                     keyExtractor={item => item.id}
                   />
-            //     fetchAllQrScanedListData && distinctDateArr && fetchAllQrScanedListData.body.data.map((item,index)=>{
-            //         console.log(item)
-            //         if(distinctDateArr.includes(moment(item.scanned_at).format('DD-MMM-YYYY')))
-            //         {
-                        
-            //             if(count===0)
-            //             {
-            //                 count++;
-            //                 console.log(fetchAllQrScanedListData.body.data.length)
-            //                 return(
-            //                    <View style={{alignItems:"center",justifyContent:"center",width:'100%'}} key ={index}>
-            //                     <View  style={{alignItems:"flex-start",justifyContent:"center",borderBottomWidth:1,paddingBottom:10,width:'90%',marginTop:20}}>
-            //                         <PoppinsTextMedium style={{color:'black',fontSize:16}} content ={moment(item.scanned_at).format('DD-MMM-YYYY')}></PoppinsTextMedium>
-            //                     </View>
-            //                     <ListItem  description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
+          
+            } */}
+                                    <ListItem  description="This is a great product" productCode="123QWERTY123" time="10:20" amount="100"></ListItem>
 
-            //                     </View>
-            //                 )
-            //             }
-                        
-            //         }
-            //         return(
-            // <ListItem key={item.id} description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
-            //         )
-            //     })
-            }
         </View>
     );
 }

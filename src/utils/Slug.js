@@ -1,1 +1,1 @@
-export const slug = "6"
+export const slug = "2"

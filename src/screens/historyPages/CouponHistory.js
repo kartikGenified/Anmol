@@ -49,34 +49,38 @@ const CouponHistory = ({navigation}) => {
         const couponCode = props.couponCode
         const redeemedOn = props.redeemedOn
         const expiresOn = props.expiresOn
+        const data = props.data
+        console.log(data)
         return(
-            <View style={{padding:10,alignItems:"center",justifyContent:"center",borderWidth:1,borderColor:'grey',borderRadius:10,margin:10}}>
-                <View style={{height:80,width:80,alignItems:"center",justifyContent:"center",borderRadius:40}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('CouponDetails',{
+                data:data
+            })}} style={{padding:10,alignItems:"center",justifyContent:"center",borderColor:'grey',borderRadius:10,margin:10,width:'44%',backgroundColor:'#F8F8F8',elevation:4}}>
+                <View style={{height:80,width:80,alignItems:"center",justifyContent:"center",borderRadius:40,backgroundColor:"white"}}>
                 <Image style={{height:50,width:50,resizeMode:"contain"}} source={require('../../../assets/images/voucher.png')}></Image>
                 </View>
                 <View style={{alignItems:"center",justifyContent:"center"}}>
                     <PoppinsTextMedium style={{color:'grey',fontSize:12}} content="Coupon Name"></PoppinsTextMedium>
-                    <PoppinsTextMedium style={{color:'grey',fontSize:12}} content={couponName}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{color:'black',fontSize:12,fontWeight:'700'}} content={couponName}></PoppinsTextMedium>
                 </View>
                 <View style={{alignItems:"center",justifyContent:"center",marginTop:20}}>
                     <PoppinsTextMedium style={{color:'grey',fontSize:12}} content="Coupon Name"></PoppinsTextMedium>
-                    <PoppinsTextMedium style={{color:'grey',fontSize:12}} content={couponCode}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{color:'black',fontSize:12,fontWeight:'700'}} content={couponCode}></PoppinsTextMedium>
                 </View>
-                <View style={{alignItems:"center",justifyContent:"center",marginTop:20,borderWidth:1,borderStyle:'dotted',flexDirection:'row',padding:4}}>
+                <View style={{alignItems:"center",justifyContent:"center",marginTop:20,borderTopWidth:1,borderBottomWidth:1,borderStyle:'dotted',flexDirection:'row',padding:4,width:'100%',}}>
                     <PoppinsTextMedium style={{color:'grey',fontSize:12}} content="Redeemed on"></PoppinsTextMedium>
                     <PoppinsTextMedium style={{color:'grey',fontSize:12,marginLeft:4}} content={redeemedOn}></PoppinsTextMedium>
                 </View>
-                <View style={{alignItems:"center",justifyContent:"center",marginTop:20,borderWidth:1,borderStyle:'dotted',flexDirection:'row',padding:4,borderColor:'red',marginBottom:10}}>
-                    <PoppinsTextMedium style={{color:'grey',fontSize:12}} content="Expires on"></PoppinsTextMedium>
-                    <PoppinsTextMedium style={{color:'grey',fontSize:12,marginLeft:4}} content={expiresOn}></PoppinsTextMedium>
+                <View style={{alignItems:"center",justifyContent:"center",marginTop:20,borderTopWidth:1,borderBottomWidth:1,borderStyle:'dotted',flexDirection:'row',padding:4,borderColor:'#D42727',marginBottom:10,width:'100%'}}>
+                    <PoppinsTextMedium style={{color:'#D42727',fontSize:12}} content="Expires on"></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{color:'#D42727',fontSize:12,marginLeft:4}} content={`${expiresOn} Days`}></PoppinsTextMedium>
                 </View>
                 
-            </View>
+            </TouchableOpacity>
         )
     }
 
     return (
-        <View style={{alignItems:'center',justifyContent:"center"}}>
+        <View style={{alignItems:'center',justifyContent:"center",backgroundColor:"white"}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
                 <TouchableOpacity onPress={()=>{
                     navigation.goBack()
@@ -89,7 +93,7 @@ const CouponHistory = ({navigation}) => {
             <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image>
             </TouchableOpacity>
             </View>
-            <View style={{padding:14,alignItems:"center",justifyContent:"flex-start",width:"100%",flexDirection:"row"}}>
+            <View style={{padding:14,alignItems:"center",justifyContent:"flex-start",width:"100%",flexDirection:"row",borderBottomWidth:1,borderColor:'#DDDDDD',borderStyle:'dashed'}}>
                 <View style={{alignItems:"center"}}>
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:18,fontWeight:'600',color:'#6E6E6E'}} content="You Have Redeemed"></PoppinsTextMedium>
                 {getAllRedeemedData &&
@@ -105,9 +109,13 @@ const CouponHistory = ({navigation}) => {
                 style={{width: '100%'}}
                 contentContainerStyle={{alignItems:"center",justifyContent:"center",paddingBottom:100,width: '100%'}}
                 data={getAllRedeemedData.body.data}
+                
                 numColumns={2}
+                refreshing={true}
                 renderItem={({item, index}) => (
-                 <CouponItems key ={index} couponName={item.brand} couponCode={item.coupon_code} redeemedOn={moment(item.redeem_date).format("DD-MM-YYYY")} expiresOn={moment(item.expire_date).format("DD-MM-YYYY")}></CouponItems> 
+                 <CouponItems 
+                data={item}
+                key ={index} couponName={item.brand} couponCode={item.coupon_code} redeemedOn={moment(item.redeem_date).format("DD-MM-YYYY")} expiresOn={String(new moment.duration(new Date(item.expire_date)-new Date()).asDays()).substring(0,2)}></CouponItems> 
                 )}></FlatList>}
                 
         </View>

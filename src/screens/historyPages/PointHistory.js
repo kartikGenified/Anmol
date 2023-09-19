@@ -95,18 +95,18 @@ const PointHistory = ({navigation}) => {
         const time = props.time
         const amount =props.amount
         return(
-            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8}}>
-                <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD'}}>
-                    <Image style={{height:50,width:50,resizeMode:"contain"}} source={require('../../../assets/images/box.png')}></Image>
+            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8,borderBottomWidth:1,borderColor:'#DDDDDD',paddingBottom:10}}>
+                <View style={{height:60,width:60,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD'}}>
+                    <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/box.png')}></Image>
                 </View>
                 <View style={{alignItems:"flex-start",justifyContent:"center",marginLeft:20}}>
-                    <PoppinsTextMedium style={{fontWeight:'700',fontSize:18}} content={description}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{fontWeight:'700',fontSize:14}} content={description}></PoppinsTextMedium>
                     <PoppinsTextMedium style={{fontWeight:'400',fontSize:12}} content={`Product Code : ${productCode}`}></PoppinsTextMedium>
                     <PoppinsTextMedium style={{fontWeight:'200',fontSize:12}} content={time}></PoppinsTextMedium>
                 </View>
                 <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginLeft:20}}>
-                    <Image style={{height:24,width:24,resizeMode:"contain"}} source={require('../../../assets/images/wallet.png')}></Image>
-                    <PoppinsTextMedium style={{color:"#91B406",fontSize:18}} content={` + ${amount}`}></PoppinsTextMedium>
+                    <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/wallet.png')}></Image>
+                    <PoppinsTextMedium style={{color:"#91B406",fontSize:16}} content={` + ${amount}`}></PoppinsTextMedium>
                 </View>
             </View>
         )
@@ -140,6 +140,7 @@ const PointHistory = ({navigation}) => {
                  <Header></Header>
                  {fetchUserPointsHistoryData && <FlatList
         data={fetchUserPointsHistoryData.body.data}
+        contentContainerStyle={{paddingBottom:200}}
         renderItem={({item,index}) => {
             console.log(index+1,item)
             return(

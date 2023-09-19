@@ -3,12 +3,50 @@ import {View, StyleSheet,TouchableOpacity,Image} from 'react-native';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
-import { useFetchGiftsRedemptionsOfUserMutation } from '../../apiServices/workflow/RedemptionApi';
 import * as Keychain from 'react-native-keychain';
+import { useFetchCashbackEnteriesOfUserMutation } from '../../apiServices/workflow/rewards/GetCashbackApi';
 
 
-const CashbackHistory = () => {
+const CashbackHistory = ({navigation}) => {
     const cashback =200
+    const userId = useSelector(state => state.appusersdata.userId);
+
+    const [fetchCashbackEnteriesFunc,{
+        data:fetchCashbackEnteriesData,
+        error:fetchCashbackEnteriesError,
+        isLoading:fetchCashbackEnteriesIsLoading,
+        isError:fetchCashbackEnteriesIsError
+    }] =useFetchCashbackEnteriesOfUserMutation()
+
+
+    useEffect(()=>{
+        const getData=async()=>{
+            
+            const credentials = await Keychain.getGenericPassword();
+                if (credentials) {
+                  console.log(
+                    'Credentials successfully loaded for user ' + credentials.username
+                  );
+                  const token = credentials.username
+                  const params={token:token,userId:userId}
+                fetchCashbackEnteriesFunc(params)
+        }
+    }
+    getData()
+        
+    },[])
+    useEffect(()=>{
+        if(fetchCashbackEnteriesData)
+        {
+            console.log("fetchCashbackEnteriesData",fetchCashbackEnteriesData)
+        }
+        else if(fetchCashbackEnteriesError)
+        {
+            console.log("fetchCashbackEnteriesError",fetchCashbackEnteriesError)
+        }
+    },[fetchCashbackEnteriesData,fetchCashbackEnteriesError])
+
+
     const Header=()=>{
         return(
             <View style={{height:40,width:'100%',backgroundColor:'#DDDDDD',alignItems:"center",justifyContent:"center",flexDirection:"row",marginTop:20}}>
@@ -22,7 +60,9 @@ const CashbackHistory = () => {
     }
     const CashbackListItem=()=>{
         return(
-            <View style={{alignItems:"flex-start",justifyContent:"center",width:"90%",borderBottomWidth:1,borderColor:"#DDDDDD",paddingBottom:10,margin:10}}>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('CashbackDetails')
+            }} style={{alignItems:"flex-start",justifyContent:"center",width:"90%",borderBottomWidth:1,borderColor:"#DDDDDD",paddingBottom:10,margin:10}}>
                 <View style={{alignItems:"flex-start",justifyContent:"flex-start",flexDirection:"row",marginBottom:10}}>
                 <PoppinsTextMedium style={{color:'black',fontWeight:'600',fontSize:18,}} content ="Credited to cash balance"></PoppinsTextMedium>
                 <PoppinsTextMedium style={{color:'#91B406',fontWeight:'600',fontSize:18,marginLeft:50}} content ="INR +100"></PoppinsTextMedium>
@@ -37,13 +77,18 @@ const CashbackHistory = () => {
                 </View>
                 </View>
 
-            </View>
+            </TouchableOpacity>
         )
     }
     return (
         <View style={{alignItems:"center",justifyContent:"flex-start"}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
+            <TouchableOpacity onPress={()=>{
+                navigation.goBack()
+            }}>
             <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:10}} source={require('../../../assets/images/blackBack.png')}></Image>
+
+            </TouchableOpacity>
             <PoppinsTextMedium content ="Cashback History" style={{marginLeft:10,fontSize:16,fontWeight:'600',color:'#171717'}}></PoppinsTextMedium>
             <TouchableOpacity style={{marginLeft:160}}>
             <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image>

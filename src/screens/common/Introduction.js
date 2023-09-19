@@ -21,7 +21,7 @@ const Introduction = ({navigation}) => {
 
       // calling API to fetch themes for the app
       useEffect(()=>{
-        getAppTheme("ozone-overseas")
+        getAppTheme("paramount cables")
       },[])
 
       // fetching data and checking for errors from the API-----------------------
@@ -49,7 +49,8 @@ const Introduction = ({navigation}) => {
 
         }
         else{
-            getAppTheme("ozone-overseas")
+            getAppTheme("paramount cables")
+
             console.log("getAppThemeIsError",getAppThemeIsError)
             console.log("getAppThemeError",getAppThemeError)
         }

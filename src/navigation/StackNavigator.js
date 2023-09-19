@@ -24,6 +24,11 @@ import PointHistory from '../screens/historyPages/PointHistory';
 import RedeemedHistory from '../screens/historyPages/RedeemedHistory';
 import CashbackHistory from '../screens/historyPages/CashbackHistory';
 import CouponHistory from '../screens/historyPages/CouponHistory';
+import ScannedDetails from '../screens/historyPages/ScannedDetails';
+import RedeemedDetails from '../screens/historyPages/RedeemedDetails';
+import CashbackDetails from '../screens/historyPages/CashbackDetails';
+import CouponDetails from '../screens/historyPages/CouponDetails';
+import WheelHistory from '../screens/historyPages/WheelHistory';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -47,11 +52,36 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="Introduction" component={Introduction}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="RedeemedDetails" component={RedeemedDetails}></Stack.Screen>
                  <Stack.Screen options={
                     {
                         headerShown:false
                     }
                 } name="RedeemedHistory" component={RedeemedHistory}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="WheelHistory" component={WheelHistory}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="CouponDetails" component={CouponDetails}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="CashbackDetails" component={CashbackDetails}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ScannedDetails" component={ScannedDetails}></Stack.Screen>
                  <Stack.Screen options={
                     {
                         headerShown:false

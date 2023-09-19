@@ -81,6 +81,11 @@ const Passbook = ({navigation}) => {
                 navigation.navigate('CouponHistory')
 
             }
+            else if(data==="Wheel History")
+            {
+                navigation.navigate('WheelHistory')
+
+            }
             
         }
         

@@ -115,8 +115,10 @@ const RedeemedHistory = ({navigation}) => {
         const time = props.time
         const amount =props.amount
         return(
-            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8}}>
-                <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD'}}>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('RedeemedDetails')
+            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8,width:"100%"}}>
+                <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD',position:"absolute",left:20}}>
                     <Image style={{height:50,width:50,resizeMode:"contain"}} source={require('../../../assets/images/box.png')}></Image>
                 </View>
                 <View style={{alignItems:"flex-start",justifyContent:"center",marginLeft:20}}>
@@ -130,13 +132,13 @@ const RedeemedHistory = ({navigation}) => {
                     
                     </View>
                 </View>
-                <View style={{alignItems:"center",justifyContent:"center",marginLeft:26}}>
+                <View style={{alignItems:"center",justifyContent:"center",marginLeft:26,position:"absolute",right:20}}>
                     
                     <PoppinsTextMedium style={{color:ternaryThemeColor,fontSize:18,fontWeight:"700"}} content={` - ${amount}`}></PoppinsTextMedium>
                     <PoppinsTextMedium style={{color:"grey",fontSize:14}} content="PTS"></PoppinsTextMedium>
 
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
     return (
@@ -162,7 +164,7 @@ const RedeemedHistory = ({navigation}) => {
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Points Balance"></PoppinsTextMedium>
             </View>
             <Header></Header>
-            {fetchGiftsRedemptionsOfUserData && <FlatList
+            {/* {fetchGiftsRedemptionsOfUserData && <FlatList
         data={fetchGiftsRedemptionsOfUserData.body.userPointsRedemptionList}
         renderItem={({item,index}) => {
             console.log(index+1,item)
@@ -171,7 +173,9 @@ const RedeemedHistory = ({navigation}) => {
             )
         }}
         keyExtractor={item => item.id}
-      />}
+      />} */}
+                <ListItem description="Product" productCode="PRO123" amount="100" time="10:20"/>
+
         </View>
     );
 }
