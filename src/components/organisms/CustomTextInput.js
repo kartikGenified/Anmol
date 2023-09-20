@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {View, StyleSheet,TextInput,Image} from 'react-native';
 import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
 
@@ -6,6 +6,10 @@ const CustomTextInput = (props) => {
     const [content, setContent] = useState('')
     const title = props.title
     const image = props.image
+
+    useEffect(()=>{
+        setContent(props.name)
+    },[props.name])
 
     const handleData=(val)=>{
         setContent(val)

@@ -9,15 +9,21 @@ import Location from 'react-native-vector-icons/EvilIcons';
 import Message from 'react-native-vector-icons/Feather';
 import Edit from 'react-native-vector-icons/Entypo';
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
+import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 
 
 
-const RedeemedDetails = ({navigation}) => {
+const RedeemedDetails = ({navigation,route}) => {
     const height = Dimensions.get('window').height
-    const redeemedDate="10 Aug 2023"
-    const redeemedId = "ABC12309"
-    const redemptionMode = "Wallet Points"
+    const data = route.params.data
+    const redeemedDate=moment(data.created_at).format("DD MMM YYYY")
+    const redeemedId = data.ref_no
+    const redemptionMode = data.redemption
+
+
+
+    console.log("Data RedeemedDetails",data)
     const secondaryThemeColor = useSelector(
         state => state.apptheme.secondaryThemeColor,
       )
@@ -28,11 +34,12 @@ const RedeemedDetails = ({navigation}) => {
           )
             ? useSelector(state => state.apptheme.ternaryThemeColor)
             : 'grey';
-    const productName = "LG fridge"
+    const productName = data.gift.gift[0].name
     const productImage=require('../../../assets/images/box.png')
-    const walletPoints ="30000"
+    const walletPoints =data.points
     const expectedDeliveryDate="23 Sep 2023"
     const deliveryStatus = "Approved"
+    const image = data.gift.gift[0].images[0]
     const deliveryAddress = "69/5, Gali no -2 Sainik Enclave Sector 2, Mohan Garden,Uttam Nagar, New Delhi - 110059"
     return (
         <View style={{alignItems:"center",justifyContent:"flex-start",height:'100%',backgroundColor:"white",width:"100%"}}>
@@ -53,23 +60,23 @@ const RedeemedDetails = ({navigation}) => {
             <View style={{alignItems:"center",justifyContent:"center",marginTop:30,marginBottom:10}}>
                 <PoppinsTextMedium style={{fontSize:16,fontWeight:'600',color:'#171717'}} content={`Redeem Date ${redeemedDate}`}></PoppinsTextMedium>
                 <View style={{alignItems:"center",justifyContent:"center",borderWidth:1,borderStyle:'dashed',backgroundColor:secondaryThemeColor,padding:6,marginTop:8,marginBottom:10}}>
-                <PoppinsTextMedium style={{fontSize:16,fontWeight:'600',color:'#171717'}} content={`Redeem Id ${redeemedId}`}></PoppinsTextMedium>
+                <PoppinsTextMedium style={{fontSize:16,fontWeight:'600',color:'#171717'}} content={`Redeem Id:  ${redeemedId}`}></PoppinsTextMedium>
             </View>
             </View>
             
             <View style={{alignItems:"center",justifyContent:"center",borderWidth:1,borderColor:'#DDDDDD',width:'100%',padding:10}}>
-                <Image style={{height:80,width:80}} source={productImage}></Image>
+                <Image style={{height:80,width:80,resizeMode:"contain"}} source={{uri:BaseUrlImages+image}}></Image>
                 <PoppinsTextMedium style={{fontSize:16,fontWeight:'700',color:'#171717'}} content={productName}></PoppinsTextMedium>
             </View>
 
             {/* grey box ------------------------------- */}
             <View style={{alignItems:"center",justifyContent:"center",backgroundColor:"#F7F7F7",width:'100%',padding:10}}>
-            <PoppinsTextMedium style={{fontSize:20,fontWeight:'600',color:'#171717'}} content={`Redeemption Mode Wallet Points`}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{fontSize:20,fontWeight:'600',color:'#171717'}} content={`Redeemption Mode: ${redemptionMode}`}></PoppinsTextMedium>
 
-            <View style={{height:50,width:140,borderWidth:1,borderStyle:'dashed',backgroundColor:secondaryThemeColor,alignItems:"center",justifyContent:"center",marginTop:10,borderRadius:6,flexDirection:"row"}}>
+            { data.redemption_type!=="1" && <View style={{height:50,width:140,borderWidth:1,borderStyle:'dashed',backgroundColor:secondaryThemeColor,alignItems:"center",justifyContent:"center",marginTop:10,borderRadius:6,flexDirection:"row"}}>
             <Image style={{height:30,width:30,resizeMode:"contain"}} source={require('../../../assets/images/points.png')}></Image>
             <PoppinsTextMedium style={{fontSize:24,fontWeight:'700',color:'#171717'}} content={walletPoints}></PoppinsTextMedium>
-            </View>
+            </View>}
             <PoppinsTextMedium style={{fontSize:16,fontWeight:'500',color:'#171717',marginTop:10}} content={`Expected Delivery Date : ${expectedDeliveryDate}`}></PoppinsTextMedium>
             <View style={{height:50,padding:4,borderWidth:1,borderStyle:'dashed',backgroundColor:secondaryThemeColor,alignItems:"center",justifyContent:"center",marginTop:10,borderRadius:6,flexDirection:"row"}}>
             <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/greenTick.png')}></Image>
@@ -90,7 +97,7 @@ const RedeemedDetails = ({navigation}) => {
             </View>
                                  {/* Delivery Address */}
             {/* -------------------------------------------------------------- */}
-            <View style={{width:'90%',borderTopWidth:1,borderStyle:'dashed',borderColor:'#DDDDDD',alignItems:"center",justifyContent:"flex-start",marginTop:20}}>
+            {/* <View style={{width:'90%',borderTopWidth:1,borderStyle:'dashed',borderColor:'#DDDDDD',alignItems:"center",justifyContent:"flex-start",marginTop:20}}>
                 <PoppinsText style={{color:"black",fontSize:20}} content="Delivery Address"></PoppinsText>
                 <PoppinsTextMedium style={{color:'black',fontSize:18,width:'80%',textAlign:'center'}} content={deliveryAddress}></PoppinsTextMedium>
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginTop:4}}>
@@ -99,7 +106,7 @@ const RedeemedDetails = ({navigation}) => {
                 <Edit style={{}} name="edit" size={16} color={ternaryThemeColor}></Edit>
                 </View>
             </View>
-            </View>
+            </View> */}
             <View style={{alignItems:"center",justifyContent:"center",marginTop:20}}>
                 <PoppinsTextMedium style={{color:"black",fontSize:18,fontWeight:"700"}} content="Issue With This ?"></PoppinsTextMedium>
                 <ButtonNavigate style={{color:"white"}}  content ="Click Here To Report" backgroundColor="#D10000"></ButtonNavigate>

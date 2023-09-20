@@ -29,6 +29,7 @@ import RedeemedDetails from '../screens/historyPages/RedeemedDetails';
 import CashbackDetails from '../screens/historyPages/CashbackDetails';
 import CouponDetails from '../screens/historyPages/CouponDetails';
 import WheelHistory from '../screens/historyPages/WheelHistory';
+import WarrantyHistory from '../screens/historyPages/WarrantyHistory';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -57,6 +58,11 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="RedeemedDetails" component={RedeemedDetails}></Stack.Screen>
+                 <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="WarrantyHistory" component={WarrantyHistory}></Stack.Screen>
                  <Stack.Screen options={
                     {
                         headerShown:false

@@ -313,15 +313,15 @@ const CongratulateOnScan = ({navigation, route}) => {
               product_id: productData.product_id,
               product_code: productData.product_code,
               platform_id: Number(platform),
-              pincode: location.address.postcode,
+              pincode: location.address.postcode===undefined ? "N/A" :location.address.postcode,
               platform: 'mobile',
-              state: location.address.state,
-              district: location.address.state_district,
-              city: location.address.county,
-              area: location.address.county,
-              known_name: location.address.county,
-              lat: location.lat.substring(0, 10),
-              log: location.lon.substring(0, 10),
+              state: location.address.state===undefined ? "N/A" :location.address.state,
+              district: location.address.state_district===undefined ? "N/A" : location.address.state_district,
+              city: location.address.county===undefined ? "N/A" :location.address.county,
+              area: location.address.county===undefined ? "N/A" :location.address.county,
+              known_name: location.address.county===undefined ? "N/A" :location.address.county,
+              lat: location.lat.substring(0, 10)===undefined ? "N/A" :location.lat.substring(0, 10),
+              log: location.lon.substring(0, 10)===undefined ? "N/A" :location.lon.substring(0, 10),
               method_id: 1,
               method: 'point on product',
               points: productData.consumer_points,
@@ -360,6 +360,7 @@ const CongratulateOnScan = ({navigation, route}) => {
   }, [userPointEntryData, userPointEntryError]);
   console.log('workflowProgram', workflowProgram);
   const handleWorkflowNavigation = () => {
+    console.log("WorkflowProgram Left",workflowProgram)
     console.log('scccess');
 
     if (workflowProgram[0] === 'Static Coupon') {
@@ -394,18 +395,31 @@ const CongratulateOnScan = ({navigation, route}) => {
         rewardType:workflowProgram[0] 
        
       });
-    } else {
-      navigation.navigate('CongratulateOnScan', {
+    } 
+    else if (workflowProgram[0] === 'Genuinity') {
+      console.log(workflowProgram.slice(1));
+      navigation.navigate('Genuinity', {
         workflowProgram: workflowProgram.slice(1),
-
+        rewardType:workflowProgram[0] 
+       
       });
+    }else if (workflowProgram[0] === 'Genuinity+') {
+      console.log(workflowProgram.slice(1));
+      navigation.navigate('GenuinityScratch', {
+        workflowProgram: workflowProgram.slice(1),
+        rewardType:workflowProgram[0] 
+       
+      });
+    }  else if(workflowProgram.length===0 ) {
+      navigation.navigate('Dashboard');
     }
   };
   const navigateDashboard=()=>{
     navigation.navigate('Dashboard')
   }
   const navigateQrScanner=()=>{
-    navigation.navigate('QrCodeScanner')
+    // navigation.navigate('QrCodeScanner')
+    handleWorkflowNavigation()
   }
   return (
     <View

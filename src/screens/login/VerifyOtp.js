@@ -23,7 +23,7 @@ import {useVerifyOtpMutation} from '../../apiServices/login/otpBased/VerifyOtpAp
 import { setAppUserId,setAppUserName,setAppUserType,setUserData,setId} from '../../../redux/slices/appUserDataSlice';
 import OtpInput from '../../components/organisms/OtpInput';
 import * as Keychain from 'react-native-keychain';
-
+import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
 
 const VerifyOtp = ({navigation, route}) => {
   const [mobile, setMobile] = useState(route.params.navigationParams.mobile);
@@ -90,6 +90,15 @@ const VerifyOtp = ({navigation, route}) => {
       isError: verifyOtpIsError,
     },
   ] = useVerifyOtpMutation();
+  const [
+    getNameFunc,
+    {
+      data:getNameData,
+      error:getNameError,
+      isLoading:getLoading,
+      isError:getIsError
+    }
+  ] = useGetNameMutation()
   // -----------------------------------------
 
   // fetching navigation route params ------------------------
@@ -123,7 +132,7 @@ const VerifyOtp = ({navigation, route}) => {
   dispatch(setAppUserName(data.name))
   dispatch(setAppUserType(data.user_type))
   dispatch(setUserData(data))
-  // dispatch(setId())
+  dispatch(setId(data.id))
       }
 catch(e){
   console.log("error",e)

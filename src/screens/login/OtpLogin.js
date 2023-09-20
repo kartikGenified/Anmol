@@ -18,7 +18,7 @@ import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateAr
 import { useGetLoginOtpMutation } from '../../apiServices/login/otpBased/SendOtpApi';
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import ErrorModal from '../../components/modals/ErrorModal';
-
+import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
 
 const OtpLogin = ({navigation, route}) => {
   const [mobile, setMobile] = useState()
@@ -63,6 +63,16 @@ const OtpLogin = ({navigation, route}) => {
     isError:sendOtpIsError
   }] = useGetLoginOtpMutation()
 
+  const [
+    getNameFunc,
+    {
+      data:getNameData,
+      error:getNameError,
+      isLoading:getLoading,
+      isError:getIsError
+    }
+  ] = useGetNameMutation()
+
   const needsApproval = route.params.needsApproval;
   const user_type_id = route.params.userId;
   const user_type = route.params.userType;
@@ -92,11 +102,28 @@ const OtpLogin = ({navigation, route}) => {
     
 
   },[sendOtpData,sendOtpError])
-  
+
+  useEffect(()=>{
+    if(getNameData){
+      console.log("getNameData",getNameData)
+      if(getNameData.success)
+      {
+        setName(getNameData.body.name)
+      }
+    }
+    else if(getNameError)
+    {
+      console.log("getNameError",getNameError)
+    }
+  },[getNameData,getNameError])
 
   const getMobile = data => {
     // console.log(data)
     setMobile(data)
+    if(data.length===10)
+    {
+      getNameFunc({mobile:data})
+    }
   };
 
   const getName = data => {
@@ -195,6 +222,7 @@ const OtpLogin = ({navigation, route}) => {
               title="Mobile No"
               image={require('../../../assets/images/whitePhone.png')}></CustomTextInputNumeric>
             <CustomTextInput
+              name={name}
               sendData={getName}
               title="Name"
               image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>

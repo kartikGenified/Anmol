@@ -20,19 +20,15 @@ const OtpInput = (propData) => {
     setValue,
   });
   useEffect(() => {
-    return () => {
-      if (value.length === 4) {
-        propData.getOtpFromComponent(value);
-      }
-    };
-  }, [value, propData]);
-  if(
-    value.length===4
-  )
-  {
-    // console.log(value)
-    propData.getOtpFromComponent(value)
-  }
+    if(
+      value.length===4
+    )
+    {
+      // console.log(value)
+      propData.getOtpFromComponent(value)
+    }
+  }, [value]);
+  
   return (
     <SafeAreaView style={styles.root}>
       

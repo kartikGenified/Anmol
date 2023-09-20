@@ -57,7 +57,7 @@ const ActivateWarranty = ({navigation, route}) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : '#ef6110';
-
+console.log("date console",date)
   const qrData = useSelector(state => state.qrData.qrData);
   const productData = useSelector(state => state.productData.productData);
   console.log('QR data', productData);
@@ -104,7 +104,7 @@ const ActivateWarranty = ({navigation, route}) => {
   }, [activateWarrantyData, activateWarrantyError]);
 
   const submitDataWithToken = async data => {
-    // console.log('qrData', data);
+    console.log('date', date);
 
     try {
         const body= {
@@ -212,11 +212,11 @@ const ActivateWarranty = ({navigation, route}) => {
   const handleWarrantyFormSubmission = () => {
     responseArray &&
       responseArray.map(item => {
-        if (item.name === 'name') {
+        if (item.name === 'name' || item.name === 'Name') {
           setName(item.value);
-        } else if (item.name === 'phone') {
+        } else if (item.name === 'phone' || item.name === 'Phone') {
           setPhone(item.value);
-        } else if (item.name === 'invoice') {
+        } else if (item.name === 'invoice' || item.name === 'Invoice') {
           console.log('Inside file');
 
           const imageData = {
@@ -227,7 +227,7 @@ const ActivateWarranty = ({navigation, route}) => {
           const uploadFile = new FormData();
           uploadFile.append('images', imageData);
           uploadImageFunc({body: uploadFile});
-        } else if (item.name === 'dop') {
+        } else if (item.name === 'dop' || item.name ==="Date Of Purchase") {
           setDate(item.value);
         }
       });

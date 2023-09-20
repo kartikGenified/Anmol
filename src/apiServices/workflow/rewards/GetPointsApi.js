@@ -15,6 +15,20 @@ export const GetForms = baseApi.injectEndpoints({
         };
       },
     }),
+    fetchUserPoints: builder.mutation({
+      query: (params) => {
+        console.log(params)
+        return {
+          method: "GET",
+          url: `api/app/userPoints?user_id=${params.userId}`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
     fetchUserPointsHistory: builder.mutation({
       query: (params) => {
         return {
@@ -59,4 +73,4 @@ export const GetForms = baseApi.injectEndpoints({
   }),
 });
 
-export const {useCheckUserPointMutation, useUserPointsEntryMutation,useAllUserPointsEntryMutation,useFetchUserPointsHistoryMutation} = GetForms;
+export const {useCheckUserPointMutation, useUserPointsEntryMutation,useAllUserPointsEntryMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation} = GetForms;

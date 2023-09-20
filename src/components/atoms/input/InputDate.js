@@ -13,7 +13,7 @@ const InputDate = (props) => {
     const data =props.data
     
     const handleInputEnd=()=>{
-      let tempJsonData ={...props.jsonData,"value":moment(date).format('DD/MM/YYYY')}
+      let tempJsonData ={...props.jsonData,"value":moment(date).format('YYYY-MM-DD')}
       console.log(tempJsonData)
       props.handleData(tempJsonData)
   }

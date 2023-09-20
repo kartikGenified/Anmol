@@ -5,10 +5,11 @@ import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTex
 import { useFetchAllQrScanedListMutation } from '../../apiServices/qrScan/AddQrApi';
 import { useSelector } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
-import { useCheckUserPointMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
+import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import { useAllUserPointsEntryMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
-
+import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import moment from 'moment';
+
 const ScannedHistory = ({navigation}) => {
 const [distinctDateArr, setDistinctDateArr] = useState()
     
@@ -22,27 +23,28 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         },
       ] = useFetchAllQrScanedListMutation();
      
-      const [userPointEntryFunc,{
-        data:userPointEntryData,
-        error:userPointEntryError,
-        isLoading:userPointEntryIsLoading,
-        isError:userPointEntryIsError
-    }]= useAllUserPointsEntryMutation()
+      const [userPointFunc,{
+        data:userPointData,
+        error:userPointError,
+        isLoading:userPointIsLoading,
+        isError:userPointIsError
+    }]= useFetchUserPointsMutation()
   const qrData = useSelector(state=>state.qrData.qrData)
   const userId = useSelector(state => state.appusersdata.userId);
+  const id = useSelector(state => state.appusersdata.id);
     
   const userData = useSelector(state=>state.appusersdata.userData)
   useEffect(()=>{
-    if(userPointEntryData)
+    if(userPointData)
     {
-        console.log("userPointEntryData",userPointEntryData)
+        console.log("userPointData",userPointData)
     }
-    else if(userPointEntryError)
+    else if(userPointError)
     {
-        console.log("userPointEntryError",userPointEntryError)
+        console.log("userPointError",userPointError)
     }
 
-},[userPointEntryData,userPointEntryError])
+},[userPointData,userPointError])
   const toDate = new Date()
   var fromDate = new Date(new Date().setDate(toDate.getDate() - 30));
       useEffect(() => {
@@ -86,9 +88,9 @@ const [distinctDateArr, setDistinctDateArr] = useState()
       const fetchPoints=async()=>{
         const credentials = await Keychain.getGenericPassword();
         const token = credentials.username;
-        const params ={userId:userId,
+        const params ={userId:id,
         token:token}
-        userPointEntryFunc(params)
+        userPointFunc(params)
   
     }
       
@@ -107,11 +109,11 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         return(
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                 <View style={{alignItems:"center",justifyContent:"center"}}>
-                    {userPointEntryData && <PoppinsText style={{color:"black"}} content={userPointEntryData.body.point_earned}></PoppinsText>}
+                    {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_earned}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Earnings"></PoppinsTextMedium>
                 </View>
                 <View style={{alignItems:"center",justifyContent:"center",marginLeft:20}}>
-                    {userPointEntryData && <PoppinsText style={{color:"black"}} content={userPointEntryData.body.point_redeemed}></PoppinsText>}
+                    {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_redeemed}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Burns"></PoppinsTextMedium>
                 </View>
                 <TouchableOpacity style={{borderRadius:2,height:40,width:100,backgroundColor:"#FFD11E",alignItems:"center",justifyContent:"center",marginLeft:20}}>
@@ -136,12 +138,15 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         const productCode = props.productCode
         const time = props.time
         const amount =props.amount
+        const data = props.data
+        // console.log(data)
+        const image = data.images[0]
         return(
             <TouchableOpacity onPress={()=>{
-                navigation.navigate('ScannedDetails')
+                navigation.navigate('ScannedDetails',{data:data})
             }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8}}>
                 <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD'}}>
-                    <Image style={{height:50,width:50,resizeMode:"contain"}} source={require('../../../assets/images/box.png')}></Image>
+                    <Image style={{height:60,width:60,resizeMode:"contain"}} source={{uri:BaseUrlImages+image}}></Image>
                 </View>
                 <View style={{alignItems:"flex-start",justifyContent:"center",marginLeft:20}}>
                     <PoppinsTextMedium style={{fontWeight:'700',fontSize:18}} content={description}></PoppinsTextMedium>
@@ -175,12 +180,12 @@ const [distinctDateArr, setDistinctDateArr] = useState()
             </View>
             <View style={{padding:14,alignItems:"flex-start",justifyContent:"flex-start",width:"100%"}}>
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="You Have"></PoppinsTextMedium>
-                {userPointEntryData && <PoppinsText style={{color:"black",marginLeft:10,fontSize:24,fontWeight:'600'}} content={userPointEntryData.body.point_earned}></PoppinsText>}
+                {userPointData && <PoppinsText style={{color:"black",marginLeft:10,fontSize:24,fontWeight:'600'}} content={userPointData.body.point_earned}></PoppinsText>}
 
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Point Balance"></PoppinsTextMedium>
             </View>
             <Header></Header>
-            {/* {
+            {
                  fetchAllQrScanedListData && distinctDateArr && fetchAllQrScanedListData && <FlatList
                     data={fetchAllQrScanedListData.body.data}
                     renderItem={({item,index}) => {
@@ -196,7 +201,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                                     <View  style={{alignItems:"flex-start",justifyContent:"center",borderBottomWidth:1,paddingBottom:10,width:'90%',marginTop:20}}>
                                         <PoppinsTextMedium style={{color:'black',fontSize:16}} content ={moment(item.scanned_at).format('DD-MMM-YYYY')}></PoppinsTextMedium>
                                     </View>
-                                    <ListItem  description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
+                                    <ListItem  data={item} description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
     
                                     </View>
                                 )
@@ -204,14 +209,14 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                             
                         }
                         return(
-                <ListItem key={item.id} description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
+                <ListItem data={item} key={item.id} description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
                         )
                     }}
                     keyExtractor={item => item.id}
                   />
           
-            } */}
-                                    <ListItem  description="This is a great product" productCode="123QWERTY123" time="10:20" amount="100"></ListItem>
+            }
+                                    {/* <ListItem  description="This is a great product" productCode="123QWERTY123" time="10:20" amount="100"></ListItem> */}
 
         </View>
     );

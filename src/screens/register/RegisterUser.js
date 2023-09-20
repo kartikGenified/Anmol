@@ -92,7 +92,7 @@ const RegisterUser = ({navigation,route}) => {
       if(sendCredentialsData)
       {
         console.log("send Credentials data",sendCredentialsData)
-        if(sendCredentialsData.body.success)
+        if(sendCredentialsData.success)
         {
           navigation.navigate('PasswordLogin')
         }

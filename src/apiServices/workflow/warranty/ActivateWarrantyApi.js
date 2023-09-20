@@ -43,20 +43,20 @@ export const ActivateWarrantyApi = baseApi.injectEndpoints({
         // };
       },
     }),
-    // getWarrantyByAppUserId: builder.mutation({
-    //   query(token) {
-    //     console.log(token);
-    //     return {
-    //       method: 'GET',
-    //       url: `/app/warranty`,
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: 'Bearer ' + params.token,
-    //         slug: params.tenant_id,
-    //       },
-    //     };
-    //   },
-    // }),
+    getWarrantyByAppUserId: builder.mutation({
+      query(params) {
+        // console.log(token);
+        return {
+          method: 'GET',
+          url: `api/app/warranty`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + params.token,
+            slug: slug,
+          },
+        };
+      },
+    }),
   }),
 });
 

@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useId } from 'react';
 import {View, StyleSheet,TouchableOpacity,Image,FlatList} from 'react-native';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
-import { useAllUserPointsEntryMutation,useFetchUserPointsHistoryMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
+import { useFetchUserPointsMutation,useFetchUserPointsHistoryMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import * as Keychain from 'react-native-keychain';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 const PointHistory = ({navigation}) => {
     const points=100
-    const [userPointEntryFunc,{
-        data:userPointEntryData,
-        error:userPointEntryError,
-        isLoading:userPointEntryIsLoading,
-        isError:userPointEntryIsError
-    }]= useAllUserPointsEntryMutation()
+    const [userPointFunc,{
+        data:userPointData,
+        error:userPointError,
+        isLoading:userPointIsLoading,
+        isError:userPointIsError
+    }]= useFetchUserPointsMutation()
     
     const [fetchUserPointsHistoryFunc,{
         data:fetchUserPointsHistoryData,
@@ -25,28 +25,29 @@ const PointHistory = ({navigation}) => {
     useEffect(()=>{
         fetchPoints()
     },[])
-  const userId = useSelector(state => state.appusersdata.userId);
+  const userId = useSelector(state => state.appusersdata.id);
 
     const fetchPoints=async()=>{
         const credentials = await Keychain.getGenericPassword();
         const token = credentials.username;
+        console.log("userId",userId)
         const params ={userId:userId,
         token:token}
-        userPointEntryFunc(params)
+        userPointFunc(params)
         fetchUserPointsHistoryFunc(params)
 
     }
     useEffect(()=>{
-        if(userPointEntryData)
+        if(userPointData)
         {
-            console.log("userPointEntryData",userPointEntryData)
+            console.log("userPointData",userPointData)
         }
-        else if(userPointEntryError)
+        else if(userPointError)
         {
-            console.log("userPointEntryError",userPointEntryError)
+            console.log("userPointError",userPointError)
         }
 
-    },[userPointEntryData,userPointEntryError])
+    },[userPointData,userPointError])
     useEffect(()=>{
         if(fetchUserPointsHistoryData)
         {
@@ -63,11 +64,11 @@ const PointHistory = ({navigation}) => {
         return(
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                 <View style={{alignItems:"center",justifyContent:"center"}}>
-                    {userPointEntryData && <PoppinsText style={{color:"black"}} content={userPointEntryData.body.point_earned}></PoppinsText>}
+                    {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_earned}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Earnings"></PoppinsTextMedium>
                 </View>
                 <View style={{alignItems:"center",justifyContent:"center",marginLeft:20}}>
-                    {userPointEntryData && <PoppinsText style={{color:"black"}} content={userPointEntryData.body.point_redeemed}></PoppinsText>}
+                    {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_redeemed}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Burns"></PoppinsTextMedium>
                 </View>
                 <TouchableOpacity style={{borderRadius:2,height:40,width:100,backgroundColor:"#FFD11E",alignItems:"center",justifyContent:"center",marginLeft:20}}>
@@ -128,8 +129,8 @@ const PointHistory = ({navigation}) => {
             <View style={{padding:14,alignItems:"center",justifyContent:"flex-start",width:"100%",flexDirection:"row"}}>
                 <View style={{width:100}}>
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="You Have"></PoppinsTextMedium>
-                {userPointEntryData &&
-                <PoppinsText style={{marginLeft:14,fontSize:34,fontWeight:'600',color:'#373737'}} content={userPointEntryData.body.point_balance}></PoppinsText>
+                {userPointData &&
+                <PoppinsText style={{marginLeft:14,fontSize:34,fontWeight:'600',color:'#373737'}} content={userPointData.body.point_balance}></PoppinsText>
 
                 }
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Points"></PoppinsTextMedium>
@@ -142,7 +143,7 @@ const PointHistory = ({navigation}) => {
         data={fetchUserPointsHistoryData.body.data}
         contentContainerStyle={{paddingBottom:200}}
         renderItem={({item,index}) => {
-            console.log(index+1,item)
+            // console.log(index+1,item)
             return(
                 <ListItem description={item.product_name} productCode={item.product_code} amount={item.points} time={moment(item.created_at).format('HH:MM')}/>
             )
