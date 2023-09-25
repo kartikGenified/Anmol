@@ -1,5 +1,5 @@
-import React,{useEffect, useId} from 'react';
-import {View, StyleSheet,TouchableOpacity,Image,FlatList} from 'react-native';
+import React,{useEffect, useState} from 'react';
+import {View, StyleSheet,TouchableOpacity,Image,FlatList,Modal,Pressable,Text} from 'react-native';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
@@ -76,16 +76,52 @@ const RedeemedHistory = ({navigation}) => {
       useEffect(()=>{
         if(fetchGiftsRedemptionsOfUserData)
         {
-            console.log("fetchGiftsRedemptionsOfUserData",fetchGiftsRedemptionsOfUserData.body.userPointsRedemptionList[0].gift)
+            console.log("fetchGiftsRedemptionsOfUserData",fetchGiftsRedemptionsOfUserData.body.userPointsRedemptionList)
         }
-        else if(fetchGiftsRedemptionsOfUserIsLoading)
+        else if(fetchGiftsRedemptionsOfUserError)
         {
-            console.log("fetchGiftsRedemptionsOfUserIsLoading",fetchGiftsRedemptionsOfUserIsLoading)
+            console.log("fetchGiftsRedemptionsOfUserIsLoading",fetchGiftsRedemptionsOfUserError)
         }
-      },[fetchGiftsRedemptionsOfUserData,fetchGiftsRedemptionsOfUserIsLoading])
+      },[fetchGiftsRedemptionsOfUserData,fetchGiftsRedemptionsOfUserError])
+
+
     const DisplayEarnings=()=>{
+        const [modalVisible, setModalVisible] = useState(false);
         return(
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+                <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+           <Image style={{height:80,width:80,marginTop:20}} source={require('../../../assets/images/gift1.png')}></Image>
+           <PoppinsTextMedium style={{color:'black',width:300,marginTop:20}} content="Do you want redeem your point with amazing gift or cashback"></PoppinsTextMedium>
+          <View style={{flexDirection:'row',alignItems:'center',justifyContent:"center",marginTop:20}}>
+            <TouchableOpacity onPress={()=>{
+                console.log("gift")
+                setModalVisible(false)
+                navigation.navigate('RedeemGifts')
+
+            }} style={{alignItems:"center",justifyContent:"center",backgroundColor:'#0E2659',flexDirection:"row",height:40,width:100,borderRadius:10}}>
+                <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/giftWhite.png')}></Image>
+                <PoppinsTextMedium style={{color:'white',marginLeft:10}} content="Gift"></PoppinsTextMedium>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+                console.log("cashback")
+            }} style={{alignItems:"center",justifyContent:"center",backgroundColor:ternaryThemeColor,flexDirection:"row",marginLeft:40,height:40,width:100,borderRadius:10}}>
+                <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/giftWhite.png')}></Image>
+                <PoppinsTextMedium style={{color:'white',marginLeft:10}} content="Cashback"></PoppinsTextMedium>
+            </TouchableOpacity>
+          </View>
+          
+          </View>
+        </View>
+      </Modal>
                 <View style={{alignItems:"center",justifyContent:"center"}}>
                     {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_earned}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Earnings"></PoppinsTextMedium>
@@ -94,7 +130,9 @@ const RedeemedHistory = ({navigation}) => {
                     {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_redeemed}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Burns"></PoppinsTextMedium>
                 </View>
-                <TouchableOpacity style={{borderRadius:2,height:40,width:100,backgroundColor:"#FFD11E",alignItems:"center",justifyContent:"center",marginLeft:20}}>
+                <TouchableOpacity onPress={()=>{
+setModalVisible(true)
+                }} style={{borderRadius:2,height:40,width:100,backgroundColor:"#FFD11E",alignItems:"center",justifyContent:"center",marginLeft:20}}>
                     <PoppinsTextMedium  style={{color:'black'}} content="Redeem"></PoppinsTextMedium>
                 </TouchableOpacity> 
             </View>
@@ -168,6 +206,7 @@ const RedeemedHistory = ({navigation}) => {
                 }
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Points Balance"></PoppinsTextMedium>
             </View>
+            <DisplayEarnings></DisplayEarnings>
             <Header></Header>
             {fetchGiftsRedemptionsOfUserData && <FlatList
         data={fetchGiftsRedemptionsOfUserData.body.userPointsRedemptionList}
@@ -187,6 +226,52 @@ const RedeemedHistory = ({navigation}) => {
     );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
+    },
+    modalView: {
+        position:'absolute',
+        bottom:0,
+      width:'100%',
+      height:240,
+      backgroundColor: 'white',
+      borderTopRightRadius:40,
+      borderTopLeftRadius:40,
+      
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    button: {
+      borderRadius: 20,
+      padding: 10,
+      elevation: 2,
+    },
+    buttonOpen: {
+      backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+      backgroundColor: '#2196F3',
+    },
+    textStyle: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
+    },
+  });
 
 export default RedeemedHistory;

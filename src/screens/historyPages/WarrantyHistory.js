@@ -112,9 +112,9 @@ const WarrantyHistory = ({navigation}) => {
                     <Image style={{height:60,width:60,resizeMode:'contain'}} source={require('../../../assets/images/box.png')}></Image>
                     <View style={{alignItems:'flex-start',justifyContent:"center",marginLeft:8}}>
                         <PoppinsTextMedium style={{color:'black'}} content = "Product Name /Code : "></PoppinsTextMedium>
-                        <PoppinsTextMedium style={{color:'black',fontWeight:'700',marginTop:4}} content = {productName}></PoppinsTextMedium>
+                        <PoppinsTextMedium style={{color:'black',fontWeight:'700',marginTop:2}} content = {productName}></PoppinsTextMedium>
                         <PoppinsTextMedium style={{color:'black',marginTop:4}} content = "Warranty Status"></PoppinsTextMedium>
-                        <PoppinsTextMedium style={{color:'black',marginTop:4}} content = {warrantyStatus}></PoppinsTextMedium>
+                        <PoppinsTextMedium style={{color:'black',marginTop:2}} content = {warrantyStatus}></PoppinsTextMedium>
 
 
                     </View>
@@ -124,7 +124,9 @@ const WarrantyHistory = ({navigation}) => {
                         <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/greenDownload.png')}></Image>
                         <PoppinsTextMedium style={{color:'#353535',fontWeight:"700",marginLeft:4}} content="Download Warranty"></PoppinsTextMedium>
                     </View>
-                        <TouchableOpacity style={{backgroundColor:ternaryThemeColor,height:40,borderRadius:20,alignItems:"center",justifyContent:"center",padding:10,flexDirection:'row',marginLeft:20}}>
+                        <TouchableOpacity onPress={()=>{
+                            navigation.navigate('WarrantyDetails',{data:props.data})
+                        }} style={{backgroundColor:'#3B6CE9',height:40,borderRadius:20,alignItems:"center",justifyContent:"center",padding:10,flexDirection:'row',marginLeft:30}}>
                             <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/eye.png')}></Image>
                             <PoppinsTextMedium style={{marginLeft:4,color:"white",fontWeight:"700",fontSize:12}} content = "View Details"></PoppinsTextMedium>
                         <View style={{height:30,width:30,borderRadius:15,backgroundColor:"white",alignItems:"center",justifyContent:"center",marginLeft:4}}>
@@ -155,11 +157,11 @@ const WarrantyHistory = ({navigation}) => {
             {getWarrantylistData && <FlatList
         data={getWarrantylistData.body}
         style={{width:'100%'}}
-        contentContainerStyle={{width:'100%'}}
+        contentContainerStyle={{width:'100%',paddingBottom:300}}
         renderItem={({item,index}) => {
             console.log(index+1,item)
             return(
-            <WarrantyList></WarrantyList>
+            <WarrantyList data={item} date={item.end_date} warrantyTillDate={item.end_date} productName={item.product_name} warrantyStatus={item.status==="1" ? "Not Activated" : "Activated"} ></WarrantyList>
                 
                 )
         }}

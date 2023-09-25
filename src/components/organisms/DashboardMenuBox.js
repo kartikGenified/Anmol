@@ -14,7 +14,7 @@ const DashboardMenuBox=(props)=>{
             navigation.navigate('QrCodeScanner')
         }
         else{
-            navigation.navigate('ActivateWarranty')
+            navigation.navigate('RedeemRewardHistory')
         }
     }
 

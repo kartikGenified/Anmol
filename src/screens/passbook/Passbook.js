@@ -120,7 +120,7 @@ const Passbook = ({navigation}) => {
             
             {/* coloured header */}
             <View style={{height:200,width:'100%',backgroundColor:ternaryThemeColor,alignItems:"flex-start",justifyContent:'flex-start'}}>
-            {/* name and membership */}
+            
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
                 <TouchableOpacity onPress={()=>{navigation.goBack()}}>
             <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/blackBack.png')}></Image>
@@ -130,6 +130,7 @@ const Passbook = ({navigation}) => {
             <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/notificationOn.png')}></Image>
             </TouchableOpacity>
             </View>
+                {/* name and membership */}
             {/* --------------------------- */}
             <View style={{flexDirection:"row",height:50,width:'100%',alignItems:"center",justifyContent:"flex-start"}}>
                 <PoppinsText content={name} style={{color:'white',fontSize:20,marginLeft:20}}></PoppinsText>

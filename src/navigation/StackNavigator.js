@@ -30,6 +30,11 @@ import CashbackDetails from '../screens/historyPages/CashbackDetails';
 import CouponDetails from '../screens/historyPages/CouponDetails';
 import WheelHistory from '../screens/historyPages/WheelHistory';
 import WarrantyHistory from '../screens/historyPages/WarrantyHistory';
+import WarrantyDetails from '../screens/historyPages/WarrantyDetails';
+import RedeemRewardHistory from '../screens/historyPages/RedeemRewardHistory';
+import AddBankAccountAndUpi from '../screens/payments/AddBankAccountAndUpi';
+import RedeemGifts from '../screens/redeem/RedeemGifts';
+import CartList from '../screens/redeem/CartList';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -58,6 +63,31 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="RedeemedDetails" component={RedeemedDetails}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="CartList" component={CartList}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="RedeemGifts" component={RedeemGifts}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="AddBankAccountAndUpi" component={AddBankAccountAndUpi}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="RedeemRewardHistory" component={RedeemRewardHistory}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="WarrantyDetails" component={WarrantyDetails}></Stack.Screen>
                  <Stack.Screen options={
                     {
                         headerShown:false

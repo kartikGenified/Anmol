@@ -9,7 +9,7 @@ import getProductSlice from './slices/getProductSlice'
 import { baseApi } from '../src/apiServices/baseApi'
 import { setupListeners } from '@reduxjs/toolkit/query'
 import userLocationSlice from './slices/userLocationSlice'
-
+import rewardCartSlice from './slices/rewardCartSlice'
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
@@ -20,7 +20,8 @@ export const store = configureStore({
     form:formSlice,
     qrData: qrCodeDataSlice,
     productData:getProductSlice,
-    userLocation:userLocationSlice
+    userLocation:userLocationSlice,
+    cart:rewardCartSlice
 
   },
   middleware: (getDefaultMiddleware) =>
