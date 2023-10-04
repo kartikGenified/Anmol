@@ -98,6 +98,7 @@ const PasswordLogin = ({navigation,route}) => {
 
     }
     const handleNavigationToRegister=()=>{
+    // navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:userType, userId:userId})
 
       navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:userType, userId:userId})
 

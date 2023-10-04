@@ -142,7 +142,7 @@ const Dashboard = ({navigation}) => {
           {
             dispatch(setIsGenuinityOnly())
           }
-            console.log("getWorkflowData",getWorkflowData.body[0].program)
+            console.log("getWorkflowData",getWorkflowData.body)
             dispatch(setProgram(getWorkflowData.body[0].program))
             dispatch(setWorkflow(getWorkflowData.body[0].workflow_id))
             

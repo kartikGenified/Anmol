@@ -32,7 +32,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
             <View style={{borderBottomWidth:1,borderColor:'#DDDDDD',width: '80%',paddingBottom:10}}>
             <PoppinsTextMedium style={{color:'#292626',marginTop:10,fontWeight:'600'}} content="Select Method"></PoppinsTextMedium>
             </View>
-            <View style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('AddBankDetails')}} style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
             <View style={{height:60,width:60,alignItems:'center',justifyContent:'center',borderRadius:30,borderWidth:1,borderColor:'#DDDDDD'}}>
                 <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/bankaccount.png')}></Image>
             </View>
@@ -44,8 +44,8 @@ const AddBankAccountAndUpi = ({navigation}) => {
             <View style={{alignItems:'center',justifyContent:'center'}}>
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/next.png')}></Image>
             </View>
-            </View>
-            <View style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
+            </TouchableOpacity>
+            <TouchableOpacity style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
             <View style={{height:60,width:60,alignItems:'center',justifyContent:'center',borderRadius:30,borderWidth:1,borderColor:'#DDDDDD'}}>
                 <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/upi.png')}></Image>
             </View>
@@ -57,7 +57,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
             <View style={{alignItems:'center',justifyContent:'center'}}>
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/next.png')}></Image>
             </View>
-            </View>
+            </TouchableOpacity>
             </View>
             
         </View>

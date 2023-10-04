@@ -1,28 +1,28 @@
 import React, {useState,useEffect} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { useSelector } from 'react-redux';
-
-const SuccessModal = (props) => {
+import  Icon  from 'react-native-vector-icons/MaterialIcons';
+const MessageModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
-    useEffect(()=>{
-      if(props.openModal===true)
+  useEffect(()=>{
+    if(props.openModal===true)
     {
         setModalVisible(true)
     }
     else{
         setModalVisible(false)
     }
-    },[])
-    const closeModal=()=>{
-      setModalVisible(!modalVisible)
-      props.modalClose()
-    }
+  },[])
+  const closeModal=()=>{
+    setModalVisible(!modalVisible)
+    props.modalClose()
+  }
+   
 
 
   return (
@@ -32,19 +32,19 @@ const SuccessModal = (props) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          props.modalClose()
+            props.modalClose()
           setModalVisible(!modalVisible);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Success</Text>
-            <Icon name="sorry" size={100} color="red"></Icon>
+          <Text style={{color:'black',fontSize:24,fontWeight:'600'}}>{props.title}</Text>
+          <Icon name="cloud-done" size={100} color="green"></Icon>
 
             <Text style={{...styles.modalText,fontSize:20,fontWeight:'600'}}>{props.message}</Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={{...styles.button,backgroundColor:ternaryThemeColor,width:100}}
               onPress={() => closeModal()}>
-              <Text style={styles.textStyle}>Hide</Text>
+              <Text style={styles.textStyle}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
   },
   modalView: {
-    margin: 20,
+   
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 60,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -76,16 +76,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
   },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
+  
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
@@ -97,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SuccessModal;
+export default MessageModal;

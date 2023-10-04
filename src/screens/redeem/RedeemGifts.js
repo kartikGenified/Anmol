@@ -12,15 +12,23 @@ import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
+import Plus from 'react-native-vector-icons/Entypo';
+
+import Minus from 'react-native-vector-icons/Entypo';
+import Check from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 import {useFetchGiftCatalogueByUserTypeAndCatalogueTypeMutation} from '../../apiServices/gifts/GiftApi';
 import {useFetchUserPointsMutation} from '../../apiServices/workflow/rewards/GetPointsApi';
 import * as Keychain from 'react-native-keychain';
 import {BaseUrlImages} from '../../utils/BaseUrlImages';
 
-const RedeemGifts = ({navigation}) => {
+const RedeemGifts = ({navigation,route}) => {
   const [search, setSearch] = useState();
+  const [cart, setCart] = useState([]);
+  const [distinctCategories, setDistinctCategories] = useState([]);
+  const [displayContent, setDisplayContent] = useState([])
   const pointBalance = 300;
+  const action = route.params?.action
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -48,6 +56,7 @@ const RedeemGifts = ({navigation}) => {
     },
   ] = useFetchUserPointsMutation();
 
+
   useEffect(() => {
     const getData = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -67,15 +76,20 @@ const RedeemGifts = ({navigation}) => {
       }
     };
     getData();
+    setCart([])
   }, []);
-
+  
   useEffect(() => {
     if (giftCatalogueData) {
       console.log('giftCatalogueData', giftCatalogueData.body[0].images);
+      getDistinctCategories(giftCatalogueData.body)
+      setDisplayContent(giftCatalogueData.body)
+      
     } else if (giftCatalogueError) {
       console.log('giftCatalogueError', giftCatalogueError);
     }
   }, [giftCatalogueData, giftCatalogueError]);
+
   useEffect(() => {
     if (userPointData) {
       console.log('userPointData', userPointData);
@@ -83,11 +97,42 @@ const RedeemGifts = ({navigation}) => {
       console.log('userPointError', userPointError);
     }
   }, [userPointData, userPointError]);
+
+
+
+  const getDistinctCategories=(data)=>{
+    let allCategories = []
+
+    for(var i=0;i<data.length;i++)
+    {
+      allCategories.push(giftCatalogueData.body[i].category)
+    }
+    const set = new Set(allCategories)
+    const arr = Array.from(set)
+    setDistinctCategories(arr)
+  }
+
+  const handleSearch=(data)=>{
+    const searchOutput =  giftCatalogueData.body.filter((item,index)=>{
+      return(item.name.toLowerCase().includes(data.toLowerCase()))
+    })
+    setDisplayContent(searchOutput)
+
+  }
+
   const Categories = props => {
     const image = props.image;
     const data = props.data;
     return (
-      <View
+      <TouchableOpacity 
+      onPress={()=>{
+        const filteredData =  giftCatalogueData.body.filter((item,index)=>{
+          return(
+            item.category == data
+          )
+        })
+        setDisplayContent(filteredData)
+      }}
         style={{
           marginLeft: 30,
           alignItems: 'center',
@@ -115,29 +160,74 @@ const RedeemGifts = ({navigation}) => {
             marginTop: 2,
           }}
           content={data}></PoppinsTextMedium>
-      </View>
+      </TouchableOpacity>
     );
   };
-  const RewardsBox = props => {
-    const [image, setImage] = useState();
-    const [points, setPoints] = useState();
-    const [product, setProduct] = useState();
-    const [category, setCategory] = useState();
+  const addItemToCart=(data,operation,count)=>{
+    let tempCount=0
+    let temp=cart
+    if(operation==="plus")
+    {
+      temp.push(data)
+      setCart(temp)
+    }
+    else {
+      
+      for(var i =0;i<temp.length;i++)
+      {
+        if(temp[i].id===data.id)
+        {
+        tempCount++
+        if(tempCount===1)
+        {
+          temp.splice(i,1)
+        }
+        
+        }       
+        
+      }
+      
+      setCart(temp)
 
-    useEffect(() => {
-      setImage(props.image);
-      setPoints(props.points);
-      setProduct(props.product);
-      setCategory(props.category);
-    }, []);
+    }
+    
+    console.log(temp)
+
+  }
+  
+  
+  const RewardsBox = props => {
+    const [count, setCount] = useState(0)
+    
+    const image = props.image
+    const points =props.points
+    const product = props.product
+    const category = props.category
+    const data = props.data
+    console.log("data",data)
+    
+   const changeCounter=(operation)=>{
+    if(operation==="plus")
+    {
+      let temp =count
+      temp++
+      setCount(temp)
+      props.handleOperation(data,operation,temp)
+    }
+    else{
+      let temp =count
+      temp--
+      setCount(temp)
+      props.handleOperation(data,operation,temp)
+
+    }
+   }
+
+   
 
     return (
       <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('CartList', {
-            data: props.data,
-          });
-        }}
+        onPress={()=>{console.log("Pressed")}}
         style={{
           height: 120,
           width: '90%',
@@ -161,7 +251,7 @@ const RedeemGifts = ({navigation}) => {
           }}>
           <View
             style={{
-              height: '80%',
+              height: 50,
               width: 50,
               alignItems: 'center',
               justifyContent: 'center',
@@ -172,7 +262,7 @@ const RedeemGifts = ({navigation}) => {
               top: 14,
             }}>
             <Image
-              style={{height: 30, width: 30, resizeMode: 'contain'}}
+              style={{height: 40, width: 40, resizeMode: 'contain'}}
               source={{uri: BaseUrlImages + image}}></Image>
           </View>
           <LinearGradient
@@ -184,7 +274,7 @@ const RedeemGifts = ({navigation}) => {
               flexDirection: 'row',
               borderRadius: 4,
               position: 'absolute',
-              right: 60,
+              right: 80,
             }}
             colors={['#FF9100', '#E4C52B']}>
             <Image
@@ -199,21 +289,37 @@ const RedeemGifts = ({navigation}) => {
               }}
               content={`Points : ${points}`}></PoppinsTextMedium>
           </LinearGradient>
-          <View
+          <View style={{alignItems:"center",justifyContent:"center",flexDirection:'row',position: 'absolute',
+              right: 10}}>
+                <TouchableOpacity onPress={()=>{if(count>0)
+                {
+                  changeCounter("minus")
+                }}}>
+          <Minus name ="minus" color='black' size={24}></Minus>
+
+                </TouchableOpacity>
+
+            <View
             style={{
-              height: 30,
-              width: 30,
-              backgroundColor: '#353535',
-              position: 'absolute',
-              right: 20,
+              height: 24,
+              width: 20,
+              backgroundColor: 'white',
+              
               borderRadius: 4,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
-              source={require('../../../assets/images/cart.png')}></Image>
+           <PoppinsTextMedium style={{color:'black',fontSize:14,fontWeight:'700'}} content ={count}></PoppinsTextMedium>
           </View>
+          <TouchableOpacity onPress={()=>{
+                changeCounter("plus")
+                }}>
+          <Plus name="plus" color='black' size={20}></Plus>
+
+                </TouchableOpacity>
+
+          </View>
+          
         </View>
         <View
           style={{
@@ -307,7 +413,7 @@ const RedeemGifts = ({navigation}) => {
             borderTopLeftRadius: 40,
             paddingBottom: 20,
           }}>
-          <View
+          {giftCatalogueData && <View
             style={{
               width: '100%',
               alignItems: 'center',
@@ -331,11 +437,11 @@ const RedeemGifts = ({navigation}) => {
                 size={30}
                 color={ternaryThemeColor}></Icon>
               <TextInput
-                style={{marginLeft: 20}}
+                style={{marginLeft: 20,width:'70%'}}
                 placeholder="Type Product Name"
                 value={search}
                 onChangeText={text => {
-                  setSearch(text);
+                  handleSearch(text)
                 }}></TextInput>
             </View>
             <View
@@ -348,7 +454,7 @@ const RedeemGifts = ({navigation}) => {
                 style={{height: 26, width: 26, resizeMode: 'contain'}}
                 source={require('../../../assets/images/settings.png')}></Image>
             </View>
-          </View>
+          </View>}
         </View>
         <View
           style={{
@@ -358,7 +464,10 @@ const RedeemGifts = ({navigation}) => {
             flexDirection: 'row',
             marginTop: 10,
           }}>
-          <View
+          <TouchableOpacity
+          onPress={()=>{
+            setDisplayContent(giftCatalogueData.body)
+          }}
             style={{
               height: 70,
               width: 70,
@@ -376,11 +485,16 @@ const RedeemGifts = ({navigation}) => {
                 marginTop: 2,
               }}
               content="All"></PoppinsTextMedium>
-          </View>
+          </TouchableOpacity>
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
-            <Categories
-              data="Electronics"
+            {distinctCategories && distinctCategories.map((item,index)=>{
+              return(
+                <Categories
+                key ={index}
+              data={item}
               image={require('../../../assets/images/box.png')}></Categories>
+              )
+            })}
           </ScrollView>
         </View>
         <View
@@ -388,7 +502,7 @@ const RedeemGifts = ({navigation}) => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            paddingBottom: 240,
+            paddingBottom: 300,
           }}>
           <PoppinsTextMedium
             style={{
@@ -399,15 +513,16 @@ const RedeemGifts = ({navigation}) => {
               marginBottom: 10,
             }}
             content="Rewards"></PoppinsTextMedium>
-          {giftCatalogueData && (
+          {displayContent && (
             <FlatList
-              data={giftCatalogueData.body}
+              data={displayContent}
               style={{width: '100%'}}
               contentContainerStyle={{width: '100%'}}
               renderItem={({item, index}) => {
-                console.log(index + 1, item);
+                
                 return (
                   <RewardsBox
+                  handleOperation={addItemToCart}
                     data={item}
                     key={index}
                     product={item.name}
@@ -420,6 +535,11 @@ const RedeemGifts = ({navigation}) => {
             />
           )}
         </View>
+        <TouchableOpacity onPress={()=>{
+          navigation.navigate("CartList",{cart:cart})
+        }} style={{alignItems:"center",borderRadius:10,justifyContent:'center',height:50,width:'60%',backgroundColor:ternaryThemeColor,position:'absolute',bottom:20}}>
+            <PoppinsTextMedium style={{color:'white',fontSize:16,fontWeight:'700'}} content = "Continue"></PoppinsTextMedium>
+        </TouchableOpacity>
       </View>
     </View>
   );

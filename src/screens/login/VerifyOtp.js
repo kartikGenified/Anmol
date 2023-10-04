@@ -219,7 +219,7 @@ catch(e){
 
   return (
     <LinearGradient
-      colors={[primaryThemeColor, secondaryThemeColor]}
+      colors={[ternaryThemeColor, secondaryThemeColor]}
       style={styles.container}>
       <View
         style={{

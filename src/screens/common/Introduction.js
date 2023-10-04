@@ -3,7 +3,7 @@ import {View, StyleSheet, Text,Image} from 'react-native';
 import DotHorizontalList from '../../components/molecules/DotHorizontalList';
 import  {useGetAppThemeDataMutation}  from '../../apiServices/appTheme/AppThemeApi';
 import { useSelector, useDispatch } from 'react-redux'
-import { setPrimaryThemeColor,setSecondaryThemeColor,setIcon,setIconDrawer,setTernaryThemeColor,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades} from '../../../redux/slices/appThemeSlice';
+import { setPrimaryThemeColor,setSecondaryThemeColor,setIcon,setIconDrawer,setTernaryThemeColor,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades,setKycOptions} from '../../../redux/slices/appThemeSlice';
 import { setManualApproval,setAutoApproval,setRegistrationRequired} from '../../../redux/slices/appUserSlice';
 const Introduction = ({navigation}) => {
     const [imageIndex, setImageIndex] = useState(0)
@@ -29,10 +29,10 @@ const Introduction = ({navigation}) => {
         if(getAppThemeData)
         {
             
-            console.log("getAppThemeData",getAppThemeData)
-            dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["600"]))
+            console.log("getAppThemeData",JSON.stringify(getAppThemeData.body))
+            dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["400"]))
             dispatch(setSecondaryThemeColor(getAppThemeData.body.theme.color_shades["200"]))
-            dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["400"]))
+            dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["600"]))
             dispatch(setIcon(getAppThemeData.body.logo[0]))
             dispatch(setIconDrawer(getAppThemeData.body.logo[1]))
             dispatch(setOptLogin(getAppThemeData.body.login_options.Otp.users))
@@ -42,6 +42,7 @@ const Introduction = ({navigation}) => {
             dispatch(setAutoApproval(getAppThemeData.body.approval_flow_options.AutoApproval.users))
             dispatch(setRegistrationRequired(getAppThemeData.body.registration_options.Registration.users))
             dispatch(setColorShades(getAppThemeData.body.theme.color_shades))
+            dispatch(setKycOptions(getAppThemeData.body.kyc_options))
 
 
 

@@ -179,6 +179,7 @@ const QrCodeScanner = ({navigation}) => {
    
     checkGenuinityFunc({qrId, token});
     productDataFunc({productCode, userType, token});
+    console.log({productCode, userType, token})
 
     if (addedQrList.length === 0) {
       setAddedQrList([...addedQrList, data]);
@@ -337,6 +338,9 @@ const QrCodeScanner = ({navigation}) => {
           handleWorkflowNavigation()
         }
         }
+        else{
+          handleWorkflowNavigation()
+        }
         }
       }
         else if(checkWarrantyError){
@@ -355,6 +359,7 @@ const QrCodeScanner = ({navigation}) => {
       }
       }
       else{
+        console.log("else")
         handleWorkflowNavigation()
       }
        

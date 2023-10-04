@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { useSelector } from 'react-redux';
+import  Icon  from 'react-native-vector-icons/MaterialIcons';
 const ErrorModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const ternaryThemeColor = useSelector(
@@ -36,9 +37,12 @@ const ErrorModal = (props) => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{props.message}</Text>
+          <Text style={{color:'black',fontSize:24,fontWeight:'600'}}>SORRY</Text>
+          <Icon name="disabled-by-default" size={100} color="red"></Icon>
+
+            <Text style={{...styles.modalText,fontSize:20,fontWeight:'600'}}>{props.message}</Text>
             <Pressable
-              style={{...styles.button,backgroundColor:ternaryThemeColor}}
+              style={{...styles.button,backgroundColor:ternaryThemeColor,width:100}}
               onPress={() => closeModal()}>
               <Text style={styles.textStyle}>Hide</Text>
             </Pressable>
@@ -54,13 +58,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-   
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
   },
   modalView: {
    
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 60,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
   },

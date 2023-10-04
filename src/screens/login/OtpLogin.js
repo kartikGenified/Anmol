@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {BaseUrl} from '../../utils/BaseUrl';
-import LinearGradient from 'react-native-linear-gradient';import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
+import LinearGradient from 'react-native-linear-gradient';
+import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import CustomTextInput from '../../components/organisms/CustomTextInput';
 import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';
@@ -77,6 +78,7 @@ const OtpLogin = ({navigation, route}) => {
   const user_type_id = route.params.userId;
   const user_type = route.params.userType;
   const registrationRequired = route.params.registrationRequired
+  console.log("registrationRequired",registrationRequired)
   const width = Dimensions.get('window').width;
   const navigationParams = {"needsApproval":needsApproval,"user_type_id":user_type_id,"user_type":user_type,"mobile":mobile,"name":name}
   
@@ -132,18 +134,28 @@ const OtpLogin = ({navigation, route}) => {
   };
   
   const handleButtonPress=()=>{
-    
-    sendOtpFunc({mobile,name,user_type,user_type_id})
+    console.log("first",getNameData.message)
+    if(getNameData.message==="Not Found")
+    {
+      console.log("registrationRequired",registrationRequired)
+    registrationRequired && navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id,name:name,mobile:mobile})
+
+    }
+    else{
+      sendOtpFunc({mobile,name,user_type,user_type_id})
+    navigation.navigate('VerifyOtp',{navigationParams})
+
+    }
   }
   const handleNavigationToRegister=()=>{
-    navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:user_type, userId:user_type_id})
+    navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id})
   }
   const modalClose=()=>{
     setError(false)
   }
   return (
     <LinearGradient
-      colors={[primaryThemeColor, secondaryThemeColor]}
+      colors={[ternaryThemeColor, secondaryThemeColor]}
       style={styles.container}>
 
       {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
@@ -245,7 +257,7 @@ const OtpLogin = ({navigation, route}) => {
             navigationParams={navigationParams}
             ></ButtonNavigateArrow>}
         </View>
-       {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
+       {/* {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
         <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium>
         <ButtonNavigate
               handleOperation={handleNavigationToRegister}
@@ -255,7 +267,7 @@ const OtpLogin = ({navigation, route}) => {
               >
         </ButtonNavigate>
 
-        </View>}
+        </View>} */}
       </ScrollView>
     </LinearGradient>
   );

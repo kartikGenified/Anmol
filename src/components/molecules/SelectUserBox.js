@@ -14,15 +14,18 @@ const SelectUserBox = (props) => {
     // const autoApproval = props.autoApproval
     const manualApproval = props.manualApproval
     const registrationRequired = props.registrationRequired
-
+    console.log(props.content, registrationRequired)
 
     const checkRegistrationRequired=()=>{
         if(registrationRequired.includes(props.content))
         {
             checkApprovalFlow(true)
+            console.log("registration required")
         }
         else{
             checkApprovalFlow(false)
+            console.log("registration not required")
+
         }
     }
 

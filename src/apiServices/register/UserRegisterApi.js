@@ -23,7 +23,23 @@ export const UserRegisterApi = baseApi.injectEndpoints({
         };
       },
     }),
+    registerUserByBody: builder.mutation({
+      query: (body) => {
+        console.log("body ......................",body);
+
+        
+        return {
+          method: "POST",
+          url: "/api/app/appUserLogin/",
+          headers: {
+            slug: slug,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        };
+      },
+    }),
   }),
 });
 
-export const {useRegisterUserMutation} = UserRegisterApi;
+export const {useRegisterUserMutation,useRegisterUserByBodyMutation} = UserRegisterApi;

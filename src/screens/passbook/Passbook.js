@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import {View, StyleSheet,Image,ScrollView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet,Image,ScrollView, TouchableOpacity,Text} from 'react-native';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
@@ -100,15 +100,14 @@ const Passbook = ({navigation}) => {
                 <View style={{height:44,width:44,alignItems:"center",justifyContent:"center",borderRadius:4,borderColor:ternaryThemeColor,borderWidth:1,marginLeft:10}}>
                     <Image style={{height:26,width:26,resizeMode:"contain"}} source={image}></Image>
                 </View>
-                <View style={{height:50,width:200,alignItems:"flex-start",justifyContent:"center",marginLeft:14}}>
+                <View style={{height:50,width:210,alignItems:"flex-start",justifyContent:"center",marginLeft:14}}>
                     <PoppinsText style={{color:'black',fontSize:14}} content={title}></PoppinsText>
-                    <PoppinsTextMedium style={{color:'grey',fontSize:12}} content ={discription}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{color:'grey',fontSize:12,textAlign:'left'}} content ={discription}></PoppinsTextMedium>
                 </View>
                 <TouchableOpacity onPress={()=>{
                 navigateToPages(title)
                 }} style={{marginLeft:20}}>
                 <Image style={{height:22,width:22,resizeMode:"contain"}} source={require('../../../assets/images/goNext.png')}></Image>
-
                 </TouchableOpacity>
 
             </View>

@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import {View, StyleSheet,TouchableOpacity,Image,FlatList} from 'react-native';
+import {View, StyleSheet,TouchableOpacity,Image,FlatList,Text} from 'react-native';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import { useFetchAllQrScanedListMutation } from '../../apiServices/qrScan/AddQrApi';
@@ -144,22 +144,21 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         return(
             <TouchableOpacity onPress={()=>{
                 navigation.navigate('ScannedDetails',{data:data})
-            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8}}>
-                <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD'}}>
+            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8,width:'100%'}}>
+                <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderColor:'#DDDDDD'}}>
                     <Image style={{height:60,width:60,resizeMode:"contain"}} source={{uri:BaseUrlImages+image}}></Image>
                 </View>
-                <View style={{alignItems:"flex-start",justifyContent:"center",marginLeft:20}}>
-                    <PoppinsTextMedium style={{fontWeight:'700',fontSize:18}} content={description}></PoppinsTextMedium>
+                <View style={{alignItems:"flex-start",justifyContent:"center",marginLeft:10,width:200}}>
+                    <PoppinsTextMedium style={{fontWeight:'600',fontSize:14,textAlign:'auto'}} content={description}></PoppinsTextMedium>
                     <PoppinsTextMedium style={{fontWeight:'400',fontSize:12}} content={`Product Code : ${productCode}`}></PoppinsTextMedium>
                     <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
-                        <Image style={{height:14,width:14,resizeMode:"contain"}} source={require('../../../assets/images/clock.png')}></Image>
+                        <Image style={{height:14,width:14,resizeMode:"contain"}} source={require('..s/../../assets/images/clock.png')}></Image>
                     <PoppinsTextMedium style={{fontWeight:'200',fontSize:12,marginLeft:4}} content={time}></PoppinsTextMedium>
-
                     </View>
                 </View>
-                <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginLeft:20}}>
-                    <Image style={{height:24,width:24,resizeMode:"contain"}} source={require('../../../assets/images/wallet.png')}></Image>
-                    <PoppinsTextMedium style={{color:"#91B406",fontSize:18}} content={` + ${amount}`}></PoppinsTextMedium>
+                <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginLeft:10}}>
+                    <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/wallet.png')}></Image>
+                    <PoppinsTextMedium style={{color:"#91B406",fontSize:16}} content={` + ${amount}`}></PoppinsTextMedium>
                 </View>
             </TouchableOpacity>
         )

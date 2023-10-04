@@ -48,7 +48,7 @@ const CongratulateOnScan = ({navigation, route}) => {
   // workflow for the given user
   const workflowProgram = route.params.workflowProgram;
   const rewardType = route.params.rewardType
-  console.log('rewardType', rewardType,workflowProgram);
+  console.log('rewardType', rewardType,workflowProgram,productData);
   const platform = Platform.OS === 'ios' ? '1' : '2';
 
   const [

@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import TextInputRectangleMandatory from '../../components/atoms/input/TextInputRectangleMandatory';
 import TextInputRectangle from '../../components/atoms/input/TextInputRectangle';
 import TextInputNumericRectangle from '../../components/atoms/input/TextInputNumericRectangle';
 import InputDate from '../../components/atoms/input/InputDate';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImageInput from '../../components/atoms/input/ImageInput';
 import ButtonOval from '../../components/atoms/buttons/ButtonOval';
 import ProductList from '../../components/molecules/ProductList';

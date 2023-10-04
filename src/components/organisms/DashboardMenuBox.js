@@ -13,6 +13,10 @@ const DashboardMenuBox=(props)=>{
         {
             navigation.navigate('QrCodeScanner')
         }
+        else if(data.toLowerCase()==="passbook")
+        {
+            navigation.navigate("Passbook")
+        }
         else{
             navigation.navigate('RedeemRewardHistory')
         }

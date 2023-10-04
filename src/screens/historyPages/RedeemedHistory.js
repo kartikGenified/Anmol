@@ -105,7 +105,7 @@ const RedeemedHistory = ({navigation}) => {
             <TouchableOpacity onPress={()=>{
                 console.log("gift")
                 setModalVisible(false)
-                navigation.navigate('RedeemGifts')
+                navigation.navigate('Verification')
 
             }} style={{alignItems:"center",justifyContent:"center",backgroundColor:'#0E2659',flexDirection:"row",height:40,width:100,borderRadius:10}}>
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/giftWhite.png')}></Image>
@@ -113,7 +113,9 @@ const RedeemedHistory = ({navigation}) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={()=>{
                 console.log("cashback")
-            }} style={{alignItems:"center",justifyContent:"center",backgroundColor:ternaryThemeColor,flexDirection:"row",marginLeft:40,height:40,width:100,borderRadius:10}}>
+                setModalVisible(false)
+                navigation.navigate('RedeemCashback')
+            }} style={{alignItems:"center",justifyContent:"center",backgroundColor:ternaryThemeColor,flexDirection:"row",marginLeft:40,height:40,width:120,borderRadius:10}}>
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/giftWhite.png')}></Image>
                 <PoppinsTextMedium style={{color:'white',marginLeft:10}} content="Cashback"></PoppinsTextMedium>
             </TouchableOpacity>

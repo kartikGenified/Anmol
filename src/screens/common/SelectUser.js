@@ -30,8 +30,8 @@ const SelectUser = ({navigation}) => {
       console.log("type of users",getUsersData.body);
       dispatch(setAppUsers(getUsersData.body))
       setListUsers(getUsersData.body);
-    } else {
-      console.log(getUsersError);
+    } else if(getUsersError) {
+      console.log("getUsersError",getUsersError);
     }
   }, [getUsersData, getUsersError]);
 

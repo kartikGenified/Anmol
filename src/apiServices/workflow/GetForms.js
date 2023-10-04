@@ -15,10 +15,20 @@ export const GetForms = baseApi.injectEndpoints({
                     },
             }
         }
-        })
+        }),
+        getFormAccordingToAppUserType :builder.mutation({
+            query: (params) => {
+                return {
+                    method: 'GET',
+                    url: `api/admin/vendorTheme/form/${slug}/${params.AppUserType}`,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }}
+        }),
     })
 });
 
 
-export const {useGetFormMutation} = GetForms
+export const {useGetFormMutation,useGetFormAccordingToAppUserTypeMutation} = GetForms
 

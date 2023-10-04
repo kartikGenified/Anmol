@@ -35,6 +35,11 @@ import RedeemRewardHistory from '../screens/historyPages/RedeemRewardHistory';
 import AddBankAccountAndUpi from '../screens/payments/AddBankAccountAndUpi';
 import RedeemGifts from '../screens/redeem/RedeemGifts';
 import CartList from '../screens/redeem/CartList';
+import Verification from '../screens/verification/Verification';
+import RedeemCashback from '../screens/redeem/RedeemCashback';
+import BasicInfo from '../screens/register/BasicInfo';
+import AddBankDetails from '../screens/payments/AddBankDetails';
+
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -62,7 +67,27 @@ const StackNavigator=()=>{
                     {
                         headerShown:false
                     }
+                } name="BasicInfo" component={BasicInfo}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="AddBankDetails" component={AddBankDetails}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
                 } name="RedeemedDetails" component={RedeemedDetails}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="RedeemCashback" component={RedeemCashback}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="Verification" component={Verification}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false
