@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet,Text,Image,TouchableOpacity,FlatList} from 'react-native';
+import {View, StyleSheet,Text,Image,TouchableOpacity,FlatList,ScrollView} from 'react-native';
 
 const RectangularUnderlinedDropDown = (props) => {
-    const [selectedBank, setSelectedBank] = useState('Select Bank')
+    const [selectedBank, setSelectedBank] = useState(props.header)
     const [showList, setShowList] = useState(false)
     const [topMargin, setTopMargin] = useState(0)
     const data = props.data
@@ -15,7 +15,7 @@ const RectangularUnderlinedDropDown = (props) => {
     }
     const handleOpenList=()=>{
         setShowList(!showList)
-        setTopMargin(20)
+        
     }
     const SelectableDropDownComponent=(props)=>{
         const title = props.title
@@ -29,19 +29,24 @@ const RectangularUnderlinedDropDown = (props) => {
         )
     }
     return (
-        <View style={{backgroundColor:"white",width:'90%',borderBottomWidth:1,borderColor:'#DDDDDD',alignItems:"center",justifyContent:'center',marginTop:topMargin}}>
+        <View style={{backgroundColor:"white",width:'90%',borderBottomWidth:1,borderColor:'#DDDDDD',alignItems:"center",justifyContent:'center',marginTop:10,marginBottom:10}}>
             <TouchableOpacity onPress={()=>{handleOpenList()}} style={{flexDirection:"row",width:'100%',alignItems:"center",justifyContent:'center',height:40,borderBottomWidth:1,borderColor:'#DDDDDD'}}>
-                <Text style={{color:'black',fontSize:16,position:"absolute",left:20,top:10,fontWeight:"600"}}>{selectedBank}</Text>
+                <Text style={{color:'black',fontSize:14,position:"absolute",left:10,top:10}}>{selectedBank}</Text>
                 <Image style={{height:14,width:14,resizeMode:"contain",position:"absolute",right:10,top:10}} source={require('../../../../assets/images/arrowDown.png')}></Image>
             </TouchableOpacity>
+            
+            {showList && <ScrollView style={{width:'100%',minHeight:100}}>
+                <View style={{alignItems:"center",justifyContent:"center",width:"100%"}}>
             {
-                showList && data.map((item,index)=>{
+                data.map((item,index)=>{
                     // console.log(item)
                     return(
                         <SelectableDropDownComponent key ={index} title={item}></SelectableDropDownComponent>
                     )
                 })
             }
+            </View>
+            </ScrollView>}
         </View>
     );
 }

@@ -10,7 +10,7 @@ import {
 
 
 
-const CELL_COUNT = 4;
+const CELL_COUNT = 6;
 
 const OtpInput = (propData) => {
   const [value, setValue] = useState('');
@@ -21,7 +21,7 @@ const OtpInput = (propData) => {
   });
   useEffect(() => {
     if(
-      value.length===4
+      value.length===6
     )
     {
       // console.log(value)
@@ -62,7 +62,7 @@ const styles =  StyleSheet.create({
     title: {textAlign: 'center', fontSize: 30},
     codeFieldRoot: {
       marginTop: 10,
-      width: 200,
+      width: 300,
       marginLeft: 'auto',
       marginRight: 'auto',
     },

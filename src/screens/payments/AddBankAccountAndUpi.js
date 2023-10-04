@@ -45,7 +45,7 @@ const AddBankAccountAndUpi = ({navigation}) => {
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/next.png')}></Image>
             </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('AddUpi')}} style={{width:'90%',alignItems:"center",justifyContent:"center",height:80,flexDirection:'row',marginTop:20,borderBottomWidth:0.4,borderColor:'#DDDDDD'}}>
             <View style={{height:60,width:60,alignItems:'center',justifyContent:'center',borderRadius:30,borderWidth:1,borderColor:'#DDDDDD'}}>
                 <Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/upi.png')}></Image>
             </View>

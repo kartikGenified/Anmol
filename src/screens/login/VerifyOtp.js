@@ -158,7 +158,7 @@ catch(e){
 
   useEffect(() => {
     if (verifyLoginOtpData) {
-      // console.log(verifyLoginOtpData)
+      console.log(verifyLoginOtpData)
       const mobile = navigationParams.mobile;
       const name = navigationParams.name;
       const user_type_id = navigationParams.user_type_id;
@@ -167,7 +167,7 @@ catch(e){
         verifyOtpFunc({mobile, name,otp, user_type_id, user_type});
       }
     } else {
-      // console.log(verifyLoginOtpError)
+      console.log(verifyLoginOtpError)
     }
   }, [verifyLoginOtpData, verifyLoginOtpError]);
 
@@ -186,13 +186,15 @@ catch(e){
   };
 
   const getOtpFromComponent = value => {
-    if (value.length === 4) {
+    console.log("value",value)
+    if (value.length === 6) {
       setOtp(value);
       console.log('From Verify Otp', value);
     }
   };
 
   const verifyOtp = () => {
+    console.log("first")
     const mobile = navigationParams.mobile;
     const name = navigationParams.name;
     const user_type_id = navigationParams.user_type_id;
