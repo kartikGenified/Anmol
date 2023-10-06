@@ -48,7 +48,7 @@ export const ActivateWarrantyApi = baseApi.injectEndpoints({
         // console.log(token);
         return {
           method: 'GET',
-          url: `api/app/warranty`,
+          url: `/api/app/warranty`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + params.token,

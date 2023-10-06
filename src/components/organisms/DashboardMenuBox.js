@@ -9,7 +9,7 @@ const DashboardMenuBox=(props)=>{
     const navigation = props.navigation
     const handleMenuItemPress=(data)=>{
         console.log(data)
-        if(data==="Scan QR Code" || data==="Scan and Win")
+        if(data.substring(0,4).toLowerCase()==="scan" )
         {
             navigation.navigate('QrCodeScanner')
         }
@@ -17,9 +17,19 @@ const DashboardMenuBox=(props)=>{
         {
             navigation.navigate("Passbook")
         }
-        else{
+        else if(data.toLowerCase() === "rewards"){
             navigation.navigate('RedeemRewardHistory')
         }
+        else if(data.toLowerCase() === "profile"){
+            navigation.navigate('Profile')
+        }
+        else if(data.toLowerCase() === "warranty list"){
+            navigation.navigate('WarrantyHistory')
+        }
+        else if(data.toLowerCase() === "bank details" || data.toLowerCase() === "bank account"){
+            navigation.navigate('AddBankAccountAndUpi')
+        }
+        
     }
 
     return(

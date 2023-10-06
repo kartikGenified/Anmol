@@ -7,7 +7,7 @@ import * as Keychain from 'react-native-keychain';
 import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
 import ShowLoadingButtonSmall from '../../components/atoms/buttons/ShowLoadingButtonSmall';
 import MessageModal from '../../components/modals/MessageModal';
-
+import ErrorModal from '../../components/modals/ErrorModal';
 const AddUpi = ({navigation}) => {
     const [upi, setUpi] = useState()
     const [message, setMessage] = useState();
@@ -70,11 +70,11 @@ const AddUpi = ({navigation}) => {
     return (
         <View style={{alignItems:"center",justifyContent:"flex-start",width:'100%',backgroundColor:ternaryThemeColor,height:'100%'}}>
             {error && (
-            <MessageModal
+            <ErrorModal
               modalClose={modalClose}
               title="Error"
               message={message}
-              openModal={error}></MessageModal>
+              openModal={error}></ErrorModal>
           )}
            {success && (
             <MessageModal

@@ -73,6 +73,11 @@ const StackNavigator=()=>{
                     {
                         headerShown:false
                     }
+                } name="EditProfile" component={EditProfile}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
                 } name="AddUpi" component={AddUpi}></Stack.Screen>
                 <Stack.Screen options={
                     {

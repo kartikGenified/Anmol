@@ -105,7 +105,7 @@ const RedeemedHistory = ({navigation}) => {
             <TouchableOpacity onPress={()=>{
                 console.log("gift")
                 setModalVisible(false)
-                navigation.navigate('Verification')
+                navigation.navigate('RedeemGifts')
 
             }} style={{alignItems:"center",justifyContent:"center",backgroundColor:'#0E2659',flexDirection:"row",height:40,width:100,borderRadius:10}}>
                 <Image style={{height:20,width:20,resizeMode:"contain"}} source={require('../../../assets/images/giftWhite.png')}></Image>

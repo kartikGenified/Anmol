@@ -1,14 +1,227 @@
+import { useEffect } from 'react';
+import { View,Text,Image,TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Dashboard from '../screens/dashboard/Dashboard';
 import BottomNavigator from './BottomNavigator';
 import RedeemRewardHistory from '../screens/historyPages/RedeemRewardHistory';
 import AddBankAccountAndUpi from '../screens/payments/AddBankAccountAndUpi';
 import Profile from '../screens/profile/Profile';
-const Drawer = createDrawerNavigator();
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import  Icon  from 'react-native-vector-icons/FontAwesome';
+import { useGetAppDashboardDataMutation } from '../apiServices/dashboard/AppUserDashboardApi';
+import { useGetAppMenuDataMutation } from '../apiServices/dashboard/AppUserDashboardMenuAPi.js';
+import * as Keychain from 'react-native-keychain';
+import { SvgUri } from 'react-native-svg';
+import { BaseUrlImages } from '../utils/BaseUrlImages';
 
-function DrawerNavigator() {
+const Drawer = createDrawerNavigator();
+const CustomDrawer=()=>{
+  const ternaryThemeColor = useSelector(
+    state => state.apptheme.ternaryThemeColor,
+  )
+    ? useSelector(state => state.apptheme.ternaryThemeColor)
+    : 'grey';
+    const primaryThemeColor = useSelector(
+      state => state.apptheme.primaryThemeColor,
+    )
+      ? useSelector(state => state.apptheme.primaryThemeColor)
+      : '#FF9B00';
+    const userData = useSelector(state=>state.appusersdata.userData)
+  console.log(userData)
+const navigation = useNavigation()
+
+
+
+const [getAppMenuFunc,{
+  data:getAppMenuData,
+  error:getAppMenuError,
+  isLoading:getAppMenuIsLoading,
+  isError:getAppMenuIsError
+}]= useGetAppMenuDataMutation()
+
+
+useEffect(()=>{
+const fetchMenu=async()=>{
+  const credentials = await Keychain.getGenericPassword();
+                if (credentials) {
+                  console.log(
+                    'Credentials successfully loaded for user ' + credentials.username
+                  );
+                  const token = credentials.username
+                  getAppMenuFunc(token)
+                }
+
+}
+fetchMenu()
+},[])
+useEffect(()=>{
+  if(getAppMenuData)
+  {
+    console.log("getAppMenuData",getAppMenuData.body[0].app_menu)
+  }
+  else if(getAppMenuError)
+  {
+    console.log("getAppMenuError",getAppMenuError)
+  }
+},[getAppMenuData,getAppMenuError])
+
+const DrawerItems = (props) => {
+  const image = BaseUrlImages+props.image
+  const size = props.size
+  console.log("image",image)
   return (
-    <Drawer.Navigator>
+    <View
+      style={{
+        height: 54,
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop:1,
+        borderBottomWidth: 1,
+          borderColor: '#DDDDDD',
+      }}>
+      <View
+        style={{
+          width: '20%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          marginBottom:4
+        }}>
+          {/* <SvgUri width={40} height={40} uri={image}></SvgUri> */}
+        <Icon size={size} name="bars" color={ternaryThemeColor}></Icon>
+      </View>
+
+      <View
+        style={{
+          
+          width: '80%',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            if(props.title==="Scan QR Code" || props.title==="Scan and Win")
+            {
+                navigation.navigate('QrCodeScanner')
+            }
+            else if(props.title.toLowerCase()==="passbook")
+            {
+                navigation.navigate("Passbook")
+            }
+            else if(props.title.toLowerCase()==="rewards"){
+                navigation.navigate('RedeemRewardHistory')
+            }
+            else if(props.title.toLowerCase() === "bank details" || props.title.toLowerCase() === "bank account"){
+              navigation.navigate('AddBankAccountAndUpi')
+          }
+          else if(props.title.toLowerCase() === "profile"){
+            navigation.navigate('Profile')
+        }
+        else if(props.title.toLowerCase() === "warranty list"){
+            navigation.navigate('WarrantyHistory')
+        }
+          }}>
+          <Text style={{color: primaryThemeColor, fontSize: 15}}>{props.title}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+return (
+  <View>
+    <View
+      style={{
+        height: 125,
+        backgroundColor: ternaryThemeColor,
+        borderBottomLeftRadius: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Image
+        style={{
+          height: 60,
+          width: 60,
+          borderRadius: 30,
+          marginLeft: 10,
+          position: 'absolute',
+          left: 4,
+        }}
+        source={require('../../assets/images/whiteUser.png')}></Image>
+      <View style={{justifyContent: 'center', marginLeft: 50}}>
+      {userData && <Text
+          style={{
+            color: 'white',
+            margin: 0,
+            fontWeight: '600',
+            fontSize: 16,
+          }}>
+          {userData.name}
+        </Text>}
+        {userData && <Text style={{color: 'white', margin: 0}}>{userData.user_type} Account</Text>}
+        
+        <View style={{flexDirection: 'row',marginTop:4}}>
+           <View
+            style={{
+              height: 22,
+              width: 80,
+              borderRadius: 20,
+              backgroundColor: 'white',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              marginTop: 2,
+            }}>
+            <Image
+              style={{height: 16, width: 16,resizeMode:"contain"}}
+              source={require('../../assets/images/greenTick.png')}></Image>
+            <Text style={{marginLeft:4,color:'black',fontSize: 10, fontWeight: '500'}}>KYC Status</Text>
+          </View>
+           {/* <View
+            style={{
+              height: 22,
+              width: 80,
+              borderRadius: 20,
+              backgroundColor: 'white',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+              marginTop: 2,
+              marginLeft: 8,
+            }}>
+            <Image
+              style={{height: 16, width: 16}}
+              source={require('../../assets/images/whiteUser.png')}></Image>
+            <Text style={{fontSize: 10, fontWeight: '500',color:'black'}}>TDS Status</Text>
+          </View> */}
+        </View>
+      </View>
+    </View>
+    {
+      getAppMenuData && getAppMenuData.body[0].app_menu.map((item,index)=>{
+        return(
+          <DrawerItems
+        key ={index}
+      title={item.name}
+      image={item.icon}
+      size={20}></DrawerItems>
+        )
+        
+      })
+    }
+   
+         
+  </View>
+);
+}
+function DrawerNavigator() {
+  
+  return (
+    <Drawer.Navigator drawerContent={() => <CustomDrawer/>}>
       <Drawer.Screen options={{headerShown:false}} name="DashboardDrawer" component={BottomNavigator} />
       <Drawer.Screen options={{headerShown:false}} name="Redeem Reward" component={RedeemRewardHistory} />
       <Drawer.Screen options={{headerShown:false}} name="Add BankAccount And Upi" component={AddBankAccountAndUpi} />

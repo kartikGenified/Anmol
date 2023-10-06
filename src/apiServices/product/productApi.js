@@ -7,8 +7,8 @@ export const productApi = baseApi.injectEndpoints({
       query({productCode , userType, token}) {
         console.log("token product code and userType is",token, productCode,  userType);
         return {
-          method: 'GET',
-          url: `api/tenant/productPoints/?product_code=${productCode}&user_type=${userType}`,
+          method: 'POST',
+          url: `/api/tenant/productPoints/?product_code=${productCode}&user_type=${userType}`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,

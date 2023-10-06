@@ -11,11 +11,12 @@ const InputDate = (props) => {
     const [selected, setSelected] = useState(false)
     console.log(moment(date).format('DD/MM/YYYY'))
     const data =props.data
+    const title = props.title
     
-    const handleInputEnd=()=>{
-      let tempJsonData ={...props.jsonData,"value":moment(date).format('YYYY-MM-DD')}
-      console.log(tempJsonData)
-      props.handleData(tempJsonData)
+    const handleInputEnd=(date,title)=>{
+      
+      console.log(date,title)
+      props.handleData(moment(date).format("DD-MM-YYYY"),title)
   }
 
     return (
@@ -23,7 +24,7 @@ const InputDate = (props) => {
             setOpen(true)
         }} style={{height:54,width:'86%',backgroundColor:'#0000000D',borderRadius:2,borderColor:'#DDDDDD',alignItems:'center',justifyContent:"center",flexDirection:'row',margin:20}}>
            
-           {selected ? (<PoppinsText style={{position:'absolute',left:20}} content={moment(date).format('DD/MM/YYYY')}></PoppinsText>) : (<PoppinsText style={{position:'absolute',left:20}} content={data}></PoppinsText>)
+           {selected ? (<PoppinsText style={{position:'absolute',left:20}} content={moment(date).format('DD/MM/YYYY')}></PoppinsText>) : (<PoppinsText style={{position:'absolute',left:20}} content={data===null ? "N/A":data}></PoppinsText>)
             
            }
             <View style={{position:"absolute",right:10}}>
@@ -38,7 +39,7 @@ const InputDate = (props) => {
           setSelected(true)
           setOpen(false)
           setDate(date)
-          handleInputEnd()
+          handleInputEnd(date,title)
         }}
         onCancel={() => {
           setOpen(false)

@@ -14,8 +14,6 @@ import {BaseUrl} from '../../utils/BaseUrl';
 import LinearGradient from 'react-native-linear-gradient';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
-import CustomTextInput from '../../components/organisms/CustomTextInput';
-import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';
 import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
 import {useGetLoginOtpMutation} from '../../apiServices/login/otpBased/SendOtpApi';
 import {useGetAppLoginMutation} from '../../apiServices/login/otpBased/OtpLoginApi';
@@ -167,7 +165,7 @@ catch(e){
         verifyOtpFunc({mobile, name,otp, user_type_id, user_type});
       }
     } else {
-      console.log(verifyLoginOtpError)
+      // console.log(verifyLoginOtpError)
     }
   }, [verifyLoginOtpData, verifyLoginOtpError]);
 
@@ -186,7 +184,6 @@ catch(e){
   };
 
   const getOtpFromComponent = value => {
-    console.log("value",value)
     if (value.length === 6) {
       setOtp(value);
       console.log('From Verify Otp', value);

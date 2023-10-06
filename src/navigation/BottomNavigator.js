@@ -26,15 +26,15 @@ function BottomNavigator({navigation}) {
     const platformFontWeight = Platform.OS==="ios" ? "400":"800"
 
   return (
-    <Tab.Navigator tabBar={()=><View style={{alignItems:"center",justifyContent:"center",width:"100%"}}>
-      <Wave style={{top:6}} width={100}></Wave>
+    <Tab.Navigator tabBar={()=><View style={{alignItems:"center",justifyContent:"center",width:"100%",backgroundColor:"#F7F7F7"}}>
+      <Wave style={{top:10}} width={100}></Wave>
     <View style={{alignItems:"center",justifyContent:"center",flexDirection:"row",height:60,backgroundColor:"white",width:'100%'}}>
     <TouchableOpacity onPress={()=>{navigation.navigate('Dashboard')}} style={{alignItems:"center",justifyContent:"center",position:'absolute'}}>
     <Home name="home" size={24} color={ternaryThemeColor}></Home>
     <PoppinsTextMedium style={{marginTop:4,fontSize:12,fontWeight:platformFontWeight}} content="Home"></PoppinsTextMedium>
     </TouchableOpacity>
     
-    <TouchableOpacity style={{alignItems:"center",justifyContent:"center",position:'absolute',left:30}}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('QrCodeScanner')}} style={{alignItems:"center",justifyContent:"center",position:'absolute',left:30}}>
     <Qrcode name="qrcode" size={24} color={ternaryThemeColor}></Qrcode>
     <PoppinsTextMedium style={{marginTop:4,fontSize:12,fontWeight:platformFontWeight}} content="Scan QR Code"></PoppinsTextMedium>
     </TouchableOpacity>

@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, StyleSheet,TouchableOpacity} from 'react-native';
+import {View, StyleSheet,TouchableOpacity,Image} from 'react-native';
 import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { SvgUri } from 'react-native-svg';
 
 const SelectUserBox = (props) => {
-    // const image = BaseUrlImages+props.image
-    const image = 'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/atom.svg'
+    const image = BaseUrlImages+props.image
+    // const image = 'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/atom.svg'
     // console.log(image)
     const color = props.color
     const otpLogin = props.otpLogin
@@ -55,12 +55,13 @@ const SelectUserBox = (props) => {
     return (
         <TouchableOpacity onPress={()=>{
             checkRegistrationRequired()
-        }} style={{...styles.container,backgroundColor:color}}>
+        }} style={{...styles.container,backgroundColor:'white'}}>
             
-            {image && <SvgUri color="white" uri = {image} style={styles.image}></SvgUri>}
+            {image && <View style={{height:70,width:70,borderRadius:35,backgroundColor:"white",alignItems:"center",justifyContent:'center'}}>
+            <Image source={{uri:image}} style={styles.image}></Image></View>}
 
             
-            <PoppinsTextMedium style={{color:'white'}} content ={props.content}></PoppinsTextMedium>
+            <PoppinsTextMedium style={{color:'#B0B0B0',marginTop:20,fontSize:18,fontWeight:'700'}} content ={(props.content).toUpperCase()}></PoppinsTextMedium>
         </TouchableOpacity>
     );
 }
@@ -73,12 +74,15 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         margin:10,
         elevation:10,
-        borderRadius:10
+        borderRadius:10,
+        borderWidth:0.8,
+        borderColor:'#DDDDDD'
        
     },
     image:{
         height:80,
         width:80,
+        marginBottom:8
        
         
     }

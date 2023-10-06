@@ -111,7 +111,7 @@ const QrCodeScanner = ({navigation}) => {
     if (checkWarrantyData) {
       console.log('warranty check', checkWarrantyData);
     } else if (checkWarrantyError) {
-      console.log('Error', checkWarrantyError);
+      console.log('warranty Error', checkWarrantyError);
     }
   }, [checkWarrantyData, checkWarrantyError]);
 
@@ -119,10 +119,10 @@ const QrCodeScanner = ({navigation}) => {
     if (productDataData) {
     const form_type = '2';
     const token =savedToken
-    const body = {product_id: productDataData.body.product_id, qr_id: qr_id};
-      console.log('Product Data is ', productDataData);
+    const body = {product_id: productDataData.body.products[0].product_id, qr_id: qr_id};
+      console.log('Product Data is ',  productDataData.body.products[0].product_id);
       console.log("productdata", token,body)
-      dispatch(setProductData(productDataData.body));
+      dispatch(setProductData(productDataData.body.products[0]));
       setProductId(productDataData.body.product_id);
       
       checkWarrantyFunc({form_type, token, body})

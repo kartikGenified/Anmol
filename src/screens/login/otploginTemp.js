@@ -20,7 +20,7 @@ import { useGetLoginOtpMutation } from '../../apiServices/login/otpBased/SendOtp
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import ErrorModal from '../../components/modals/ErrorModal';
 import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
-
+import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
 
 const OtpLogin = ({navigation, route}) => {
   const [mobile, setMobile] = useState()
@@ -75,8 +75,6 @@ const OtpLogin = ({navigation, route}) => {
     }
   ] = useGetNameMutation()
 
-  
-
   const needsApproval = route.params.needsApproval;
   const user_type_id = route.params.userId;
   const user_type = route.params.userType;
@@ -84,14 +82,11 @@ const OtpLogin = ({navigation, route}) => {
   console.log("registrationRequired",registrationRequired)
   const width = Dimensions.get('window').width;
   const navigationParams = {"needsApproval":needsApproval,"user_type_id":user_type_id,"user_type":user_type,"mobile":mobile,"name":name}
-  // useEffect(()=>{
-  //   getActiveMembershipFunc()
-
-  // },[])
+  
   useEffect(()=>{
     if(sendOtpData){
       console.log("data",sendOtpData)
-      if(sendOtpData.success===true)
+      if(sendOtpData.success===true && mobile.length===10)
       {
         navigation.navigate('VerifyOtp',{navigationParams})
       }
@@ -140,8 +135,10 @@ const OtpLogin = ({navigation, route}) => {
   };
   
   const handleButtonPress=()=>{
-    console.log("first",getNameData.message)
-    if(getNameData.message==="Not Found")
+    // console.log("first",getNameData.message)
+    if(getNameData)
+    {
+      if(getNameData.message==="Not Found")
     {
       console.log("registrationRequired",registrationRequired)
     registrationRequired && navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id,name:name,mobile:mobile})
@@ -152,6 +149,7 @@ const OtpLogin = ({navigation, route}) => {
     navigation.navigate('VerifyOtp',{navigationParams})
 
     }
+    }
   }
   const handleNavigationToRegister=()=>{
     navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id})
@@ -161,89 +159,84 @@ const OtpLogin = ({navigation, route}) => {
   }
   return (
     <LinearGradient
-      colors={[ternaryThemeColor, secondaryThemeColor]}
+      colors={["white", "white"]}
       style={styles.container}>
 
       {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
+      
+      <View style={{width:'100%',alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,}}>
       <View
         style={{
-          height: 140,
+          height: 120,
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,
+          flexDirection:'row',
+          
         }}>
-        <View
-          style={{
-            ...styles.semicircle,
-            width: width + 60,
-            borderRadius: (width + width) / 2,
-            height: width + 60,
-            top: -(width / 2),
-          }}>
+        
           <TouchableOpacity
+          style={{height:50,alignItems:"center",justifyContent:'center',position:"absolute",left:10,top:20}}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain', right: 80}}
+              style={{height: 20, width: 20, resizeMode: 'contain'}}
               source={require('../../../assets/images/blackBack.png')}></Image>
           </TouchableOpacity>
           <Image
             style={{
-              height: 110,
-              width: 140,
+              height: 50,
+              width: 100,
               resizeMode: 'contain',
-              top: width / 8,
+              top:20,
+            position:"absolute",
+            left:50,
+              borderRadius:10
+              
+              
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-        </View>
       </View>
-
       <View
-        style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <View
-          style={{
-            ...styles.banner,
-            backgroundColor: ternaryThemeColor,
-            elevation: 10,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 2},
-            shadowOpacity: 0.5,
-            shadowRadius: 2,
-          }}></View>
-      </View>
-      <ScrollView style={{width: '100%'}}>
-        <KeyboardAvoidingView>
-          <View
             style={{
-              alignItems: 'center',
+              alignItems: 'flex-start',
               justifyContent: 'center',
               marginTop: 10,
+              width:'90%'
             }}>
             <PoppinsText
-              style={{color: 'white', fontSize: 22}}
-              content="Welcome"></PoppinsText>
-            <PoppinsTextMedium
-              style={{color: 'white', fontSize: 16}}
-              content="Login To Your Account"></PoppinsTextMedium>
+              style={{color: 'white', fontSize: 28}}
+              content="Tell us your mobile number"></PoppinsText>
+            
           </View>
+      </View>
+
+     
+      <ScrollView style={{width: '100%'}}>
+        <KeyboardAvoidingView>
+          
 
           <View
             style={{
               width: '100%',
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 10,
+              marginTop: 40,
             }}>
-            <CustomTextInputNumeric
-              sendData={getMobile}
-              title="Mobile No"
-              image={require('../../../assets/images/whitePhone.png')}></CustomTextInputNumeric>
-            <CustomTextInput
-              name={name}
-              sendData={getName}
-              title="Name"
-              image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
+            <TextInputRectangularWithPlaceholder
+            placeHolder="Mobile No"
+            handleData={getMobile}
+            maxLength={10}
+              ></TextInputRectangularWithPlaceholder>
+            <TextInputRectangularWithPlaceholder
+            placeHolder="Name"
+            handleData={getName}
+            value={name}
+              ></TextInputRectangularWithPlaceholder>
           </View>
         </KeyboardAvoidingView>
         <View
@@ -286,7 +279,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   semicircle: {
-    backgroundColor: 'white',
+   
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

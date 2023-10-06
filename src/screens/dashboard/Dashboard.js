@@ -19,20 +19,35 @@ import { setWarrantyForm,setWarrantyFormId} from '../../../redux/slices/formSlic
 import { setLocation } from '../../../redux/slices/userLocationSlice';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import { useGetAppMenuDataMutation } from '../../apiServices/dashboard/AppUserDashboardMenuAPi.js';
 
 
 const Dashboard = ({navigation}) => {
 
     const [dashboardItems, setDashboardItems] = useState()
+    const [bannerArray, setBannerArray] = useState()
     const userId = useSelector((state)=>state.appusersdata.userId)
     console.log("user id is from dashboard",userId)
+    
+    
+    
     const [getDashboardFunc,{
-        data:getDashboardData,
-        error:getDashboardError,
-        isLoading:getDashboardIsLoading,
-        isError:getDashboardIsError
+      data:getDashboardData,
+      error:getDashboardError,
+      isLoading:getDashboardIsLoading,
+      isError:getDashboardIsError
     }] =useGetAppDashboardDataMutation()
-
+    useEffect(()=>{
+      if(getDashboardData)
+      {
+        console.log("getDashboardData",getDashboardData.body.app_dashboard)
+        setDashboardItems(getDashboardData.body.app_dashboard)
+      }
+      else if(getDashboardError)
+      {
+        console.log("getDashboardError",getDashboardError)
+      }
+    },[getDashboardData,getDashboardError])
     const [getBannerFunc,{
         data:getBannerData,
         error:getBannerError,
@@ -100,6 +115,7 @@ const Dashboard = ({navigation}) => {
                   const form_type = "2"
                   console.log(typeof token)
                   token && getDashboardFunc(token)
+                  
                   token && getBannerFunc(token)
                   token && getWorkflowFunc({userId,token})
                   token && getFormFunc({form_type,token})
@@ -114,21 +130,17 @@ const Dashboard = ({navigation}) => {
         
     },[])
 
-    useEffect(()=>{
-        if(getDashboardData)
-        {
-            console.log(getDashboardData.body.app_dashboard)
-            setDashboardItems(getDashboardData.body.app_dashboard)
-        }
-        else{
-            console.log(getDashboardError)
-        }
-    },[getDashboardData,getDashboardError])
+    
     
     useEffect(()=>{
       if(getBannerData)
       {
-          console.log(getBannerData.body["0"])
+          console.log("getBannerData",getBannerData.body)
+          const images = Object.values(getBannerData.body).map((item)=>{
+            return item.image[0]
+          })
+          console.log("images",images)
+          setBannerArray(images)
       }
       else{
           console.log(getBannerError)
@@ -142,7 +154,7 @@ const Dashboard = ({navigation}) => {
           {
             dispatch(setIsGenuinityOnly())
           }
-            console.log("getWorkflowData",getWorkflowData.body)
+            console.log("getWorkflowData",getWorkflowData.body[0].program)
             dispatch(setProgram(getWorkflowData.body[0].program))
             dispatch(setWorkflow(getWorkflowData.body[0].workflow_id))
             
@@ -173,8 +185,9 @@ const Dashboard = ({navigation}) => {
             <ScrollView style={{width:'100%',marginBottom:platformMarginScroll,height:'100%'}}>
                 <View style={{width:'100%',alignItems:"center",justifyContent:"center",height:"100%"}}>
               <View style={{height:200,width:'100%',marginBottom:20}}>
-        <Banner images={["https://picsum.photos/200/300","https://picsum.photos/300/300","https://picsum.photos/200/200"]}></Banner>
-
+        {bannerArray && 
+          <Banner images={bannerArray}></Banner>
+}
           </View>
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{paddingLeft:10,paddingRight:10,paddingBottom:4}}>
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>

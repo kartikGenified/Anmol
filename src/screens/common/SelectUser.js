@@ -7,6 +7,7 @@ import {useGetAppUsersDataMutation} from '../../apiServices/appUsers/AppUsersApi
 import SelectUserBox from '../../components/molecules/SelectUserBox';
 import { setAppUsers } from '../../../redux/slices/appUserSlice';
 import { slug } from '../../utils/Slug';
+import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 
 const SelectUser = ({navigation}) => {
   const [listUsers, setListUsers] = useState();
@@ -71,7 +72,7 @@ const SelectUser = ({navigation}) => {
 
   return (
     <LinearGradient
-      colors={[ternaryThemeColor, secondaryThemeColor]}
+      colors={["white", "white"]}
       style={styles.container}>
       <View
         style={{
@@ -80,37 +81,29 @@ const SelectUser = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <View
+        {/* <View
           style={{
             ...styles.semicircle,
             width: width + 60,
             borderRadius: (width + width) / 2,
             height: width + 60,
             top: -(width / 2),
-          }}>
+          }}> */}
           <Image
             style={{
               height: 110,
               width: 140,
               resizeMode: 'contain',
-              top: width / 8,
+              top: 20,
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-        </View>
+            <View style={{width:'80%',alignItems:"center",justifyContent:'center',borderColor:ternaryThemeColor,borderTopWidth:1,borderBottomWidth:1,height:40}}>
+              <PoppinsTextMedium style={{color:'#171717',fontSize:20,fontWeight:'700'}} content="Are You A"></PoppinsTextMedium>
+            </View>
+        {/* </View> */}
       </View>
-      <ScrollView style={{flex:1}}>
-        <View style={{alignItems:'center',justifyContent:"center",width:'100%'}}>
-        <View
-        style={{
-          ...styles.banner,
-          backgroundColor: ternaryThemeColor,
-          elevation: 10,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.5,
-          shadowRadius: 2,
-        }}></View>
-        </View>
+      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
+       
      
       
         <View style={styles.userListContainer}>
@@ -140,7 +133,7 @@ const SelectUser = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+    height:'100%',
     width: '100%',
     alignItems: 'center'
   },
@@ -157,7 +150,7 @@ const styles = StyleSheet.create({
   },
   userListContainer: {
     width: '100%',
-    height:600,
+    height:800,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',

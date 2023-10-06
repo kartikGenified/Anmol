@@ -6,7 +6,7 @@ export const GetForms = baseApi.injectEndpoints({
       query: params => {
         return {
           method: 'GET',
-          url: `api/app/userPointsEnteries/check?qr_id=${params.qrId}`,
+          url: `/api/app/userPointsEnteries/check?qr_id=${params.qrId}`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + params.token,
@@ -20,7 +20,7 @@ export const GetForms = baseApi.injectEndpoints({
         console.log(params)
         return {
           method: "GET",
-          url: `api/app/userPoints?user_id=${params.userId}`,
+          url: `/api/app/userPoints?user_id=${params.userId}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + params.token,
@@ -33,7 +33,7 @@ export const GetForms = baseApi.injectEndpoints({
       query: (params) => {
         return {
           method: "POST",
-          url: `api/app/userPointsEnteries?app_user_id=${params.userId}`,
+          url: `/api/app/userPointsEnteries?app_user_id=${params.userId}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + params.token,
@@ -46,7 +46,7 @@ export const GetForms = baseApi.injectEndpoints({
       query: params => {
         return {
           method: 'GET',
-          url: `api/app/userPoints?user_id=${params.userId}`,
+          url: `/api/app/userPoints?user_id=${params.userId}`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + params.token,
@@ -57,10 +57,10 @@ export const GetForms = baseApi.injectEndpoints({
     }),
     userPointsEntry: builder.mutation({
       query: body => {
-        console.log('body', body);
+        console.log('body aisi', body);
         return {
           method: 'POST',
-          url: `api/app/userPointsEnteries/add?qr_id=${body.qrId}`,
+          url: `/api/app/userPointsEnteries/add?qr_id=${body.qrId}`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + body.token,

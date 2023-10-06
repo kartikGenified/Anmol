@@ -38,7 +38,7 @@ const SelectLanguage = () => {
             <View style={{height:"50%",width:'100%',alignItems:"center",justifyContent:"center"}}>
             <SelectLanguageBox selectedLanguage={language}   setSelectedLanguage={setSelectedLanguage} languageHindi = 'हिन्दी' languageEnglish = 'Hindi' image = {require('../../../assets/images/languageHindi.png')}></SelectLanguageBox>
             <SelectLanguageBox selectedLanguage={language} setSelectedLanguage={setSelectedLanguage} languageHindi = 'English' languageEnglish = 'English' image = {require('../../../assets/images/languageEnglish.png')}></SelectLanguageBox>
-            {language && <ButtonNavigate backgroundColor="#FB774F" style={{color:'white',fontSize:16}} content="Continue" navigateTo="SelectUser"></ButtonNavigate>}
+            {language && <ButtonNavigate backgroundColor= {ternaryThemeColor} style={{color:'white',fontSize:16}} content="Continue" navigateTo="SelectUser"></ButtonNavigate>}
             </View>
         </LinearGradient>
         
