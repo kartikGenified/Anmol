@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import {SafeAreaView, Text, View,StyleSheet} from 'react-native';
-
+import { useSelector } from 'react-redux';
 import {
   CodeField,
   Cursor,
@@ -15,10 +15,21 @@ const CELL_COUNT = 6;
 const OtpInput = (propData) => {
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+  const buttonThemeColor = useSelector(
+    state => state.apptheme.ternaryThemeColor,
+  )
+    ? useSelector(state => state.apptheme.ternaryThemeColor)
+    : '#ef6110';
+    const primaryThemeColor = useSelector(
+      state => state.apptheme.primaryThemeColor,
+    )
+      ? useSelector(state => state.apptheme.primaryThemeColor)
+      : '#FF9B00';
   useEffect(() => {
     if(
       value.length===6
@@ -46,8 +57,10 @@ const OtpInput = (propData) => {
             // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
             onLayout={getCellOnLayoutHandler(index)}
             key={index}
-            style={[styles.cellRoot, isFocused && styles.focusCell]}>
-            <Text style={styles.cellText}>
+            style={[styles.cellRoot, isFocused && {...styles.focusCell,borderBlockColor:primaryThemeColor,
+            borderBottomWidth: 2,},{borderBottomColor: buttonThemeColor,
+            borderBottomWidth: 1,}]}>
+            <Text style={{...styles.cellText, color: buttonThemeColor,}}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Text>
           </View>
@@ -71,17 +84,15 @@ const styles =  StyleSheet.create({
       height: 40,
       justifyContent: 'center',
       alignItems: 'center',
-      borderBottomColor: 'white',
-      borderBottomWidth: 1,
+      
     },
     cellText: {
-      color: 'white',
+     
       fontSize: 30,
       textAlign: 'center',
     },
     focusCell: {
-      borderBlockColor:'white',
-      borderBottomWidth: 2,
+      
     },
   });
 

@@ -8,7 +8,7 @@ import CustomTextInput from '../../components/organisms/CustomTextInput';
 import { usePasswordLoginMutation } from '../../apiServices/login/passwordBased/PasswordLoginApi';
 import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
-
+import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
 
 
 const PasswordLogin = ({navigation,route}) => {
@@ -108,9 +108,9 @@ const PasswordLogin = ({navigation,route}) => {
 
   return (
     <LinearGradient
-      colors={[primaryThemeColor, secondaryThemeColor]}
+      colors={["white", "white"]}
       style={styles.container}>
-      <View
+      {/* <View
         style={{
           height: 140,
           width: '100%',
@@ -142,28 +142,74 @@ const PasswordLogin = ({navigation,route}) => {
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
         </View>
+      </View> */}
+      <View style={{width:'100%',alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,}}>
+      <View
+        style={{
+          height: 120,
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,
+          flexDirection:'row',
+          
+        }}>
+        
+          <TouchableOpacity
+          style={{height:50,alignItems:"center",justifyContent:'center',position:"absolute",left:10,top:20}}
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Image
+              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              source={require('../../../assets/images/blackBack.png')}></Image>
+          </TouchableOpacity>
+          <Image
+            style={{
+              height: 50,
+              width: 100,
+              resizeMode: 'contain',
+              top:20,
+            position:"absolute",
+            left:50,
+              borderRadius:10
+              
+              
+            }}
+            source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
+      </View>
+      <View
+            style={{
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              marginTop: 10,
+              width:'90%'
+            }}>
+            <PoppinsText
+              style={{color: 'white', fontSize: 28}}
+              content="Login To Your Account"></PoppinsText>
+            
+          </View>
       </View>
       <ScrollView style={{width:'100%'}}>
-        <View style={{alignItems:'center',justifyContent:"center",width:'100%'}}>
-        <View
-        style={{
-          ...styles.banner,
-          backgroundColor: ternaryThemeColor,
-          elevation: 10,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.5,
-          shadowRadius: 2,
-        }}></View>
-        </View>
-        <View style={{alignItems:"center",justifyContent:"center",marginTop:10}}>
-            <PoppinsText style={{color:'white',fontSize:22}} content = "Welcome"></PoppinsText>
-            <PoppinsTextMedium style={{color:'white', fontSize:16}} content = "Login To Your Account"></PoppinsTextMedium>
-        </View>
-        <View style={{width:"100%",alignItems:"center",justifyContent:"center",marginTop:10}}>
-            <CustomTextInput sendData={getUserId} title="Username" image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
-            <CustomTextInput sendData={getPassword} title="Password" image={require('../../../assets/images/whitePassword.png')}></CustomTextInput>
+       
+        
+        <View style={{width:"100%",alignItems:"center",justifyContent:"center",marginTop:30}}>
+            {/* <CustomTextInput sendData={getUserId} title="Username" image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
+            <CustomTextInput sendData={getPassword} title="Password" image={require('../../../assets/images/whitePassword.png')}></CustomTextInput> */}
 
+            <TextInputRectangularWithPlaceholder
+            placeHolder="UserName"
+            handleData={getUserId}
+            maxLength={10}
+              ></TextInputRectangularWithPlaceholder>
+              <TextInputRectangularWithPlaceholder
+            placeHolder="Password"
+            handleData={getPassword}
+            maxLength={10}
+              ></TextInputRectangularWithPlaceholder>
         </View>
         <View style={{width:"100%",alignItems:'center',justifyContent:"center"}}>
         <ButtonNavigateArrow

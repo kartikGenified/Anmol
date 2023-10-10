@@ -48,6 +48,7 @@ const SelectUserBox = (props) => {
         }
         else{
             props.navigation.navigate('PasswordLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
+        console.log("Password Login",props.content,props.id,registrationRequired,needsApproval)
         }
 
     }

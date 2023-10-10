@@ -37,6 +37,16 @@ const AddUpi = ({navigation}) => {
     useEffect(()=>{
         if(addBankDetailsData){
             console.log("addBankDetailsData",addBankDetailsData)
+            if(addBankDetailsData.message==="Bank Account Created")
+            {
+                setSuccess(true)
+                setMessage("UPI Added Successfully")
+                setTimeout(() => {
+                    setSuccess(false)
+                navigation.navigate("BankAccounts",{refresh:true})
+                    
+                }, 2000);
+            }
         }
         else if(addBankDetailsError)
         {

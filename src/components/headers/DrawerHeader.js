@@ -22,7 +22,7 @@ const DrawerHeader = () => {
             <Icon name="bars" size={30} color={ternaryThemeColor}></Icon>
             </TouchableOpacity>
             <Image style={{height:40,width:60,resizeMode:"contain",marginLeft:20}} source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-            <TouchableOpacity style={{marginLeft:210}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate("Notification")}} style={{marginLeft:210}}>
                 <Bell name="bell" size={30} color={ternaryThemeColor}></Bell>
             </TouchableOpacity>
             

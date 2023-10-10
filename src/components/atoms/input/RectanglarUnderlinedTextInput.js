@@ -6,6 +6,7 @@ const RectanglarUnderlinedTextInput = (props) => {
     const [input ,setInput] = useState(props.value)
     const title = props.title
     const placeHolder = props.placeHolder
+    
     useEffect(()=>{
         props.handleData(input,title)
     },[props.pressedSubmit])

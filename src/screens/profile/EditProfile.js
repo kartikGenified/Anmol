@@ -18,7 +18,7 @@ const EditProfile = ({navigation,route}) => {
   const [hasManualkyc, setHasManualKyc] = useState(false)
   const [pressedSubmit, setPressedSubmit] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
-  const [profileImage, setProfileImage] = useState(BaseUrlImages+route.params.savedImage)
+  const [profileImage, setProfileImage] = useState()
   const [filename, setFilename] = useState()
   const [message, setMessage] = useState();
   const [success, setSuccess] = useState(false);
@@ -54,7 +54,9 @@ console.log("saved image",profileImage)
     }] =useUpdateProfileMutation()
 
     
-
+    useEffect(()=>{
+      setFilename(route.params.savedImage)
+    },[route.params.savedImage])
     useEffect(()=>{
       if(updateProfileData)
       {
@@ -227,6 +229,7 @@ console.log("saved image",profileImage)
           )}
            {success && (
             <MessageModal
+              navigateTo = "EditProfile"
               modalClose={modalClose}
               title="Success"
               message={message}

@@ -92,6 +92,7 @@ const DrawerItems = (props) => {
         }}>
           {/* <SvgUri width={40} height={40} uri={image}></SvgUri> */}
         <Icon size={size} name="bars" color={ternaryThemeColor}></Icon>
+        {/* <Image style={{height:20,width:20,resizeMode:'contain'}} source={{uri:image}}></Image> */}
       </View>
 
       <View
@@ -116,7 +117,7 @@ const DrawerItems = (props) => {
                 navigation.navigate('RedeemRewardHistory')
             }
             else if(props.title.toLowerCase() === "bank details" || props.title.toLowerCase() === "bank account"){
-              navigation.navigate('AddBankAccountAndUpi')
+              navigation.navigate('BankAccounts')
           }
           else if(props.title.toLowerCase() === "profile"){
             navigation.navigate('Profile')

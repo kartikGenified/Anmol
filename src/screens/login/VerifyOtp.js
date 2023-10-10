@@ -218,76 +218,70 @@ catch(e){
 
   return (
     <LinearGradient
-      colors={[ternaryThemeColor, secondaryThemeColor]}
+      colors={["white", "white"]}
       style={styles.container}>
+     <View style={{width:'100%',alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,}}>
       <View
         style={{
-          height: 140,
+          height: 120,
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,
+          flexDirection:'row',
+          
         }}>
-        <View
-          style={{
-            ...styles.semicircle,
-            width: width + 60,
-            borderRadius: (width + width) / 2,
-            height: width + 60,
-            top: -(width / 2),
-          }}>
+        
           <TouchableOpacity
+          style={{height:50,alignItems:"center",justifyContent:'center',position:"absolute",left:10,top:20}}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain', right: 90}}
+              style={{height: 20, width: 20, resizeMode: 'contain'}}
               source={require('../../../assets/images/blackBack.png')}></Image>
           </TouchableOpacity>
           <Image
             style={{
-              height: 110,
-              width: 140,
+              height: 50,
+              width: 100,
               resizeMode: 'contain',
-              top: width / 8,
+              top:20,
+            position:"absolute",
+            left:50,
+              borderRadius:10
+              
+              
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-        </View>
+      </View>
+      <View
+            style={{
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              marginTop: 10,
+              width:'90%'
+            }}>
+            <PoppinsText
+              style={{color: 'white', fontSize: 28}}
+              content="Enter the OTP sent to"></PoppinsText>
+              <PoppinsText
+              style={{color: 'white', fontSize: 28}}
+              content={navigationParams.mobile}></PoppinsText>
+            
+          </View>
+          
       </View>
 
-      <View
-        style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <View
-          style={{
-            ...styles.banner,
-            backgroundColor: ternaryThemeColor,
-            elevation: 10,
-            shadowColor: '#000',
-            shadowOffset: {width: 0, height: 2},
-            shadowOpacity: 0.5,
-            shadowRadius: 2,
-          }}></View>
-      </View>
+     
       <ScrollView style={{width: '100%'}}>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <Image
             style={{height: 160, width: 160, resizeMode: 'contain'}}
             source={require('../../../assets/images/otpScreenImage.png')}></Image>
-          <PoppinsText
-            style={{color: 'white', fontSize: 24}}
-            content="OTP Verification"></PoppinsText>
-
-          <View style={{flexDirection: 'row'}}>
-            <PoppinsTextMedium
-              style={{fontSize: 14, color: 'white'}}
-              content="Enter the OTP sent to"></PoppinsTextMedium>
-            <View style={{marginLeft: 4}}>
-              {mobile && (
-                <PoppinsTextMedium
-                  style={{fontSize: 14, color: 'white'}}
-                  content={navigationParams.mobile}></PoppinsTextMedium>
-              )}
-            </View>
-          </View>
+          
         </View>
         <OtpInput
           getOtpFromComponent={getOtpFromComponent}
@@ -300,7 +294,7 @@ catch(e){
             justifyContent: 'center',
           }}>
           <PoppinsTextMedium
-            style={{fontSize: 14, color: 'white'}}
+            style={{fontSize: 14, color: 'black'}}
             content="Didn't you recieve the OTP?"></PoppinsTextMedium>
           <Text
             style={{

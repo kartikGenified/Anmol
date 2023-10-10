@@ -10,6 +10,7 @@ import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateAr
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import CustomTextInputNumeric from '../../components/organisms/CustomTextInputNumeric';
 import { useSendCredentialsMutation } from '../../apiServices/register/SendCrendentialsApi';
+import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
 
 const RegisterUser = ({navigation,route}) => {
   const [mobile, setMobile] = useState()
@@ -45,7 +46,9 @@ const RegisterUser = ({navigation,route}) => {
     )
       ? useSelector(state => state.apptheme.ternaryThemeColor)
       : '#ef6110';
-    
+      const userType = route.params.userType
+      const userId = route.params.userId
+      const needsApproval = route.params.needsApproval
 // ------------------------------------------
 
   // initializing mutations --------------------------------
@@ -94,7 +97,7 @@ const RegisterUser = ({navigation,route}) => {
         console.log("send Credentials data",sendCredentialsData)
         if(sendCredentialsData.success)
         {
-          navigation.navigate('PasswordLogin')
+          navigation.navigate('PasswordLogin',{needsApproval:needsApproval, userType:userType, userId:userId})
         }
       }
       else{
@@ -131,67 +134,76 @@ const RegisterUser = ({navigation,route}) => {
 
   return (
     <LinearGradient
-      colors={[primaryThemeColor, secondaryThemeColor]}
+      colors={["white", "white"]}
       style={styles.container}>
+      <View style={{width:'100%',alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,}}>
       <View
         style={{
-          height: 140,
+          height: 120,
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
+          backgroundColor:ternaryThemeColor,
+          flexDirection:'row',
+          
         }}>
-        <View
-          style={{
-            ...styles.semicircle,
-            width: width + 60,
-            borderRadius: (width + width) / 2,
-            height: width + 60,
-            top: -(width / 2),
-          }}>
+        
           <TouchableOpacity
+          style={{height:50,alignItems:"center",justifyContent:'center',position:"absolute",left:10,top:20}}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain', right: 90}}
+              style={{height: 20, width: 20, resizeMode: 'contain'}}
               source={require('../../../assets/images/blackBack.png')}></Image>
           </TouchableOpacity>
           <Image
             style={{
-              height: 110,
-              width: 140,
+              height: 50,
+              width: 100,
               resizeMode: 'contain',
-              top: width / 8,
+              top:20,
+            position:"absolute",
+            left:50,
+              borderRadius:10
+              
+              
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-        </View>
+      </View>
+      <View
+            style={{
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              marginTop: 10,
+              width:'90%'
+            }}>
+            <PoppinsText
+              style={{color: 'white', fontSize: 28}}
+              content="Tell us your mobile number"></PoppinsText>
+            
+          </View>
       </View>
       <ScrollView style={{width:'100%'}}>
-        <View style={{alignItems:'center',justifyContent:"center",width:'100%'}}>
-        <View
-        style={{
-          ...styles.banner,
-          backgroundColor: ternaryThemeColor,
-          elevation: 10,
-          shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.5,
-          shadowRadius: 2,
-        }}></View>
-        </View>
+        
         <View style={{alignItems:"center",justifyContent:"center",marginTop:10}}>
             <PoppinsText style={{color:'white',fontSize:22}} content = "New User ?"></PoppinsText>
             <PoppinsTextMedium style={{color:'white', fontSize:16}} content = "Register"></PoppinsTextMedium>
         </View>
         <View style={{width:"100%",alignItems:"center",justifyContent:"center",marginTop:10}}>
-        <CustomTextInputNumeric
-              sendData={getMobile}
-              title="Mobile No"
-              image={require('../../../assets/images/whitePhone.png')}></CustomTextInputNumeric>
-            <CustomTextInput
-              sendData={getName}
-              title="Name"
-              image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
+        <TextInputRectangularWithPlaceholder
+            placeHolder="Mobile No"
+            handleData={getMobile}
+            maxLength={10}
+              ></TextInputRectangularWithPlaceholder>
+        <TextInputRectangularWithPlaceholder
+            placeHolder="Name"
+            handleData={getName}
+            maxLength={100}
+              ></TextInputRectangularWithPlaceholder>
+           
         </View>
         <View style={{width:"100%",alignItems:'center',justifyContent:"center"}}>
         <ButtonNavigateArrow

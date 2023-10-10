@@ -33,12 +33,25 @@ const AddBankDetails = ({navigation}) => {
     useEffect(()=>{
         if(addBankDetailsData){
             console.log("addBankDetailsData",addBankDetailsData)
+            if(addBankDetailsData.message==="Bank Account Created")
+            {
+                setSuccess(true)
+                setMessage("Account Added Successfully")
+                setTimeout(() => {
+                    setSuccess(false)
+                    navigation.navigate("BankAccounts",{refresh:true})
+                }, 2000);
+            }
         }
         else if(addBankDetailsError)
         {
             console.log("addBankDetailsError",addBankDetailsError)
             setError(true)
             setMessage(addBankDetailsError.data.message)
+            setTimeout(() => {
+                setError(false)
+                navigation.navigate("BankAccounts",{refresh:true})
+            }, 2000);
         }
     },[addBankDetailsData,addBankDetailsError])
 
