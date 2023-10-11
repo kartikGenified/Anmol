@@ -137,10 +137,10 @@ const Passbook = ({navigation}) => {
                 <Image style={{height:20,width:20,resizeMode:'contain',marginLeft:10}} source={require('../../../assets/images/reward.png')}></Image>
                 <PoppinsTextMedium style={{color:"white"}} content={membership}></PoppinsTextMedium>
             </View>
-            <View style={{alignItems:"center",justifyContent:"center",width:'100%',top:10}}>
+            {workflowProgram.length!==0 && <View style={{alignItems:"center",justifyContent:"center",width:'100%',top:10}}>
             <RewardBox></RewardBox>
 
-            </View>
+            </View>}
             </View>
            
 

@@ -237,7 +237,7 @@ const RedeemGifts = ({navigation,route}) => {
       console.log(Number(pointBalance),Number(data.points))
       if(tempPoints+Number(data.points)<=pointBalance)
     {
-      if(Number(pointBalance)>Number(data.points))
+      if(Number(pointBalance)>=Number(data.points))
     {
       tempPoints =  tempPoints+data.points
       let temp =count

@@ -67,10 +67,10 @@ const Profile = ({navigation}) => {
 
       const filteredData = Object.values(getFormData.body.template).filter(
         (item, index) => {
-          if (item.name === 'profile_pic') {
+          if (item.name === 'profile_pic' || item.name=== "picture") {
             setShowProfilePic(true);
           }
-          return item.name !== 'profile_pic';
+          return item.name !== 'profile_pic' || item.name=="picture";
         },
       );
 

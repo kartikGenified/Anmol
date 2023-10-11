@@ -15,6 +15,7 @@ import * as Keychain from 'react-native-keychain';
 import { SvgUri } from 'react-native-svg';
 import { BaseUrlImages } from '../utils/BaseUrlImages';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useGetActiveMembershipMutation } from '../apiServices/membership/AppMembershipApi';
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer=()=>{
@@ -41,6 +42,37 @@ const [getAppMenuFunc,{
   isError:getAppMenuIsError
 }]= useGetAppMenuDataMutation()
 
+const [getActiveMembershipFunc,{
+  data:getActiveMembershipData,
+  error:getActiveMembershipError,
+  isLoading:getActiveMembershipIsLoading,
+  isError:getActiveMembershipIsError
+}]=useGetActiveMembershipMutation()
+
+useEffect(()=>{
+  getMembership()
+},[])
+
+
+const getMembership=async()=>{
+  const credentials = await Keychain.getGenericPassword();
+  if (credentials) {
+    console.log(
+      'Credentials successfully loaded for user ' + credentials.username
+    );
+    const token = credentials.username
+    getActiveMembershipFunc(token)
+  }
+}
+
+useEffect(()=>{
+  if(getActiveMembershipData){
+    console.log("getActiveMembershipData",JSON.stringify(getActiveMembershipData))
+  }
+  else if(getActiveMembershipError){
+    console.log("getActiveMembershipError",getActiveMembershipError)
+  }
+},[getActiveMembershipData,getActiveMembershipError])
 
 useEffect(()=>{
 const fetchMenu=async()=>{
@@ -117,6 +149,9 @@ const DrawerItems = (props) => {
             else if(props.title.toLowerCase()==="rewards"){
                 navigation.navigate('RedeemRewardHistory')
             }
+            else if(props.title.toLowerCase()==="gift catalogue"){
+              navigation.navigate('RedeemGifts')
+          }
             else if(props.title.toLowerCase() === "bank details" || props.title.toLowerCase() === "bank account"){
               navigation.navigate('BankAccounts')
           }

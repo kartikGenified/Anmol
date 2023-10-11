@@ -251,7 +251,7 @@ const handleRegistrationFormSubmission=()=>{
               console.log(item);
               
               if (item.type === 'text') {
-                if (item.required === true ) {
+                // if (item.required === true ) {
                   if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile")
                   {
                     return (
@@ -277,7 +277,7 @@ const handleRegistrationFormSubmission=()=>{
                     );
                   
                 } 
-                } 
+                // } 
                 else if (item.name === 'aadhar') {
                   console.log("aadhar")
                   return (

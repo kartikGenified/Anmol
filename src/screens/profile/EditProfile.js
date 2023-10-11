@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {View, StyleSheet,Image,TouchableOpacity,Dimensions,FlatList,Keyboard, Pressable, Modal,Text} from 'react-native';
+import {View, StyleSheet,Image,TouchableOpacity,Dimensions,FlatList,Keyboard, Pressable, Modal,Text, KeyboardAvoidingView} from 'react-native';
 import { useSelector } from 'react-redux';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import RectanglarUnderlinedTextInput from '../../components/atoms/input/RectanglarUnderlinedTextInput';
@@ -25,7 +25,7 @@ const EditProfile = ({navigation,route}) => {
   const [error, setError] = useState(false);
   // const userData = useSelector(state=>state.appusersdata.userData)
 console.log("saved image",profileImage)
-  
+  console.log("route.params.savedImage",route.params.savedImage)
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
       )
@@ -54,9 +54,9 @@ console.log("saved image",profileImage)
     }] =useUpdateProfileMutation()
 
     
-    useEffect(()=>{
-      setFilename(route.params.savedImage)
-    },[route.params?.savedImage])
+    // useEffect(()=>{
+    //   route.params.savedImage!==undefined && setFilename(route.params.savedImage)
+    // },[route.params?.savedImage])
     useEffect(()=>{
       if(updateProfileData)
       {
@@ -179,7 +179,7 @@ console.log("saved image",profileImage)
     return (
       
      
-        <View style={{height:height,backgroundColor:ternaryThemeColor}}>
+        <View style={{height:'100%',backgroundColor:ternaryThemeColor}}>
            
           <Modal
         animationType="slide"
@@ -208,7 +208,7 @@ console.log("saved image",profileImage)
             <View style={{height:150,width:150,borderRadius:75,backgroundColor:'white',alignItems:'center',justifyContent:'center',borderColor:'#DDDDDD',borderWidth:0.6,marginTop:20}}>
             <View style={{height:130,width:130,borderRadius:65 ,backgroundColor:'white',alignItems:'center',justifyContent:'center',borderColor:'#DDDDDD',borderWidth:0.6}}>
               {profileImage!==route.params?.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:profileImage?.uri}}></Image>}
-              {profileImage===route.params?.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:profileImage}}></Image>}
+              {profileImage===route.params?.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:BaseUrlImages+profileImage}}></Image>}
 
             </View>
             </View>
@@ -249,8 +249,8 @@ console.log("saved image",profileImage)
         </View>
         <View style={{flexDirection:"row",alignItems:"center",justifyContent:"flex-start",marginLeft:20}}>
        <View style={{backgroundColor:"white",height:100,width:100,borderRadius:50,alignItems:"center",justifyContent:"center",flexDirection:"row"}}>
-       {profileImage!==BaseUrlImages+route.params.savedImage && profileImage!==null && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage.uri}}></Image>}
-              {profileImage===BaseUrlImages+route.params.savedImage && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage}}></Image>}
+       {profileImage!==BaseUrlImages+route.params?.savedImage && profileImage!==null && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage.uri}}></Image>}
+              {profileImage===BaseUrlImages+route.params?.savedImage && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage}}></Image>}
 
        </View>
        <TouchableOpacity onPress={()=>{
@@ -262,7 +262,6 @@ console.log("saved image",profileImage)
         </View>
         <View style={{width:"100%",borderTopLeftRadius:40,borderTopRightRadius:40,alignItems:"center",justifyContent:"flex-start",backgroundColor:"white",marginTop:20,paddingTop:20}}>
             {/* data goes here */}
-           
 {
   formFields && <FlatList
   contentContainerStyle={{borderTopLeftRadius:40,borderTopRightRadius:40,justifyContent:'center'}}
@@ -286,7 +285,6 @@ console.log("saved image",profileImage)
   keyExtractor={item => item.id}
 />
 }
-            
            
             
             
