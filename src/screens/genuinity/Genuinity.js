@@ -52,13 +52,17 @@ const Genuinity = ({navigation,route}) => {
   
   
       }
-      else{
+      else if(workflowProgram[0]==="Genuinity"){
       navigation.navigate('Genuinity',{
         workflowProgram:workflowProgram.slice(1)
       })
   
   
   
+      }
+      else{
+        
+        navigation.navigate('Dashboard')
       }
   
     }

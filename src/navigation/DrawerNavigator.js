@@ -14,6 +14,7 @@ import { useGetAppMenuDataMutation } from '../apiServices/dashboard/AppUserDashb
 import * as Keychain from 'react-native-keychain';
 import { SvgUri } from 'react-native-svg';
 import { BaseUrlImages } from '../utils/BaseUrlImages';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer=()=>{
@@ -202,6 +203,7 @@ return (
         </View>
       </View>
     </View>
+    <ScrollView>
     {
       getAppMenuData && getAppMenuData.body[0].app_menu.map((item,index)=>{
         return(
@@ -215,7 +217,7 @@ return (
       })
     }
    
-         
+         </ScrollView>
   </View>
 );
 }

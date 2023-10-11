@@ -15,7 +15,7 @@ import * as Keychain from 'react-native-keychain';
 import {useGetFormMutation} from '../../apiServices/workflow/GetForms';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { useGetActiveMembershipMutation } from '../../apiServices/membership/AppMembershipApi';
-
+import { useIsFocused } from '@react-navigation/native';
 const Profile = ({navigation}) => {
   const [formFields, setFormFields] = useState();
   const [formValues, setFormValues] = useState();
@@ -26,6 +26,7 @@ const Profile = ({navigation}) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
+    const focused = useIsFocused()
   const [
     fetchProfileFunc,
     {
@@ -54,7 +55,7 @@ const Profile = ({navigation}) => {
 
   useEffect(()=>{
     if(getActiveMembershipData){
-      console.log("getActiveMembershipData",getActiveMembershipData)
+      console.log("getActiveMembershipData",JSON.stringify(getActiveMembershipData))
     }
     else if(getActiveMembershipError){
       console.log("getActiveMembershipError",getActiveMembershipError)
@@ -95,7 +96,7 @@ const Profile = ({navigation}) => {
     };
     fetchData();
     getMembership()
-  }, []);
+  }, [focused]);
   const getMembership=async()=>{
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
@@ -426,7 +427,7 @@ const Profile = ({navigation}) => {
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             backgroundColor: 'white',
-            height: '80%',
+           
             marginTop: 10,
             alignItems: 'center',
             justifyContent: 'center',

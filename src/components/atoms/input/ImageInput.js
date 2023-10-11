@@ -9,7 +9,7 @@ const ImageInput = (props) => {
     const action = props.action
 
     const handleOpenImageGallery = async () => {
-        const result = await launchImageLibrary();
+        const result = await launchImageLibrary();2
         console.log(result.assets[0].uri)
         setImage(result.assets[0])
         let tempJsonData ={...props.jsonData,"value":result.assets[0].uri}
@@ -17,7 +17,7 @@ const ImageInput = (props) => {
         props.handleData(tempJsonData)
       };
     return (
-        <View style={{width:'100%',alignItems:"center",justifyContent:"center"}}>
+        <View style={{width:'100%',alignItems:"center",justifyContent:"center",marginBottom:20}}>
             {image && <Image style={{width:200,height:200,resizeMode:"center"}} source={{uri:image.uri}}></Image>}
         <TouchableOpacity onPress={()=>{
             handleOpenImageGallery()

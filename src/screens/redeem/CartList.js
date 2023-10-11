@@ -18,6 +18,8 @@ import {BaseUrlImages} from '../../utils/BaseUrlImages';
 import { useRedeemGiftsMutation } from '../../apiServices/gifts/RedeemGifts';
 import * as Keychain from 'react-native-keychain';
 import ErrorModal from '../../components/modals/ErrorModal';
+import SuccessModal from '../../components/modals/SuccessModal';
+import MessageModal from '../../components/modals/MessageModal';
 
 const CartList = ({navigation, route}) => {
   const [cart, setCart] = useState(route.params.cart);
@@ -25,6 +27,8 @@ const CartList = ({navigation, route}) => {
   const [showSubmitButtons, setShowSubmitButtons] = useState(false)
   const [message, setMessage] = useState();
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false)
+
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -38,7 +42,7 @@ const CartList = ({navigation, route}) => {
     : '#FFB533';
     const userData = useSelector(state => state.appusersdata.userData);
 
-  console.log('CartList',userData);
+  console.log('userdata',userData);
     const height = Dimensions.get('window').height
 
 const [redeemGiftsFunc,{
@@ -50,12 +54,13 @@ const [redeemGiftsFunc,{
 
 const modalClose = () => {
     setError(false);
+    setSuccess(false)
   };
 
 const handleGiftRedemption=async()=>{
     let tempID = []
     cart && cart.map((item,index)=>{
-        tempID.push(item.id)
+        tempID.push((String(item.id)))
     })
     
 
@@ -66,14 +71,15 @@ const handleGiftRedemption=async()=>{
                   );
                   const token = credentials.username
                   const data = {
-                    "user_type_id":userData.user_type_id,
+                    "user_type_id":String(userData.user_type_id),
                     "user_type":userData.user_type,
                     "platform_id":1,
                     "platform" :"mobile",
                     "gift_ids":tempID,
-                    "approved_by_id":1,
-                    "app_user_id" : userData.id,
-                    "remarks":"demo"
+                    "approved_by_id":"1",
+                    "app_user_id" : String(userData.id),
+                    "remarks":"demo",
+                    "type":"point"
                 }
                 const params = {token:token,
                 data:data
@@ -85,6 +91,8 @@ const handleGiftRedemption=async()=>{
 useEffect(()=>{
     if(redeemGiftsData){
         console.log("redeemGiftsData",redeemGiftsData)
+        setSuccess(true)
+        setMessage(redeemGiftsData.message)
     }
     else if(redeemGiftsError){
         console.log("redeemGiftsError",redeemGiftsError)
@@ -315,8 +323,8 @@ useEffect(()=>{
           }}>
           <View
             style={{
-              height: '80%',
-              width: 50,
+              height: 50,
+              width: 60,
               alignItems: 'center',
               justifyContent: 'center',
               borderWidth: 0.4,
@@ -326,7 +334,7 @@ useEffect(()=>{
               top: 14,
             }}>
             <Image
-              style={{height: 30, width: 30, resizeMode: 'contain'}}
+              style={{height: 46, width: 56, resizeMode: 'center'}}
               source={{uri: BaseUrlImages + image}}></Image>
           </View>
           <LinearGradient
@@ -414,6 +422,12 @@ useEffect(()=>{
               modalClose={modalClose}
               message={message}
               openModal={error}></ErrorModal>
+          )}
+          {success && (
+            <MessageModal
+              modalClose={modalClose}
+              message={message}
+              openModal={success}></MessageModal>
           )}
       <View
         style={{

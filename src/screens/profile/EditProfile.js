@@ -18,7 +18,7 @@ const EditProfile = ({navigation,route}) => {
   const [hasManualkyc, setHasManualKyc] = useState(false)
   const [pressedSubmit, setPressedSubmit] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
-  const [profileImage, setProfileImage] = useState()
+  const [profileImage, setProfileImage] = useState(route.params?.savedImage )
   const [filename, setFilename] = useState()
   const [message, setMessage] = useState();
   const [success, setSuccess] = useState(false);
@@ -31,8 +31,8 @@ console.log("saved image",profileImage)
       )
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
-    const formFields = route.params.formFields
-    const formValues = route.params.formValues
+    const formFields = route.params?.formFields
+    const formValues = route.params?.formValues
     const height = Dimensions.get('window').height
     // const manualkyc = ["fabricator","consumer","retailer","dealer"]
     console.log("form fields and values",formFields,formValues)
@@ -56,7 +56,7 @@ console.log("saved image",profileImage)
     
     useEffect(()=>{
       setFilename(route.params.savedImage)
-    },[route.params.savedImage])
+    },[route.params?.savedImage])
     useEffect(()=>{
       if(updateProfileData)
       {
@@ -207,8 +207,8 @@ console.log("saved image",profileImage)
             </View>
             <View style={{height:150,width:150,borderRadius:75,backgroundColor:'white',alignItems:'center',justifyContent:'center',borderColor:'#DDDDDD',borderWidth:0.6,marginTop:20}}>
             <View style={{height:130,width:130,borderRadius:65 ,backgroundColor:'white',alignItems:'center',justifyContent:'center',borderColor:'#DDDDDD',borderWidth:0.6}}>
-              {profileImage!==BaseUrlImages+route.params.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:profileImage.uri}}></Image>}
-              {profileImage===BaseUrlImages+route.params.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:profileImage}}></Image>}
+              {profileImage!==route.params?.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:profileImage?.uri}}></Image>}
+              {profileImage===route.params?.savedImage && <Image style={{height:130,width:130,borderRadius:65 }} source={{uri:profileImage}}></Image>}
 
             </View>
             </View>
@@ -249,7 +249,7 @@ console.log("saved image",profileImage)
         </View>
         <View style={{flexDirection:"row",alignItems:"center",justifyContent:"flex-start",marginLeft:20}}>
        <View style={{backgroundColor:"white",height:100,width:100,borderRadius:50,alignItems:"center",justifyContent:"center",flexDirection:"row"}}>
-       {profileImage!==BaseUrlImages+route.params.savedImage && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage.uri}}></Image>}
+       {profileImage!==BaseUrlImages+route.params.savedImage && profileImage!==null && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage.uri}}></Image>}
               {profileImage===BaseUrlImages+route.params.savedImage && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage}}></Image>}
 
        </View>
@@ -268,17 +268,18 @@ console.log("saved image",profileImage)
   contentContainerStyle={{borderTopLeftRadius:40,borderTopRightRadius:40,justifyContent:'center'}}
   style={{width:'90%',height:'70%'}}
   data={formFields}
+  showsVerticalScrollIndicator={false}
   renderItem={({item,index}) => { 
     if(item.type==="text")
   {
     return(
-      <RectanglarUnderlinedTextInput pressedSubmit={pressedSubmit} key ={item.id} handleData={handleData} title={item.name} value={formValues[index]}></RectanglarUnderlinedTextInput>
+      <RectanglarUnderlinedTextInput pressedSubmit={pressedSubmit} key ={index} handleData={handleData} title={item.name} value={formValues[index]}></RectanglarUnderlinedTextInput>
           )
   }
-   if(item.type==="date")
+   else if(item.type==="date")
   {
     return(
-    <InputDate key ={item.id} data={formValues[index]} title={item.name} handleData = {handleData}></InputDate>
+    <InputDate key ={index} data={formValues[index]} title={item.name} handleData = {handleData}></InputDate>
 
     )
   }}}
@@ -291,7 +292,7 @@ console.log("saved image",profileImage)
             
 
         </View>
-        <View style={{height:60,width:'100%',backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:"center",position:"absolute",bottom:30}}>
+        <View style={{height:60,width:'100%',backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:"center",marginBottom:20}}>
               <TouchableOpacity onPress={()=>{
                 updateProfile()
               }} style={{height:40,width:200,backgroundColor:"white",borderRadius:4,alignItems:'center',justifyContent:"center"}}>

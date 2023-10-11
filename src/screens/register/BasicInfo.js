@@ -241,9 +241,9 @@ const handleRegistrationFormSubmission=()=>{
             }}></PoppinsTextMedium>
         </View>
       </View>
-      <ScrollView style={{width:'100%',height:height}}>
+      <ScrollView style={{width:'100%'}}>
 
-      <View style={{height:height,width:width,backgroundColor:"white",alignItems:"center",justifyContent:'flex-start',paddingTop:20}}>
+      <View style={{width:width,backgroundColor:"white",alignItems:"center",justifyContent:'flex-start',paddingTop:20}}>
         <PoppinsTextMedium style={{color:'black',fontWeight:'700',fontSize:18,marginBottom:40}} content="Please Fill The Following Form To Register"></PoppinsTextMedium>
         {/* <RegistrationProgress data={["Basic Info","Business Info","Manage Address","Other Info"]}></RegistrationProgress> */}
         {registrationForm &&
@@ -251,26 +251,32 @@ const handleRegistrationFormSubmission=()=>{
               console.log(item);
               
               if (item.type === 'text') {
-                if (item.required === true && item.name !== 'phone' && item.name !== 'aadhar'&& item.name !== 'pan') {
-                  return (
-                    <TextInputRectangleMandatory
-                      jsonData={item}
-                      key={index}
-                      handleData={handleChildComponentData}
-                      placeHolder={item.name}>
-                      {' '}
-                    </TextInputRectangleMandatory>
-                  );
-                } else if (item.name === 'phone') {
-                  return (
-                    <TextInputNumericRectangle
-                      jsonData={item}
-                      key={index}
-                      handleData={handleChildComponentData}
-                      placeHolder={item.name}>
-                      {' '}
-                    </TextInputNumericRectangle>
-                  );
+                if (item.required === true ) {
+                  if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile")
+                  {
+                    return (
+                      <TextInputRectangleMandatory
+                        jsonData={item}
+                        key={index}
+                        handleData={handleChildComponentData}
+                        placeHolder={item.name}>
+                        {' '}
+                      </TextInputRectangleMandatory>
+                    );
+                  }
+                  else if (item.name === 'phone' || item.name==="mobile") {
+                    return (
+                      <TextInputNumericRectangle
+                        jsonData={item}
+                        key={index}
+                        maxLength={10}
+                        handleData={handleChildComponentData}
+                        placeHolder={item.name}>
+                        {' '}
+                      </TextInputNumericRectangle>
+                    );
+                  
+                } 
                 } 
                 else if (item.name === 'aadhar') {
                   console.log("aadhar")

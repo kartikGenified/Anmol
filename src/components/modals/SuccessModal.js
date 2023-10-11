@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { useSelector } from 'react-redux';
+import  Icon  from 'react-native-vector-icons/MaterialIcons';
 
 const SuccessModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,7 +39,7 @@ const SuccessModal = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Success</Text>
-            <Icon name="sorry" size={100} color="red"></Icon>
+            <Icon name="tick" size={100} color="red"></Icon>
 
             <Text style={{...styles.modalText,fontSize:20,fontWeight:'600'}}>{props.message}</Text>
             <Pressable

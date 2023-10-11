@@ -31,7 +31,7 @@ const PointHistory = ({navigation}) => {
         const credentials = await Keychain.getGenericPassword();
         const token = credentials.username;
         console.log("userId",userId)
-        const params ={userId:userId,
+        const params ={userId:String(userId),
         token:token}
         userPointFunc(params)
         fetchUserPointsHistoryFunc(params)
@@ -51,7 +51,7 @@ const PointHistory = ({navigation}) => {
     useEffect(()=>{
         if(fetchUserPointsHistoryData)
         {
-            console.log("fetchUserPointsHistoryData",fetchUserPointsHistoryData.body.data.length)
+            console.log("fetchUserPointsHistoryData",fetchUserPointsHistoryData.body)
         }
         else if(fetchUserPointsHistoryError)
         {

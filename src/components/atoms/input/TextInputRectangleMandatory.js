@@ -17,6 +17,10 @@ const TextInputRectangleMandatory = (props) => {
         {
             setMaxLength(10)
         }
+        else if(placeHolder.toLowerCase() === "mobile")
+        {
+            setMaxLength(10)
+        }
     },[])
 
     const handleInput=(text)=>{

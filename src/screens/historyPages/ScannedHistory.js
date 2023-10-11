@@ -164,7 +164,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         )
     }
     return (
-        <View style={{alignItems:"center",justifyContent:"flex-start"}}>
+        <View style={{alignItems:"center",justifyContent:"flex-start",height:"100%"}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
                 <TouchableOpacity onPress={()=>{
                     navigation.goBack()
@@ -186,15 +186,12 @@ const [distinctDateArr, setDistinctDateArr] = useState()
             <Header></Header>
             {
                  fetchAllQrScanedListData && distinctDateArr && fetchAllQrScanedListData && <FlatList
+                 contentContainerStyle={{}}
+                 style={{height:"100%"}}
                     data={fetchAllQrScanedListData.body.data}
                     renderItem={({item,index}) => {
-                        if(distinctDateArr.includes(moment(item.scanned_at).format('DD-MMM-YYYY')))
-                        {
-                            
-                            if(count===0)
-                            {
-                                count++;
-                                console.log(fetchAllQrScanedListData.body.data.length)
+                       
+                           
                                 return(
                                    <View style={{alignItems:"center",justifyContent:"center",width:'100%'}} key ={index}>
                                     <View  style={{alignItems:"flex-start",justifyContent:"center",borderBottomWidth:1,paddingBottom:10,width:'90%',marginTop:20}}>
@@ -204,12 +201,10 @@ const [distinctDateArr, setDistinctDateArr] = useState()
     
                                     </View>
                                 )
-                            }
                             
-                        }
-                        return(
-                <ListItem data={item} key={item.id} description={item.product_name} productCode={item.product_code} time={moment(item.scanned_at).format('HH:MM')} amount={item.points_on_product}></ListItem>
-                        )
+                            
+                        
+                       
                     }}
                     keyExtractor={item => item.id}
                   />

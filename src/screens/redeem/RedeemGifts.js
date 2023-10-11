@@ -21,13 +21,20 @@ import {useFetchGiftCatalogueByUserTypeAndCatalogueTypeMutation} from '../../api
 import {useFetchUserPointsMutation} from '../../apiServices/workflow/rewards/GetPointsApi';
 import * as Keychain from 'react-native-keychain';
 import {BaseUrlImages} from '../../utils/BaseUrlImages';
+import ErrorModal from '../../components/modals/ErrorModal';
+import SuccessModal from '../../components/modals/SuccessModal';
+import MessageModal from '../../components/modals/MessageModal';
+import PointHistory from '../historyPages/PointHistory';
 
 const RedeemGifts = ({navigation,route}) => {
   const [search, setSearch] = useState();
   const [cart, setCart] = useState([]);
   const [distinctCategories, setDistinctCategories] = useState([]);
   const [displayContent, setDisplayContent] = useState([])
-  const pointBalance = 300;
+  const [pointBalance, setPointBalance] = useState()
+  const [message, setMessage] = useState();
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false)
   const action = route.params?.action
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -40,7 +47,7 @@ const RedeemGifts = ({navigation,route}) => {
     ? useSelector(state => state.apptheme.secondaryThemeColor)
     : '#FFB533';
   const userId = useSelector(state => state.appusersdata.id);
-
+  let tempPoints=0
   const [
     fetchGiftCatalogue,
     {data: giftCatalogueData, error: giftCatalogueError},
@@ -93,6 +100,10 @@ const RedeemGifts = ({navigation,route}) => {
   useEffect(() => {
     if (userPointData) {
       console.log('userPointData', userPointData);
+      if(userPointData.success)
+      {
+        setPointBalance(userPointData.body.point_balance)
+      }
     } else if (userPointError) {
       console.log('userPointError', userPointError);
     }
@@ -111,6 +122,11 @@ const RedeemGifts = ({navigation,route}) => {
     const arr = Array.from(set)
     setDistinctCategories(arr)
   }
+
+  const modalClose = () => {
+    setError(false);
+    setSuccess(false)
+  };
 
   const handleSearch=(data)=>{
     const searchOutput =  giftCatalogueData.body.filter((item,index)=>{
@@ -166,13 +182,17 @@ const RedeemGifts = ({navigation,route}) => {
   const addItemToCart=(data,operation,count)=>{
     let tempCount=0
     let temp=cart
+    console.log("data",data)
+   
     if(operation==="plus")
     {
+      
       temp.push(data)
       setCart(temp)
+      
     }
     else {
-      
+      // setPointBalance(pointBalance+Number(data.points))
       for(var i =0;i<temp.length;i++)
       {
         if(temp[i].id===data.id)
@@ -207,18 +227,42 @@ const RedeemGifts = ({navigation,route}) => {
     console.log("data",data)
     
    const changeCounter=(operation)=>{
+    
+    
+      
+    
+    console.log(pointBalance,"tempPoints",tempPoints,data.points)
     if(operation==="plus")
     {
+      console.log(Number(pointBalance),Number(data.points))
+      if(tempPoints+Number(data.points)<=pointBalance)
+    {
+      if(Number(pointBalance)>Number(data.points))
+    {
+      tempPoints =  tempPoints+data.points
       let temp =count
       temp++
       setCount(temp)
       props.handleOperation(data,operation,temp)
+      
+    }
+    else{
+      setError(true)
+      setMessage("You don't have enough points!!!")
+    }
+    }
+      
+
+     
     }
     else{
       let temp =count
       temp--
       setCount(temp)
       props.handleOperation(data,operation,temp)
+      tempPoints = tempPoints-data.points
+
+      // setPointBalance(pointBalance+data.points)
 
     }
    }
@@ -327,14 +371,14 @@ const RedeemGifts = ({navigation,route}) => {
             alignItems: 'flex-start',
             justifyContent: 'center',
             marginTop: 4,
-            width: '100%',
+            width: '90%',
           }}>
           <PoppinsTextMedium
-            style={{color: 'black', fontSize: 12, width: '90%', marginLeft: 4}}
+            style={{color: 'black', fontSize: 13, width: '90%', marginLeft: 4}}
             content={product}></PoppinsTextMedium>
 
           <PoppinsTextMedium
-            style={{color: '#919191', fontSize: 12, width: '90%'}}
+            style={{color: '#919191', fontSize: 13, width: '90%'}}
             content={category}></PoppinsTextMedium>
         </View>
       </TouchableOpacity>
@@ -350,6 +394,18 @@ const RedeemGifts = ({navigation,route}) => {
         backgroundColor: ternaryThemeColor,
         height: '100%',
       }}>
+        {error && (
+            <ErrorModal
+              modalClose={modalClose}
+              message={message}
+              openModal={error}></ErrorModal>
+          )}
+          {success && (
+            <MessageModal
+              modalClose={modalClose}
+              message={message}
+              openModal={success}></MessageModal>
+          )}
       <View
         style={{
           alignItems: 'center',

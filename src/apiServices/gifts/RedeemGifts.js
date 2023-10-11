@@ -5,6 +5,7 @@ export const RedeemGiftsApi = baseApi.injectEndpoints({
     endpoints:(builder) =>({
         redeemGifts: builder.mutation({
             query: (params) => {
+              console.log("params",params)
               return {
                 method: "POST",
                 url: `/api/app/giftRedemptions/add`,

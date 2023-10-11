@@ -31,9 +31,10 @@ export const GetForms = baseApi.injectEndpoints({
     }),
     fetchUserPointsHistory: builder.mutation({
       query: (params) => {
+        console.log("point history",params)
         return {
-          method: "POST",
-          url: `/api/app/userPointsEnteries?app_user_id=${params.userId}`,
+          method: "GET",
+          url: `/api/app/userPointsEnteries?id=${params.userId}`,
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + params.token,

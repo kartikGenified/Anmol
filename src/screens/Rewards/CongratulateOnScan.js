@@ -324,7 +324,7 @@ const CongratulateOnScan = ({navigation, route}) => {
               log: location.lon.substring(0, 10)===undefined ? "N/A" :location.lon.substring(0, 10),
               method_id: 1,
               method: 'point on product',
-              points: productData.consumer_points,
+              points: productData[`${userData.user_type}_points`],
               type: 'point on product',
             },
             qrId: Number(qrData.id),
@@ -411,7 +411,10 @@ const CongratulateOnScan = ({navigation, route}) => {
        
       });
     }  else if(workflowProgram.length===0 ) {
+      setTimeout(() => {
       navigation.navigate('Dashboard');
+
+      }, 5000);
     }
   };
   const navigateDashboard=()=>{
