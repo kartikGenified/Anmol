@@ -2,11 +2,12 @@ import React from 'react';
 import {View, StyleSheet, TouchableOpacity,Image,Platform} from 'react-native';
 import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
 import { useSelector } from 'react-redux';
-
+import { useNavigation } from '@react-navigation/native';
 
 const KYCVerificationComponent = (props) => {
     const title = props.title
     const buttonTitle = props.buttonTitle
+    const navigation = useNavigation()
     const secondaryThemeColor = useSelector(
         state => state.apptheme.secondaryThemeColor,
       )
@@ -25,7 +26,7 @@ const KYCVerificationComponent = (props) => {
         <View style={{...styles.container,backgroundColor:secondaryThemeColor}}>
             <View style={{width:'60%',height:'100%',alignItems:'center',justifyContent:'center'}}>
                 <PoppinsTextMedium style={{fontWeight:platformFontWeight,fontSize:platformFontSize}} content={title}></PoppinsTextMedium>
-                <TouchableOpacity style={{...styles.button,backgroundColor:ternaryThemeColor}}>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Verification')}} style={{...styles.button,backgroundColor:ternaryThemeColor}}>
                 <PoppinsTextMedium style={{color:'white'}} content={buttonTitle}></PoppinsTextMedium>
                 </TouchableOpacity>
             </View>

@@ -24,6 +24,7 @@ import ButtonOval from '../../components/atoms/buttons/ButtonOval';
 import { useRegisterUserByBodyMutation } from '../../apiServices/register/UserRegisterApi';
 import TextInputAadhar from '../../components/atoms/input/TextInputAadhar';
 import TextInputPan from '../../components/atoms/input/TextInputPan';
+import TextInputGST from '../../components/atoms/input/TextInputGST';
 const BasicInfo = ({navigation,route}) => {
     const [message, setMessage] = useState();
     const [success, setSuccess] = useState(false);
@@ -252,7 +253,7 @@ const handleRegistrationFormSubmission=()=>{
               
               if (item.type === 'text') {
                 // if (item.required === true ) {
-                  if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile")
+                  if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile" && item.name!=='aadhaar')
                   {
                     return (
                       <TextInputRectangleMandatory
@@ -278,7 +279,7 @@ const handleRegistrationFormSubmission=()=>{
                   
                 } 
                 // } 
-                else if (item.name === 'aadhar') {
+                else if (item.name === 'aadhaar' || item.name==="aadhar") {
                   console.log("aadhar")
                   return (
                     <TextInputAadhar
@@ -301,7 +302,19 @@ const handleRegistrationFormSubmission=()=>{
                       {' '}
                     </TextInputPan>
                   );
-                } else {
+                } 
+                else if (item.name === 'gstin') {
+                  console.log("gstin")
+                  return (
+                    <TextInputGST
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}>
+                      {' '}
+                    </TextInputGST>
+                  );
+                }else {
                   return (
                     <TextInputRectangle
                       jsonData={item}

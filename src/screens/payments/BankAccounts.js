@@ -24,7 +24,9 @@ import Delete from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Keychain from 'react-native-keychain';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import { useDeleteBankMutation } from '../../apiServices/bankAccount.js/DeleteBankAccount'; 
-import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
+
+
 const BankAccounts = ({navigation,route}) => {
   const [message, setMessage] = useState();
   const [success, setSuccess] = useState(false);
@@ -53,7 +55,7 @@ const BankAccounts = ({navigation,route}) => {
         isLoading:deleteBankIsLoading,
         isError:deleteBankIsError
     }]=useDeleteBankMutation()
-
+    const focused = useIsFocused()
     const refresh = route.params?.refresh
     const height = Dimensions.get('window').height
     const deleteData=async(data)=>{
@@ -111,7 +113,7 @@ const BankAccounts = ({navigation,route}) => {
     },[])
     useEffect(()=>{
         refetchData()
-    },[refresh])
+    },[focused])
     useEffect(()=>{
         if(deleteBankData)
         {
@@ -272,7 +274,7 @@ const setSelectedPaymentMethod=(data)=>{
     }
     return (
      
-       <View style={{alignItems:"flex-start",justifyContent:'center',width:'90%',height:60,marginTop:20,flexDirection:"row",borderBottomWidth:1,borderColor:'#DDDDDD'}}>
+       <View style={{alignItems:"flex-start",justifyContent:'center',width:'90%',height:110,marginTop:20,flexDirection:"row",borderBottomWidth:1,borderColor:'#DDDDDD'}}>
         <Modal
         animationType="slide"
         transparent={true}

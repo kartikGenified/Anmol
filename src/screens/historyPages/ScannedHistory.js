@@ -9,6 +9,7 @@ import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/G
 import { useAllUserPointsEntryMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import moment from 'moment';
+import BottomModal from '../../components/modals/BottomModal';
 
 const ScannedHistory = ({navigation}) => {
 const [distinctDateArr, setDistinctDateArr] = useState()
@@ -123,10 +124,25 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         )
     }
     const Header=()=>{
+        const [openBottomModal, setOpenBottomModal] = useState(false)
+        const [message, setMessage] = useState()
+        const modalClose = () => {
+            setOpenBottomModal(false);
+          };
+        const ModalContent=()=>{
+            return(
+                <View style={{alignItems:"center",justifyContent:'center',height:100,width:200,backgroundColor:'red',margin:20}}></View>
+            )
+        } 
         return(
             <View style={{height:40,width:'100%',backgroundColor:'#DDDDDD',alignItems:"center",justifyContent:"center",flexDirection:"row",marginTop:20}}>
+                {openBottomModal && <BottomModal
+              modalClose={modalClose}
+              message={message}
+              openModal={openBottomModal}
+              comp={ModalContent}></BottomModal>}
                 <PoppinsTextMedium style={{marginLeft:20,fontSize:16,position:"absolute",left:10}} content="Redeemed Ladger"></PoppinsTextMedium>
-                <TouchableOpacity style={{position:"absolute",right:20}}>
+                <TouchableOpacity onPress={()=>{setOpenBottomModal(!openBottomModal),setMessage("BOTTOM MODAL")}} style={{position:"absolute",right:20}}>
                 <Image style={{height:22,width:22,resizeMode:"contain"}} source={require('../../../assets/images/settings.png')}></Image>
 
                 </TouchableOpacity>

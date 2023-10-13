@@ -9,7 +9,12 @@ import { usePasswordLoginMutation } from '../../apiServices/login/passwordBased/
 import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
 import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
-
+import { setAppUserId } from '../../../redux/slices/appUserDataSlice';
+import { setAppUserName } from '../../../redux/slices/appUserDataSlice';
+import { setAppUserType } from '../../../redux/slices/appUserDataSlice';
+import { setUserData } from '../../../redux/slices/appUserDataSlice';
+import { setId } from '../../../redux/slices/appUserDataSlice';
+import * as Keychain from 'react-native-keychain';
 
 const PasswordLogin = ({navigation,route}) => {
   const [username, setUsername] = useState()
@@ -64,10 +69,12 @@ const PasswordLogin = ({navigation,route}) => {
     useEffect(()=>{
       if(passwordLoginData)
       {
-        console.log("Password Login Data",passwordLoginData)
+        console.log("Password Login Data",passwordLoginData.body.token)
         if(passwordLoginData.success)
         {
           navigation.navigate('Dashboard')
+          saveUserDetails(passwordLoginData.body)
+          saveToken(passwordLoginData.body.token)
         }
       }
       else{
@@ -104,8 +111,26 @@ const PasswordLogin = ({navigation,route}) => {
 
 
     }
-
-
+    const saveUserDetails=(data)=>{
+    
+      try{
+    console.log("Saving user details",data)
+    dispatch(setAppUserId(data.user_type_id))
+    dispatch(setAppUserName(data.name))
+    dispatch(setAppUserType(data.user_type))
+    dispatch(setUserData(data))
+    dispatch(setId(data.id))
+        }
+  catch(e){
+    console.log("error",e)
+  }
+  }
+  const saveToken=async(data)=>{
+    const token = data 
+    const password ='17dec1998'
+  
+      await Keychain.setGenericPassword(token,password);
+    }
   return (
     <LinearGradient
       colors={["white", "white"]}
@@ -179,6 +204,18 @@ const PasswordLogin = ({navigation,route}) => {
               
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
+
+             <View style={{alignItems:'center',justifyContent:"center",position:'absolute',right:10,top:10}}>
+        {/* <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium> */}
+        <ButtonNavigate
+              handleOperation={handleNavigationToRegister}
+              backgroundColor="#353535"
+              style={{color: 'white', fontSize: 16}}
+              content="Register"
+              >
+        </ButtonNavigate>
+
+        </View>
       </View>
       <View
             style={{
@@ -211,6 +248,12 @@ const PasswordLogin = ({navigation,route}) => {
             maxLength={10}
               ></TextInputRectangularWithPlaceholder>
         </View>
+        <View style={{flexDirection:"row",alignItems:"center",justifyContent:'center',width:'90%'}}>
+          <PoppinsTextMedium style={{color:"#727272",fontSize:14}} content = "Not remembering password? "></PoppinsTextMedium>
+          <TouchableOpacity >
+            <PoppinsTextMedium style={{color:ternaryThemeColor,fontSize:14}} content="Forget Password"></PoppinsTextMedium>
+          </TouchableOpacity>
+        </View>
         <View style={{width:"100%",alignItems:'center',justifyContent:"center"}}>
         <ButtonNavigateArrow
               handleOperation={handleLogin}
@@ -221,17 +264,7 @@ const PasswordLogin = ({navigation,route}) => {
 
         </View>
 
-        <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
-        <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium>
-        <ButtonNavigate
-              handleOperation={handleNavigationToRegister}
-              backgroundColor={buttonThemeColor}
-              style={{color: 'white', fontSize: 16}}
-              content="Register"
-              >
-        </ButtonNavigate>
-
-        </View>
+       
         
         </ScrollView>
       

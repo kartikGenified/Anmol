@@ -25,7 +25,7 @@ const EditProfile = ({navigation,route}) => {
   const [error, setError] = useState(false);
   // const userData = useSelector(state=>state.appusersdata.userData)
 console.log("saved image",profileImage)
-  console.log("route.params.savedImage",route.params.savedImage)
+  // console.log("route.params.savedImage",route.params.savedImage)
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
       )
@@ -249,8 +249,8 @@ console.log("saved image",profileImage)
         </View>
         <View style={{flexDirection:"row",alignItems:"center",justifyContent:"flex-start",marginLeft:20}}>
        <View style={{backgroundColor:"white",height:100,width:100,borderRadius:50,alignItems:"center",justifyContent:"center",flexDirection:"row"}}>
-       {profileImage!==BaseUrlImages+route.params?.savedImage && profileImage!==null && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage.uri}}></Image>}
-              {profileImage===BaseUrlImages+route.params?.savedImage && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage}}></Image>}
+       {profileImage!==route.params?.savedImage && profileImage!==null && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:profileImage.uri}}></Image>}
+              {profileImage===route.params?.savedImage && <Image style={{height:98,width:98,borderRadius:49 }} source={{uri:BaseUrlImages+profileImage}}></Image>}
 
        </View>
        <TouchableOpacity onPress={()=>{

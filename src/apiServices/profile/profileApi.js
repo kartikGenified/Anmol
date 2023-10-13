@@ -19,7 +19,7 @@ export const profileApi = baseApi.injectEndpoints({
       query: params => {
         return {
           method: 'PUT',
-          url: `api/app/profile`,
+          url: `/api/app/profile`,
           headers: {
             Authorization: 'Bearer ' + params.token,
             slug: slug,

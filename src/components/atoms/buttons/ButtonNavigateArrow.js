@@ -29,7 +29,7 @@ const ButtonNavigateArrow = props => {
       }}
       style={{
         padding: 14,
-        borderRadius: 25,
+        borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: backgroundColor,

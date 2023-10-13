@@ -22,7 +22,7 @@ import ErrorModal from '../../components/modals/ErrorModal';
 import { useVerifyPanMutation } from '../../apiServices/verification/PanVerificationApi';
 import { useSendAadharOtpMutation,useVerifyAadharMutation } from '../../apiServices/verification/AadharVerificationApi';
 import { useVerifyGstMutation } from '../../apiServices/verification/GstinVerificationApi';
-
+import { useUpdateProfileMutation } from '../../apiServices/profile/profileApi';
 
 const Verification = ({navigation}) => {
   const [kycArray, setKycArray] = useState([])
@@ -36,11 +36,12 @@ const Verification = ({navigation}) => {
   const [finalPan, setFinalPan] =useState()
   const [finalGst, setFinalGst] = useState()
   const [finalAadhar, setFinalAadhar] = useState()
-
+  const [isManuallyApproved, setIsManuallyApproved] = useState()
+  const [verifiedArray, setVerifiedArray] = useState([])
   const kycOptions =useSelector(
         state => state.apptheme.kycOptions,
       )
-  console.log(kycOptions)
+  // const userData = useSelector(state=>)
   const userData = useSelector(state=>state.appusersdata.userData)
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -48,11 +49,21 @@ const Verification = ({navigation}) => {
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
       // console.log(kycOptions,userData)
+      const manualApproval = useSelector(state => state.appusers.manualApproval)
 
   const width = Dimensions.get('window').width
+  console.log(userData)
     
 useEffect(()=>{
   getVerificationForUser()
+  if(manualApproval.includes(userData.user_type))
+  {
+    setIsManuallyApproved(true)
+  }
+  else
+  {
+    setIsManuallyApproved(false)
+  }
 },[])
 
 const [verifyPanFunc,{
@@ -62,7 +73,12 @@ const [verifyPanFunc,{
   isError:verifyPanIsError
 }]= useVerifyPanMutation()
 
-
+const [updateProfileFunc,{
+  data:updateProfileData,
+  error:updateProfileError,
+  isError:updateProfileIsError,
+  isLoading:updateProfileIsLoading
+}] = useUpdateProfileMutation()
 
 useEffect(()=>{
 if(verifyPanData)
@@ -70,7 +86,10 @@ if(verifyPanData)
 console.log("verifyPanData",verifyPanData)
 if(verifyPanData.success)
 {
+  let temp = [...verifiedArray]
   showAndHideVerificationComponents("PAN")
+  temp.push({"type":"pan","value":finalPan})
+  setVerifiedArray(temp)
 }
 }
 else if(verifyPanError)
@@ -94,6 +113,10 @@ if(verifyGstData.success)
 {
   
 showAndHideVerificationComponents("GSTIN")
+let temp = [...verifiedArray]
+  
+  temp.push({"type":"gst","value":finalGst})
+  setVerifiedArray(temp)
 }
 
 }
@@ -136,7 +159,19 @@ else if(sendAadharOtpError)
 console.log("sendAadharOtpError",sendAadharOtpError)
 }
 },[sendAadharOtpData,sendAadharOtpError])
-
+useEffect(()=>{
+  if(updateProfileData)
+  {
+    console.log("updateProfileData",updateProfileData)
+    if(updateProfileData.success)
+    {
+      console.log("Success")
+    }
+  }
+  else if(updateProfileError){
+    console.log("updateProfileError",updateProfileError)
+  }
+  },[updateProfileError,updateProfileData])
 
 useEffect(()=>{
 if(verifyAadharData)
@@ -145,6 +180,10 @@ if(verifyAadharData)
   if(verifyAadharData.success)
   {
   //  showAndHideVerificationComponents("Aadhar")
+  let temp = [...verifiedArray]
+  
+  temp.push({"type":"aadhar","value":finalAadhar})
+  setVerifiedArray(temp)
   }
 }
 else if(verifyAadharError){
@@ -183,7 +222,34 @@ else if(verifyAadharError){
 
   
 
+  const handleRegistrationFormSubmission=async()=>{
+    console.log("verified array",JSON.stringify(verifiedArray))
+    const credentials = await Keychain.getGenericPassword();
+  if (credentials) {
+    console.log(
+      'Credentials successfully loaded for user ' + credentials.username
+    );
+    const token = credentials.username
+    const inputFormData = {}
+    inputFormData["user_type"] = userData.user_type;
+    inputFormData["user_type_id"] = userData.user_type_id;
+    inputFormData["is_approved_needed"] = isManuallyApproved;
+    inputFormData["name"] = userData.name;
+    inputFormData["mobile"] = userData.mobile;
   
+    for(var i =0;i<verifiedArray.length;i++)
+    {
+      console.log(verifiedArray[i])
+      inputFormData[verifiedArray[i].type] = verifiedArray[i].value
+    }
+    const body=inputFormData
+    const params = {data:body,token:token}
+    updateProfileFunc(params)
+    console.log("responseArray",body)
+  }
+    
+    
+  }
 
   const getVerificationForUser=()=>{
     const userType = userData.user_type
@@ -528,28 +594,29 @@ console.log(showAadhar,showPan,showGst)
             {showAadhar && <EnterAadhar showAndHideVerificationComponents={showAndHideVerificationComponents}></EnterAadhar>}
             {showGst  && <EnterGst showAndHideVerificationComponents={showAndHideVerificationComponents}></EnterGst>}
             <TouchableOpacity style ={{backgroundColor:ternaryThemeColor, height:50,width:200,borderRadius:4,marginTop:20}} onPress={()=>{
-              console.log(verified[1])
-          if(verified[1].toLowerCase()==="pan")
-          {
-          showAndHideVerificationComponents(verified[0])
-            setShowPan(true)
-            setShowAadhar(false)
-            setShowGst(false)
-          }
-          else if(verified[1].toLowerCase()==="gst")
-          {
-          showAndHideVerificationComponents(verified[0])
-            setShowAadhar(false)
-            setShowPan(false)
-            setShowGst(true)
-          }
-          else if(verified[1].toLowerCase()==="aadhar")
-          {
-          showAndHideVerificationComponents(verified[0])
-            setShowGst(false)
-            setShowPan(false)
-            setShowAadhar(true)
-          }
+              handleRegistrationFormSubmission()
+          //     console.log(verified[1])
+          // if(verified[1].toLowerCase()==="pan")
+          // {
+          // showAndHideVerificationComponents(verified[0])
+          //   setShowPan(true)
+          //   setShowAadhar(false)
+          //   setShowGst(false)
+          // }
+          // else if(verified[1].toLowerCase()==="gst")
+          // {
+          // showAndHideVerificationComponents(verified[0])
+          //   setShowAadhar(false)
+          //   setShowPan(false)
+          //   setShowGst(true)
+          // }
+          // else if(verified[1].toLowerCase()==="aadhar")
+          // {
+          // showAndHideVerificationComponents(verified[0])
+          //   setShowGst(false)
+          //   setShowPan(false)
+          //   setShowAadhar(true)
+          // }
         }}></TouchableOpacity>
         </View>
         

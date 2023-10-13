@@ -158,6 +158,9 @@ const DrawerItems = (props) => {
           else if(props.title.toLowerCase() === "profile"){
             navigation.navigate('Profile')
         }
+        else if(props.title.toLowerCase() === "refer and earn"){
+          navigation.navigate('ReferAndEarn')
+      }
         else if(props.title.toLowerCase() === "warranty list"){
             navigation.navigate('WarrantyHistory')
         }

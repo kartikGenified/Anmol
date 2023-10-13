@@ -41,6 +41,7 @@ import BasicInfo from '../screens/register/BasicInfo';
 import AddBankDetails from '../screens/payments/AddBankDetails';
 import AddUpi from '../screens/payments/AddUpi';
 import BankAccounts from '../screens/payments/BankAccounts';
+import ReferAndEarn from '../screens/ReferAndEarn/ReferAndEarn';
 
 const Stack = createNativeStackNavigator()
 
@@ -70,6 +71,11 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="BasicInfo" component={BasicInfo}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ReferAndEarn" component={ReferAndEarn}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false

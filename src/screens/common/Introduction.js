@@ -30,8 +30,8 @@ const Introduction = ({navigation}) => {
         {
             
             console.log("getAppThemeData",JSON.stringify(getAppThemeData.body))
-            dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["400"]))
-            dispatch(setSecondaryThemeColor(getAppThemeData.body.theme.color_shades["200"]))
+            dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["500"]))
+            dispatch(setSecondaryThemeColor(getAppThemeData.body.theme.color_shades["300"]))
             dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["600"]))
             dispatch(setIcon(getAppThemeData.body.logo[0]))
             dispatch(setIconDrawer(getAppThemeData.body.logo[1]))
@@ -50,7 +50,7 @@ const Introduction = ({navigation}) => {
 
         }
         else{
-            getAppTheme("hirshita")
+            getAppTheme("hirshitaa")
 
             console.log("getAppThemeIsError",getAppThemeIsError)
             console.log("getAppThemeError",getAppThemeError)

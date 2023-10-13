@@ -40,7 +40,7 @@ const Dashboard = ({navigation}) => {
     useEffect(()=>{
       if(getDashboardData)
       {
-        console.log("getDashboardData",getDashboardData.body.app_dashboard)
+        console.log("getDashboardData",getDashboardData)
         setDashboardItems(getDashboardData.body.app_dashboard)
       }
       else if(getDashboardError)
@@ -113,7 +113,7 @@ const Dashboard = ({navigation}) => {
                   );
                   const token = credentials.username
                   const form_type = "2"
-                  console.log(typeof token)
+                  console.log("token from dashboard ", token)
                   token && getDashboardFunc(token)
                   
                   token && getBannerFunc(token)
