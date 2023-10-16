@@ -36,7 +36,7 @@ const ScannedDetails = ({navigation,route}) => {
         return(
             <View style={{alignItems:"center",justifyContent:'center',width:"100%",position:"absolute",bottom:10}}>
                 <PoppinsTextMedium style={{color:'black',fontSize:16,fontWeight:'700'}} content="Issue with this ?"></PoppinsTextMedium>
-                <TouchableOpacity style={{height:50,width:180,backgroundColor:"#D10000",alignItems:"center",justifyContent:"center",borderRadius:4,marginTop:6}}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("ReportAndIssue")}} style={{height:50,width:180,backgroundColor:"#D10000",alignItems:"center",justifyContent:"center",borderRadius:4,marginTop:6}}>
                     <PoppinsTextMedium style={{color:'white',fontSize:16}} content="Click here to report"></PoppinsTextMedium>
                 </TouchableOpacity>
             </View>

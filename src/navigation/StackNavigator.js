@@ -49,6 +49,7 @@ import PdfComponent from '../screens/pdf/PdfComponent';
 import VideoPage from '../screens/video/VideoPage';
 import VideoGallery from '../screens/video/VideoGallery';
 import ImageGallery from '../screens/image/ImageGallery';
+import ReportAndIssue from '../screens/reportAnIssue/ReportAndIssue';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -82,6 +83,11 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="ImageGallery" component={ImageGallery}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ReportAndIssue" component={ReportAndIssue}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false

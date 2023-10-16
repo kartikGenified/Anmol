@@ -56,6 +56,13 @@ const ImageGallery = ({navigation}) => {
       }
     },[appGalleryData,appGalleryError])
 
+
+    const DateFilter=()=>{
+        return(
+            <View style={{flexDirection:"row"}}></View>
+        )
+    }
+
   const ImageComp=(props)=>{
     const [modalVisible, setModalVisible] = useState(false);
     const [indexImage, setIndexImage] = useState(0)
@@ -79,14 +86,14 @@ const ImageGallery = ({navigation}) => {
             <TouchableOpacity style={{position:"absolute",left:4}} onPress={()=>{if(indexImage>0){
 setIndexImage(indexImage-1)
             }}}>
-            <Left name = "caretleft" size={20} color={ternaryThemeColor} ></Left>
+            <Left name = "caretleft" size={30} color={ternaryThemeColor} ></Left>
 
             </TouchableOpacity>
-          <Image style={{height:'96%',width:'96%'}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
+          <Image style={{height:'96%',width:'96%',resizeMode:'contain'}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
           <TouchableOpacity style={{position:'absolute',right:4}} onPress={()=>{if(images.length-1>indexImage){
 setIndexImage(indexImage +1)
           }}}>
-          <Right name ="caretright" size={20} color={ternaryThemeColor} ></Right>
+          <Right name ="caretright" size={30} color={ternaryThemeColor} ></Right>
           </TouchableOpacity>
           <TouchableOpacity style={{position:"absolute",right:4,top:4}} onPress={()=>{setModalVisible(false)}}>
           <Cancel name="cancel" size={30} color="red" ></Cancel>
@@ -95,16 +102,16 @@ setIndexImage(indexImage +1)
           </View>
         </View>
       </Modal>
-       <View style={{width:'100%',backgroundColor:"#DDDDDD",alignItems:"center",justifyContent:'center',height:'50%'}}>
-        <Image style={{height:80,width:80,resizeMode:'contain'}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
-        <></>
+       <View style={{width:'100%',backgroundColor:"#DDDDDD",alignItems:"center",justifyContent:'center',height:'100%',borderRadius:10}}>
+        <Image style={{height:"100%",width:"100%",borderRadius:10}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
+       
        </View>
-        <View style={{backgroundColor:'black',width:'100%',alignItems:'flex-start',height:'50%',justifyContent:"center"}}>
+        {/* <View style={{backgroundColor:'black',width:'100%',alignItems:'flex-start',height:'50%',justifyContent:"center"}}>
         <PoppinsTextMedium style={{color:'white',fontSize:13,marginLeft:8}} content = {`Title : ${title}`}></PoppinsTextMedium>
         <PoppinsTextMedium style={{color:'white',fontSize:13,marginLeft:8}} content = {`Type : ${type}`}></PoppinsTextMedium>
         <PoppinsTextMedium style={{color:'white',fontSize:13,marginBottom:6,marginLeft:8}} content = {`Date : ${moment(date).format("DD MMM YYYY")}`}></PoppinsTextMedium>
         
-        </View>
+        </View> */}
       
       </TouchableOpacity>
     )
@@ -126,7 +133,7 @@ setIndexImage(indexImage +1)
           flexDirection: 'row',
           width: '100%',
           marginTop: 10,
-          height: '10%',
+          height: '4%',
           marginLeft: 20,
         }}>
         <TouchableOpacity
@@ -171,7 +178,7 @@ setIndexImage(indexImage +1)
           {
             imageData && imageData.map((item,index)=>{
               return(
-                <ImageComp title={item.title} type={item.type} image={item.images} date={item.updated_at}></ImageComp>
+                <ImageComp key={index} title={item.title} type={item.type} image={item.images} date={item.updated_at}></ImageComp>
               )
             })
           }
@@ -193,10 +200,10 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(52, 52, 52, 0.8)'
     },
     modalView: {
-      margin: 20,
+      margin: 10,
       backgroundColor: 'white',
       borderRadius: 20,
-      padding: 35,
+      padding: 24,
       alignItems: 'center',
       shadowColor: '#000',
       shadowOffset: {
@@ -206,7 +213,8 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.25,
       shadowRadius: 4,
       elevation: 5,
-      height:300,width:'80%',
+      height:500,
+      width:'90%',
       flexDirection:"row",
       justifyContent:"center"
       

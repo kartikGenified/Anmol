@@ -131,7 +131,7 @@ const VideoGallery = ({navigation}) => {
           {
             videoData && videoData.map((item,index)=>{
               return(
-                <VideoComp title={item.title} type={item.type} video={item.link} date={item.updated_at}></VideoComp>
+                <VideoComp key ={index} title={item.title} type={item.type} video={item.link} date={item.updated_at}></VideoComp>
               )
             })
           }

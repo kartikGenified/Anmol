@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View,Text,Image,TouchableOpacity } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Dashboard from '../screens/dashboard/Dashboard';
@@ -16,9 +16,12 @@ import { SvgUri } from 'react-native-svg';
 import { BaseUrlImages } from '../utils/BaseUrlImages';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useGetActiveMembershipMutation } from '../apiServices/membership/AppMembershipApi';
+import { useFetchProfileMutation } from '../apiServices/profile/profileApi';
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer=()=>{
+  const [profileImage, setProfileImage] =useState()
+  const [drawerData, setDrawerData] = useState()
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -33,7 +36,15 @@ const CustomDrawer=()=>{
   console.log(userData)
 const navigation = useNavigation()
 
-
+const [
+  fetchProfileFunc,
+  {
+    data: fetchProfileData,
+    error: fetchProfileError,
+    isLoading: fetchProfileIsLoading,
+    isError: fetchProfileIsError,
+  },
+] = useFetchProfileMutation();
 
 const [getAppMenuFunc,{
   data:getAppMenuData,
@@ -50,6 +61,19 @@ const [getActiveMembershipFunc,{
 }]=useGetActiveMembershipMutation()
 
 useEffect(()=>{
+  const fetchData = async () => {
+    const credentials = await Keychain.getGenericPassword();
+    if (credentials) {
+      console.log(
+        'Credentials successfully loaded for user ' + credentials.username,
+      );
+      const token = credentials.username;
+      fetchProfileFunc(token);
+
+     
+    }
+  };
+  fetchData()
   getMembership()
 },[])
 
@@ -64,6 +88,17 @@ const getMembership=async()=>{
     getActiveMembershipFunc(token)
   }
 }
+useEffect(() => {
+  if (fetchProfileData) {
+    console.log('fetchProfileData', fetchProfileData);
+    if(fetchProfileData.success)
+    {
+      setProfileImage(fetchProfileData.body.profile_pic)
+    }
+  } else if (fetchProfileError) {
+    console.log('fetchProfileError', fetchProfileError);
+  }
+}, [fetchProfileData, fetchProfileError]);
 
 useEffect(()=>{
   if(getActiveMembershipData){
@@ -91,7 +126,12 @@ fetchMenu()
 useEffect(()=>{
   if(getAppMenuData)
   {
-    console.log("getAppMenuData",getAppMenuData.body[0].app_menu)
+    console.log("getAppMenuData",JSON.stringify(getAppMenuData))
+   const tempDrawerData = getAppMenuData.body.filter((item)=>{
+    return item.user_type===userData.user_type
+   })
+   console.log("tempDrawerData",tempDrawerData)
+   setDrawerData(tempDrawerData)
   }
   else if(getAppMenuError)
   {
@@ -124,8 +164,8 @@ const DrawerItems = (props) => {
           marginBottom:4
         }}>
           {/* <SvgUri width={40} height={40} uri={image}></SvgUri> */}
-        <Icon size={size} name="bars" color={ternaryThemeColor}></Icon>
-        {/* <Image style={{height:20,width:20,resizeMode:'contain'}} source={{uri:image}}></Image> */}
+        {/* <Icon size={size} name="bars" color={ternaryThemeColor}></Icon> */}
+        <Image style={{height:20,width:20,resizeMode:'contain'}} source={{uri:image}}></Image>
       </View>
 
       <View
@@ -176,6 +216,10 @@ const DrawerItems = (props) => {
   else if(props.title.toLowerCase() === "gallery"){
     navigation.navigate('ImageGallery')
 }
+else  if(props.title.substring(0,4).toLowerCase()==="scan" )
+{
+    navigation.navigate('QrCodeScanner')
+}
           }}>
           <Text style={{color: primaryThemeColor, fontSize: 15}}>{props.title}</Text>
         </TouchableOpacity>
@@ -203,7 +247,7 @@ return (
           position: 'absolute',
           left: 4,
         }}
-        source={require('../../assets/images/whiteUser.png')}></Image>
+        source={{uri:BaseUrlImages+profileImage}}></Image>
       <View style={{justifyContent: 'center', marginLeft: 50}}>
       {userData && <Text
           style={{
@@ -255,7 +299,7 @@ return (
     </View>
     <ScrollView>
     {
-      getAppMenuData && getAppMenuData.body[0].app_menu.map((item,index)=>{
+      drawerData && drawerData[0].app_menu.map((item,index)=>{
         return(
           <DrawerItems
         key ={index}

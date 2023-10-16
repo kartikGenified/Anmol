@@ -21,7 +21,7 @@ const Introduction = ({navigation}) => {
 
       // calling API to fetch themes for the app
       useEffect(()=>{
-        getAppTheme("hirshitaa")
+        getAppTheme("ozone-overseas")
       },[])
 
       // fetching data and checking for errors from the API-----------------------
@@ -50,7 +50,7 @@ const Introduction = ({navigation}) => {
 
         }
         else{
-            getAppTheme("hirshitaa")
+            getAppTheme("ozone-overseas")
 
             console.log("getAppThemeIsError",getAppThemeIsError)
             console.log("getAppThemeError",getAppThemeError)
