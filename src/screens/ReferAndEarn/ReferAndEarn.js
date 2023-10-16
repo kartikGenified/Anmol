@@ -24,6 +24,8 @@ import Whatsapp from 'react-native-vector-icons/FontAwesome'
 import Error from 'react-native-vector-icons/Feather'
 import Facebook from 'react-native-vector-icons/Entypo'
 import Share from 'react-native-share';
+import { useFetchProfileMutation } from '../../apiServices/profile/profileApi';
+import { useIsFocused } from '@react-navigation/native';
 
 const ReferAndEarn = ({navigation}) => {
     const [openBottomInvitationModal, setOpenBottomInvitationModal] = useState(false)
@@ -40,10 +42,46 @@ const ReferAndEarn = ({navigation}) => {
   )
     ? useSelector(state => state.apptheme.primaryThemeColor)
     : '#FF9B00';
+  
+  const focused = useIsFocused()
 
+    useEffect(() => {
+      if (fetchProfileData) {
+        console.log('fetchProfileData', fetchProfileData.body);
+      } else if (fetchProfileError) {
+        console.log('fetchProfileError', fetchProfileError);
+      }
+    }, [fetchProfileData, fetchProfileError]);
+
+    const [
+      fetchProfileFunc,
+      {
+        data: fetchProfileData,
+        error: fetchProfileError,
+        isLoading: fetchProfileIsLoading,
+        isError: fetchProfileIsError,
+      },
+    ] = useFetchProfileMutation();
+    useEffect(() => {
+      const fetchData = async () => {
+        const credentials = await Keychain.getGenericPassword();
+        if (credentials) {
+          console.log(
+            'Credentials successfully loaded for user ' + credentials.username,
+          );
+          const token = credentials.username;
+          
+          fetchProfileFunc(token);
+  
+          
+        }
+      };
+      fetchData();
+      
+    }, []);
   const height = Dimensions.get('window').height;
   const rewardAmount = 50;
-  const referalCode = 'BL4FF';
+  const referalCode = fetchProfileData ? fetchProfileData.body.referral_code : "N/A";
   const modalInvitationClose = () => {
     setOpenBottomInvitationModal(false);
   };
@@ -199,6 +237,9 @@ Share.open(options)
             color: 'white',
           }}></PoppinsTextMedium>
         <TouchableOpacity
+        onPress={()=>{
+            navigation.navigate("MyBonus")
+        }}
           style={{
             borderRadius: 4,
             flexDirection: 'row',

@@ -364,7 +364,7 @@ const QrCodeScanner = ({navigation}) => {
       }
        
       }
-    } else {
+    } else if(addQrError) {
       console.log("addQrError",addQrError);
     }
   }, [addQrData, addQrError]);

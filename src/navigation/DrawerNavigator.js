@@ -164,6 +164,18 @@ const DrawerItems = (props) => {
         else if(props.title.toLowerCase() === "warranty list"){
             navigation.navigate('WarrantyHistory')
         }
+        else if(props.title.toLowerCase() === "help and support"){
+          navigation.navigate('HelpAndSupport')
+      }
+      else if(props.title.toLowerCase() === "product catalogue"){
+        navigation.navigate('ProductCatalogue')
+    }
+    else if(props.title.toLowerCase() === "video"){
+      navigation.navigate('VideoGallery')
+  }
+  else if(props.title.toLowerCase() === "gallery"){
+    navigation.navigate('ImageGallery')
+}
           }}>
           <Text style={{color: primaryThemeColor, fontSize: 15}}>{props.title}</Text>
         </TouchableOpacity>

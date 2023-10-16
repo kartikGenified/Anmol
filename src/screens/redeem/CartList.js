@@ -42,7 +42,7 @@ const CartList = ({navigation, route}) => {
     : '#FFB533';
     const userData = useSelector(state => state.appusersdata.userData);
 
-  console.log('userdata',userData);
+  console.log('userdata',route.params.cart);
     const height = Dimensions.get('window').height
 
 const [redeemGiftsFunc,{
@@ -60,10 +60,10 @@ const modalClose = () => {
 const handleGiftRedemption=async()=>{
     let tempID = []
     cart && cart.map((item,index)=>{
-        tempID.push((String(item.id)))
+        tempID.push(((item.gift_id)))
     })
     
-
+    console.log("tempID",tempID)
     const credentials = await Keychain.getGenericPassword();
                 if (credentials) {
                   console.log(

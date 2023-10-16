@@ -46,8 +46,8 @@ const [distinctDateArr, setDistinctDateArr] = useState()
     }
 
 },[userPointData,userPointError])
-  const toDate = new Date()
-  var fromDate = new Date(new Date().setDate(toDate.getDate() - 30));
+  const toDate = undefined
+  var fromDate = undefined
       useEffect(() => {
         
         (async () => {
@@ -57,7 +57,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
             userData.user_type_id
           }&app_user_id=${userData.id}`;
           if (fromDate && toDate) {
-            queryParams += `&from_date=${moment(toDate).format('YYYY-MM-DD')}&to_date=${moment(toDate).format('YYYY-MM-DD')}`;
+            queryParams += `&from_date=${moment(fromDate).format('YYYY-MM-DD')}&to_date=${moment(toDate).format('YYYY-MM-DD')}`;
           } else if (fromDate) {
             queryParams += `&from_date=${fromDate}`;
           }
@@ -195,7 +195,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
             </View>
             <View style={{padding:14,alignItems:"flex-start",justifyContent:"flex-start",width:"100%"}}>
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="You Have"></PoppinsTextMedium>
-                {userPointData && <PoppinsText style={{color:"black",marginLeft:10,fontSize:24,fontWeight:'600'}} content={userPointData.body.point_earned}></PoppinsText>}
+                {userPointData && <PoppinsText style={{color:"black",marginLeft:10,fontSize:24,fontWeight:'600'}} content={userPointData.body.point_balance}></PoppinsText>}
 
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Point Balance"></PoppinsTextMedium>
             </View>

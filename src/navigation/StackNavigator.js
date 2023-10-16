@@ -42,7 +42,13 @@ import AddBankDetails from '../screens/payments/AddBankDetails';
 import AddUpi from '../screens/payments/AddUpi';
 import BankAccounts from '../screens/payments/BankAccounts';
 import ReferAndEarn from '../screens/ReferAndEarn/ReferAndEarn';
-
+import MyBonus from '../screens/ReferAndEarn/MyBonus';
+import HelpAndSupport from '../screens/helpAndSupport/HelpAndSupport';
+import ProductCatalogue from '../screens/product catalogue/ProductCatalogue';
+import PdfComponent from '../screens/pdf/PdfComponent';
+import VideoPage from '../screens/video/VideoPage';
+import VideoGallery from '../screens/video/VideoGallery';
+import ImageGallery from '../screens/image/ImageGallery';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -71,6 +77,41 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="BasicInfo" component={BasicInfo}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ImageGallery" component={ImageGallery}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="VideoPage" component={VideoPage}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="VideoGallery" component={VideoGallery}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="PdfComponent" component={PdfComponent}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="ProductCatalogue" component={ProductCatalogue}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="HelpAndSupport" component={HelpAndSupport}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="MyBonus" component={MyBonus}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false

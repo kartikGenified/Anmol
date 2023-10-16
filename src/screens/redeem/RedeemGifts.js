@@ -88,7 +88,7 @@ const RedeemGifts = ({navigation,route}) => {
   
   useEffect(() => {
     if (giftCatalogueData) {
-      console.log('giftCatalogueData', giftCatalogueData.body[0].images);
+      console.log('giftCatalogueData', giftCatalogueData);
       getDistinctCategories(giftCatalogueData.body)
       setDisplayContent(giftCatalogueData.body)
       

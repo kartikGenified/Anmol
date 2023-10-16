@@ -102,7 +102,7 @@ const SelectUser = ({navigation}) => {
             </View>
         {/* </View> */}
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1,width:'100%'}}>
        
      
       
@@ -155,7 +155,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:20
+    marginTop:20,
+    
   },
 });
 

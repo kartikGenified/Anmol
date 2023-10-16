@@ -62,3 +62,8 @@ target 'GenefiedSaas' do
 end
 permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+
+pod 'react-native-blob-util',
+    :path => '../node_modules/react-native-blob-util'
+
+# pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'

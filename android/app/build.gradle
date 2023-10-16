@@ -103,7 +103,14 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-}
+    packagingOptions {
+       pickFirst 'lib/x86/libc_shared.so'
+       pickFirst 'lib/x86_64/ibjsc.so'
+       pickFirst 'lib/arm64-8a/libjsc.so'
+       pickFirst 'lib/arm64v8a/libc++_shared.so'
+       pickFirst 'lib/x86_4/libc++_shared.so'
+       pickFirst 'lib/armabi-v7a/libc++_shared.so'
+     }}
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
