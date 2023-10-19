@@ -269,12 +269,12 @@ const PasswordLogin = ({navigation,route}) => {
             <TextInputRectangularWithPlaceholder
             placeHolder="UserName"
             handleData={getUserId}
-           
+            // maxLength={10}
               ></TextInputRectangularWithPlaceholder>
               <TextInputRectangularWithPlaceholder
             placeHolder="Password"
             handleData={getPassword}
-            
+            // maxLength={10}
               ></TextInputRectangularWithPlaceholder>
         </View>
         <View style={{flexDirection:"row",alignItems:"center",justifyContent:'center',width:'90%'}}>

@@ -292,9 +292,9 @@ return (
               flexDirection: 'row',
               marginTop: 2,
             }}>
-            <Image
+            {/* <Image
               style={{height: 16, width: 16,resizeMode:"contain"}}
-              source={require('../../assets/images/greenTick.png')}></Image>
+              source={require('../../assets/images/greenTick.png')}></Image> */}
             <Text style={{marginLeft:4,color:'black',fontSize: 10, fontWeight: '500'}}>KYC Status</Text>
           </View>
            {/* <View
