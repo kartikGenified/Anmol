@@ -344,7 +344,7 @@ const Profile = ({navigation}) => {
                 content={membership}></PoppinsTextMedium>
             </View>}
             {accountVerified && (
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -356,7 +356,7 @@ const Profile = ({navigation}) => {
                 <PoppinsTextMedium
                   style={{color: 'white'}}
                   content="Account Verified"></PoppinsTextMedium>
-              </View>
+              </TouchableOpacity>
             )}
           </View>
           <View

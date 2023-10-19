@@ -58,7 +58,7 @@ const ScannedDetails = ({navigation,route}) => {
             </TouchableOpacity>
             </View>
             <StatusBox status={status}></StatusBox>
-            <Image style={{height:70,width:70,resizeMode:"contain",marginTop:20}} source={require('../../../assets/images/greenTick.png')}></Image>
+            {/* <Image style={{height:70,width:70,resizeMode:"contain",marginTop:20}} source={require('../../../assets/images/greenTick.png')}></Image> */}
             
             <View style={{alignItems:"center",justifyContent:"center",flexDirection:"row",marginTop:20}}>
             <PoppinsTextMedium style={{fontSize:20,fontWeight:'800',color:'black'}} content="Points : "></PoppinsTextMedium>

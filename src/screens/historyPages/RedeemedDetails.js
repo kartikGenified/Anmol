@@ -79,7 +79,7 @@ const RedeemedDetails = ({navigation,route}) => {
             </View>}
             <PoppinsTextMedium style={{fontSize:16,fontWeight:'500',color:'#171717',marginTop:10}} content={`Expected Delivery Date : ${expectedDeliveryDate}`}></PoppinsTextMedium>
             <View style={{height:50,padding:4,borderWidth:1,borderStyle:'dashed',backgroundColor:secondaryThemeColor,alignItems:"center",justifyContent:"center",marginTop:10,borderRadius:6,flexDirection:"row"}}>
-            <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/greenTick.png')}></Image>
+            {/* <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/greenTick.png')}></Image> */}
             <PoppinsTextMedium style={{fontSize:19,fontWeight:'700',color:'#171717',marginLeft:10}} content={`Delivery Status : ${deliveryStatus}`}></PoppinsTextMedium>
             </View>
             </View>

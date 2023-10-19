@@ -50,278 +50,298 @@ import VideoPage from '../screens/video/VideoPage';
 import VideoGallery from '../screens/video/VideoGallery';
 import ImageGallery from '../screens/image/ImageGallery';
 import ReportAndIssue from '../screens/reportAnIssue/ReportAndIssue';
+import Feedback from '../screens/feedback/Feedback';
 import Scheme from '../screens/scheme/Scheme';
 const Stack = createNativeStackNavigator()
 
-const StackNavigator=()=>{
-    return(
+const StackNavigator = () => {
+    return (
         <NavigationContainer>
-                <Stack.Navigator>
+            <Stack.Navigator>
                 {/* <Stack.Screen options={
                     {
                         headerShown:false
                     }
                 } name="EditProfile" component={EditProfile}></Stack.Screen>
+
                 <Stack.Screen options={
                     {
                         headerShown:false
                     }
                 } name="Profile" component={Profile}></Stack.Screen> */}
-                
-                
+{/* 
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
+                    }
+                } name="Feedback" component={Feedback}></Stack.Screen>
+ */}
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
                     }
                 } name="Introduction" component={Introduction}></Stack.Screen>
+
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
+                    }
+                } name="Feedback" component={Feedback}></Stack.Screen>
+                {/* <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="Feedback" component={Feedback}></Stack.Screen> */}
+                <Stack.Screen options={
+                    {
+                        headerShown: false
                     }
                 } name="BasicInfo" component={BasicInfo}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="Scheme" component={Scheme}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ImageGallery" component={ImageGallery}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ReportAndIssue" component={ReportAndIssue}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="VideoPage" component={VideoPage}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="VideoGallery" component={VideoGallery}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="PdfComponent" component={PdfComponent}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ProductCatalogue" component={ProductCatalogue}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="HelpAndSupport" component={HelpAndSupport}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="MyBonus" component={MyBonus}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ReferAndEarn" component={ReferAndEarn}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="BankAccounts" component={BankAccounts}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="EditProfile" component={EditProfile}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="AddUpi" component={AddUpi}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="AddBankDetails" component={AddBankDetails}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="RedeemedDetails" component={RedeemedDetails}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="RedeemCashback" component={RedeemCashback}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="Verification" component={Verification}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="CartList" component={CartList}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="RedeemGifts" component={RedeemGifts}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="AddBankAccountAndUpi" component={AddBankAccountAndUpi}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="RedeemRewardHistory" component={RedeemRewardHistory}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="WarrantyDetails" component={WarrantyDetails}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="WarrantyHistory" component={WarrantyHistory}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="RedeemedHistory" component={RedeemedHistory}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="WheelHistory" component={WheelHistory}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="CouponDetails" component={CouponDetails}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="CashbackDetails" component={CashbackDetails}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ScannedDetails" component={ScannedDetails}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="CouponHistory" component={CouponHistory}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="CashbackHistory" component={CashbackHistory}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="PointHistory" component={PointHistory}></Stack.Screen>
-                 <Stack.Screen options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ScannedHistory" component={ScannedHistory}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="Passbook" component={Passbook}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="GenuinityScratch" component={GenuinityScratch}></Stack.Screen>
-                
+
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="ActivateWarranty" component={ActivateWarranty}></Stack.Screen>
-                
-                 <Stack.Screen options={
+
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="Notification" component={Notification}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="GenuineProduct" component={GenuineProduct}></Stack.Screen>
-                
+
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="Genuinity" component={Genuinity}></Stack.Screen>
                 <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
                 } name="CongratulateOnScan" component={CongratulateOnScan}></Stack.Screen>
-                <Stack.Screen  options={
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="QrCodeScanner" component={QrCodeScanner}></Stack.Screen>
-               
-                <Stack.Screen  options={
+                } name="QrCodeScanner" component={QrCodeScanner}></Stack.Screen>
+
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="SelectLanguage" component={SelectLanguage}></Stack.Screen>
-               
-                <Stack.Screen  options={
+                } name="SelectLanguage" component={SelectLanguage}></Stack.Screen>
+
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="SelectUser" component={SelectUser}></Stack.Screen>
-                <Stack.Screen  options={
+                } name="SelectUser" component={SelectUser}></Stack.Screen>
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="OtpLogin" component={OtpLogin}></Stack.Screen>
-                <Stack.Screen  options={
+                } name="OtpLogin" component={OtpLogin}></Stack.Screen>
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="PasswordLogin" component={PasswordLogin}></Stack.Screen>
-                <Stack.Screen  options={
+                } name="PasswordLogin" component={PasswordLogin}></Stack.Screen>
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="VerifyOtp" component={VerifyOtp}></Stack.Screen>
-                 <Stack.Screen  options={
+                } name="VerifyOtp" component={VerifyOtp}></Stack.Screen>
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="RegisterUser" component={RegisterUser}></Stack.Screen>
-                <Stack.Screen  options={
+                } name="RegisterUser" component={RegisterUser}></Stack.Screen>
+                <Stack.Screen options={
                     {
-                        headerShown:false
+                        headerShown: false
                     }
-                }  name="Dashboard" component={DrawerNavigator}></Stack.Screen>
-                
-                </Stack.Navigator>
-            </NavigationContainer>
+                } name="Dashboard" component={DrawerNavigator}></Stack.Screen>
+
+            </Stack.Navigator>
+        </NavigationContainer>
     )
 }
 

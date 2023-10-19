@@ -70,7 +70,7 @@ const TextInputGST = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Pan Verified Succesfully</Text>
-            <Image style={{height:60,width:60,margin:20}} source={require('../../../../assets/images/greenTick.png')}></Image>
+            {/* <Image style={{height:60,width:60,margin:20}} source={require('../../../../assets/images/greenTick.png')}></Image> */}
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}>
