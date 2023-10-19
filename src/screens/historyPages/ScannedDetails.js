@@ -80,7 +80,7 @@ const ScannedDetails = ({navigation,route}) => {
                 </View>
             </View>
             <ScannedDetailsProductBox></ScannedDetailsProductBox>
-            <ClickToReport></ClickToReport>
+            {/* <ClickToReport></ClickToReport> */}
         </View>
     );
 }

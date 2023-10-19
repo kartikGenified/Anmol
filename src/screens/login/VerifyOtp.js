@@ -22,11 +22,15 @@ import { setAppUserId,setAppUserName,setAppUserType,setUserData,setId} from '../
 import OtpInput from '../../components/organisms/OtpInput';
 import * as Keychain from 'react-native-keychain';
 import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
+import ErrorModal from '../../components/modals/ErrorModal';
+import MessageModal from '../../components/modals/MessageModal';
 
 const VerifyOtp = ({navigation, route}) => {
   const [mobile, setMobile] = useState(route.params.navigationParams.mobile);
   const [otp, setOtp] = useState('');
-
+  const [message, setMessage] = useState();
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false)
   const dispatch = useDispatch()
   // fetching theme for the screen-----------------------
 
@@ -147,9 +151,13 @@ catch(e){
         console.log("successfullyLoggedIn")
         saveToken(verifyOtpData.body.token)
         saveUserDetails(verifyOtpData.body)
-        navigation.navigate('Dashboard')
+        setMessage("Successfully Loged In")
+        setSuccess(true)
+        
       }
-    } else {
+    } else if(verifyOtpError) {
+      setError(true)
+      setMessage("Login Failed")
       console.log(verifyOtpError)
     }
   }, [verifyOtpData, verifyOtpError]);
@@ -189,7 +197,11 @@ catch(e){
       console.log('From Verify Otp', value);
     }
   };
-
+  const modalClose = () => {
+    setError(false);
+    setSuccess(false)
+    setMessage('')
+  };
   const verifyOtp = () => {
     console.log("first")
     const mobile = navigationParams.mobile;
@@ -220,6 +232,7 @@ catch(e){
     <LinearGradient
       colors={["white", "white"]}
       style={styles.container}>
+        
      <View style={{width:'100%',alignItems: 'center',
           justifyContent: 'center',
           backgroundColor:ternaryThemeColor,}}>
@@ -274,7 +287,19 @@ catch(e){
           </View>
           
       </View>
-
+      {error && (
+            <ErrorModal
+              modalClose={modalClose}
+              message={message}
+              openModal={error}></ErrorModal>
+          )}
+          {success && (
+            <MessageModal
+              modalClose={modalClose}
+              message={message}
+              navigateTo="Dashboard"
+              openModal={success}></MessageModal>
+          )}
      
       <ScrollView style={{width: '100%'}}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>

@@ -23,6 +23,8 @@ import { useVerifyPanMutation } from '../../apiServices/verification/PanVerifica
 import { useSendAadharOtpMutation,useVerifyAadharMutation } from '../../apiServices/verification/AadharVerificationApi';
 import { useVerifyGstMutation } from '../../apiServices/verification/GstinVerificationApi';
 import { useUpdateProfileMutation } from '../../apiServices/profile/profileApi';
+import SuccessModal from '../../components/modals/SuccessModal';
+import MessageModal from '../../components/modals/MessageModal';
 
 const Verification = ({navigation}) => {
   const [kycArray, setKycArray] = useState([])
@@ -38,6 +40,9 @@ const Verification = ({navigation}) => {
   const [finalAadhar, setFinalAadhar] = useState()
   const [isManuallyApproved, setIsManuallyApproved] = useState()
   const [verifiedArray, setVerifiedArray] = useState([])
+  const [message, setMessage] = useState();
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false)
   const kycOptions =useSelector(
         state => state.apptheme.kycOptions,
       )
@@ -165,11 +170,15 @@ useEffect(()=>{
     console.log("updateProfileData",updateProfileData)
     if(updateProfileData.success)
     {
+      setSuccess(true)
+      setMessage("Kyc Completed")
       console.log("Success")
     }
   }
   else if(updateProfileError){
     console.log("updateProfileError",updateProfileError)
+    setError(true)
+    setMessage("Kyc Failed")
   }
   },[updateProfileError,updateProfileData])
 
@@ -220,7 +229,10 @@ else if(verifyAadharError){
    }
   },[verified])
 
-  
+  const modalClose = () => {
+    setError(false);
+    setSuccess(false)
+  };
 
   const handleRegistrationFormSubmission=async()=>{
     console.log("verified array",JSON.stringify(verifiedArray))
@@ -589,6 +601,21 @@ console.log(showAadhar,showPan,showGst)
             </View>
             <KycProgress showPan={showPanProgress} showAadhar={showAadharProgress} showGst={showGstProgress}></KycProgress>
             <ScrollView style={{width:'100%',height:'90%',backgroundColor:'white',marginTop:20}}>
+            {error && (
+            <ErrorModal
+              modalClose={modalClose}
+              message={message}
+              openModal={error}
+              navigateTo="Verification"></ErrorModal>
+          )}
+          {success && (
+            <MessageModal
+              modalClose={modalClose}
+              message={message}
+              openModal={success}
+              navigateTo="RedeemedHistory"
+              ></MessageModal>
+          )}
             <View style={{width:'100%',height:'90%',backgroundColor:'white',alignItems:'center',justifyContent:"center",marginTop:20}}>
             {showPan  && <EnterPan showAndHideVerificationComponents={showAndHideVerificationComponents}></EnterPan>}
             {showAadhar && <EnterAadhar showAndHideVerificationComponents={showAndHideVerificationComponents}></EnterAadhar>}

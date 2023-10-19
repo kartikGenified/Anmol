@@ -15,6 +15,8 @@ import RedeemRewardDataBoxLong from '../../components/molecules/RedeemRewardData
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import ProgressBar from '../../components/miscellaneous/ProgressBar';
 import RedeemRewardDataBoxWithoutImage from '../../components/molecules/RedeemRewardDataBoxWithoutImage';
+import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
+
 const RedeemRewardHistory = ({navigation}) => {
     const [showCoupons, setShowCoupons] = useState(false)
     const [showWheel, setShowWheel] = useState(false)
@@ -81,7 +83,24 @@ const RedeemRewardHistory = ({navigation}) => {
         },
       ] = useFetchGiftsRedemptionsOfUserMutation();
       
+      const [userPointFunc,{
+        data:userPointData,
+        error:userPointError,
+        isLoading:userPointIsLoading,
+        isError:userPointIsError
+    }]= useFetchUserPointsMutation()
+
+    useEffect(()=>{
+        if(userPointData)
+        {
+            console.log("userPointData",userPointData)
+        }
+        else if(userPointError)
+        {
+            console.log("userPointError",userPointError)
+        }
     
+    },[userPointData,userPointError])
       useEffect(() => {
         (async () => {
             const credentials = await Keychain.getGenericPassword();
@@ -133,6 +152,7 @@ const RedeemRewardHistory = ({navigation}) => {
         const params ={userId:userId,
         token:token}
         fetchUserPointsHistoryFunc(params)
+        userPointFunc(params)
 
     }
     useEffect(()=>{
@@ -333,12 +353,12 @@ const RedeemRewardHistory = ({navigation}) => {
                 <PoppinsTextMedium style={{color:"white"}} content={membership}></PoppinsTextMedium>
             </View>
             
-            <View style={{alignItems:"center",justifyContent:"center",width:'100%',top:10}}>
+            <View style={{alignItems:"flex-start",justifyContent:"center",width:'100%',top:10}}>
             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
            {showCoupons &&
             <RedeemRewardDataBox header="My Vouchers"  data="5000" image={require('../../../assets/images/voucher1.png')} ></RedeemRewardDataBox>}
            {showCashback && <RedeemRewardDataBox navigation = {navigation} header="Cashback"  data="5000" image={require('../../../assets/images/cashback.png')} ></RedeemRewardDataBox>}
-            {showPoints && <RedeemRewardDataBox navigation = {navigation} header="Earned Points"  data="5000" image={require('../../../assets/images/points.png')} ></RedeemRewardDataBox>}
+            {showPoints && userPointData &&  <RedeemRewardDataBox navigation = {navigation} header="Earned Points"  data={userPointData.body.point_earned} image={require('../../../assets/images/points.png')} ></RedeemRewardDataBox>}
            {showWheel &&  <RedeemRewardDataBox navigation = {navigation} header="Total Spins"  data="5000" image={require('../../../assets/images/wheel.png')} ></RedeemRewardDataBox>
            }
             </ScrollView>
@@ -350,7 +370,7 @@ const RedeemRewardHistory = ({navigation}) => {
             
             {showCoupons && <CouponList couponName="Zomato" couponCode="Yummy123" earnedOn="23 Sep 2023"></CouponList>}
             <RedeemedProductList ></RedeemedProductList>
-            <DreamGiftComponent></DreamGiftComponent>
+            {/* <DreamGiftComponent></DreamGiftComponent> */}
             {showCashback && <CashbackProductList></CashbackProductList>}
         </View>
         </ScrollView>

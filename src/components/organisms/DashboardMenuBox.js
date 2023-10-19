@@ -41,6 +41,12 @@ const DashboardMenuBox=(props)=>{
             else if(data.toLowerCase().split(" ")[1]==="warranty")
             navigation.navigate('QrCodeScanner')
         }
+        else if(data.toLowerCase() === "product catalogue"){
+            navigation.navigate('ProductCatalogue')
+        }
+        else if(data.toLowerCase() === "customer support" || data.toLowerCase() === "help and support"){
+            navigation.navigate('HelpAndSupport')
+        }
     }
 
     return(
