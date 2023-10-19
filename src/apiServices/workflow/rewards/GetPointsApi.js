@@ -17,7 +17,7 @@ export const GetForms = baseApi.injectEndpoints({
     }),
     fetchUserPoints: builder.mutation({
       query: (params) => {
-        console.log(params)
+        console.log("params",params)
         return {
           method: "GET",
           url: `/api/app/userPoints?user_id=${params.userId}`,
@@ -56,6 +56,20 @@ export const GetForms = baseApi.injectEndpoints({
         };
       },
     }),
+    cashPerPoint: builder.mutation({
+      query: token => {
+        console.log("token from cash per point api",token)
+        return {
+          method: 'GET',
+          url: `/api/app/cashPerPoint`,
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+            slug: slug,
+          },
+        };
+      },
+    }),
     userPointsEntry: builder.mutation({
       query: body => {
         console.log('body aisi', body);
@@ -74,4 +88,4 @@ export const GetForms = baseApi.injectEndpoints({
   }),
 });
 
-export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation} = GetForms;
+export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation,useCashPerPointMutation} = GetForms;

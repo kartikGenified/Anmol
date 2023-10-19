@@ -11,28 +11,19 @@ const DashboardSupportBox = (props) => {
     const fontWeight =Platform.OS==='ios' ? '400' : '800'
     const fontSize =Platform.OS==='ios' ? 10 : 12
 
-<<<<<<< HEAD
 const handleNavigation=()=>{
     if(text==="Feedback"){
         navigation.navigate('Feedback')
     }
-    else if(text ==="Report an Issue")
+    else if(text ==="Refer and Earn")
     {
-        // navigation.navigate('ReportAndIssue')
+        navigation.navigate('ReferAndEarn')
     }
     else if(text ==="Customer support")
     {
         navigation.navigate('HelpAndSupport')
     }
 }
-=======
-    const handleNavigation=()=>{
-        if(text==="Feedback")
-        {
-            navigation.navigate("Feedback")
-        }
-    }
->>>>>>> 3da96722a54985738b6aefd96bc756ccbcd0e985
 
     return (
         <TouchableOpacity onPress={()=>{handleNavigation()}}  style={{height:140,width:'28%',margin:8,borderTopLeftRadius:100,borderTopRightRadius:100,borderBottomRightRadius:10,borderBottomLeftRadius:10,backgroundColor:backgroundColor,alignItems:"center",justifyContent:"center",borderWidth:0.4,borderColor:borderColor}}>

@@ -72,7 +72,7 @@ const ImageGallery = ({navigation}) => {
     const date = props.date
     console.log(indexImage)
     return(
-      <TouchableOpacity onPress={()=>{setModalVisible(true)}} style={{height:180,width:'42%',borderRadius:10,backgroundColor:'white',elevation:10,margin:10,alignItems:'center',justifyContent:'flex-end'}}>
+      <TouchableOpacity onPress={()=>{setModalVisible(true)}} style={{height:180,width:'42%',borderRadius:20,backgroundColor:'white',elevation:10,margin:10,alignItems:'center',justifyContent:'flex-end',borderColor:"#DDDDDD",borderWidth:1}}>
         <Modal
         animationType="slide"
         transparent={true}
@@ -102,8 +102,8 @@ setIndexImage(indexImage +1)
           </View>
         </View>
       </Modal>
-       <View style={{width:'100%',backgroundColor:"#DDDDDD",alignItems:"center",justifyContent:'center',height:'100%',borderRadius:10}}>
-        <Image style={{height:"100%",width:"100%",borderRadius:10}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
+       <View style={{width:'100%',backgroundColor:"#DDDDDD",alignItems:"center",justifyContent:'center',height:'100%',borderRadius:20}}>
+        <Image style={{height:"100%",width:"100%",borderRadius:20}} source={{uri:BaseUrlImages+images[indexImage]}}></Image>
        
        </View>
         {/* <View style={{backgroundColor:'black',width:'100%',alignItems:'flex-start',height:'50%',justifyContent:"center"}}>
@@ -166,22 +166,26 @@ setIndexImage(indexImage +1)
           borderTopRightRadius: 30,
           borderTopLeftRadius: 30,
           backgroundColor: 'white',
-          minHeight:height-100,
+          minHeight:height-50,
           marginTop: 20,
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           width: '100%',
           paddingBottom: 40,
-          flexDirection:'row',flexWrap:'wrap',
+          
           
         }}>
-          {
+            <View style={{width:'100%',alignItems:"flex-start",justifyContent:'flex-start',flexDirection:'row',flexWrap:'wrap',marginTop:20}}>
+            {
             imageData && imageData.map((item,index)=>{
               return(
                 <ImageComp key={index} title={item.title} type={item.type} image={item.images} date={item.updated_at}></ImageComp>
               )
             })
           }
+          
+            </View>
+          
             
             
         </View>

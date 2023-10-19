@@ -18,6 +18,8 @@ import {BaseUrlImages} from '../../utils/BaseUrlImages';
 import {useRedeemCashbackMutation} from '../../apiServices/cashback/CashbackRedeemApi';
 import * as Keychain from 'react-native-keychain';
 import ErrorModal from '../../components/modals/ErrorModal';
+import { useCashPerPointMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
+import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 
 const RedeemCashback = ({navigation}) => {
   const [message, setMessage] = useState();
@@ -38,6 +40,21 @@ const RedeemCashback = ({navigation}) => {
   const modalClose = () => {
     setError(false);
   };
+
+  const [userPointFunc,{
+    data:userPointData,
+    error:userPointError,
+    isLoading:userPointIsLoading,
+    isError:userPointIsError
+}]= useFetchUserPointsMutation()
+
+  const [cashPerPointFunc,{
+    data:cashPerPointData,
+    error:cashPerPointError,
+    isLoading:cashPerPointIsLoading,
+    isError:cashPerPointIsError
+  }] = useCashPerPointMutation()
+
   const [
     redeemCashbackFunc,
     {
@@ -71,9 +88,39 @@ const RedeemCashback = ({navigation}) => {
         token:token
       };
       redeemCashbackFunc(params)
+      
     }
   };
+  useEffect(()=>{
+    fetchToken(userData.id)
+    console.log("userData from useeffect",userData.id)
+  },[userData])
 
+  const fetchToken=async(id)=>{
+    const credentials = await Keychain.getGenericPassword();
+    if (credentials) {
+      console.log(
+        'Credentials successfully loaded for user ' + credentials.username,
+      );
+      const token = credentials.username;
+      
+      const params = {userID:id,token:token}
+      console.log("params",params)
+      cashPerPointFunc(token)
+      userPointFunc(params)
+    }
+  }
+  useEffect(()=>{
+    if(userPointData)
+    {
+        console.log("userPointData",JSON.stringify(userPointData))
+    }
+    else if(userPointError)
+    {
+        console.log("userPointError",userPointError)
+    }
+
+},[userPointData,userPointError])
   useEffect(()=>{
     if(redeemCashbackData)
     {
@@ -85,6 +132,16 @@ const RedeemCashback = ({navigation}) => {
         setMessage(redeemCashbackError.data.message)
     }
   },[redeemCashbackData,redeemCashbackError])
+  useEffect(()=>{
+    if(cashPerPointData)
+    {
+        console.log("cashPerPointData",cashPerPointData)
+    }
+    else if(cashPerPointError){
+        console.log("cashPerPointError",cashPerPointError)
+        
+    }
+  },[cashPerPointData,cashPerPointError])
 
   
   return (
