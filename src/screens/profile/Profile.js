@@ -21,6 +21,7 @@ const Profile = ({navigation}) => {
   const [formValues, setFormValues] = useState();
   const [showProfilePic, setShowProfilePic] = useState(false);
   const [profileName, setProfileName] = useState(false);
+  const [showNoDataFoundMessage, setShowNoDataFoundMessage] = useState(false)
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -63,7 +64,9 @@ const Profile = ({navigation}) => {
   },[getActiveMembershipData,getActiveMembershipError])
   useEffect(() => {
     if (getFormData) {
-      console.log('Form Fields', JSON.stringify(getFormData.body.template));
+      if(getFormData.body.length!==0)
+      {
+        console.log('Form Fields', JSON.stringify(getFormData));
 
       const filteredData = Object.values(getFormData.body.template).filter(
         (item, index) => {
@@ -76,6 +79,12 @@ const Profile = ({navigation}) => {
 
       setFormFields(filteredData);
       filterNameFromFormFields(filteredData);
+      }
+      else{
+        console.log("no Form")
+        setShowNoDataFoundMessage(true)
+      }
+      
     } else {
       console.log('Form Field Error', getFormError);
     }
@@ -421,7 +430,7 @@ const Profile = ({navigation}) => {
               source={require('../../../assets/images/notificationOn.png')}></Image>
           </TouchableOpacity>
         </View>
-        <ProfileHeader></ProfileHeader>
+        {!showNoDataFoundMessage && <ProfileHeader></ProfileHeader>}
         <View
           style={{
             borderTopRightRadius: 30,

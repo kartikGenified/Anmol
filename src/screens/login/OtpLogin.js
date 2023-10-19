@@ -444,7 +444,10 @@ const OtpLogin = ({navigation, route}) => {
     // console.log(data)
     setName(data)
   };
-  
+  const navigateToOtp=()=>{
+    sendOtpFunc({mobile,name,user_type,user_type_id})
+    navigation.navigate('VerifyOtp',{navigationParams})
+  }
   const handleButtonPress=()=>{
     // console.log("first",getNameData.message)
     if(getNameData)
@@ -452,7 +455,7 @@ const OtpLogin = ({navigation, route}) => {
       if(getNameData.message==="Not Found")
     {
       console.log("registrationRequired",registrationRequired)
-    registrationRequired && navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id,name:name,mobile:mobile})
+    registrationRequired ? navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id,name:name,mobile:mobile}) : navigateToOtp()
 
     }
     else{

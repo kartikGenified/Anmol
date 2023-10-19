@@ -17,6 +17,8 @@ import { BaseUrlImages } from '../utils/BaseUrlImages';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useGetActiveMembershipMutation } from '../apiServices/membership/AppMembershipApi';
 import { useFetchProfileMutation } from '../apiServices/profile/profileApi';
+import Share from 'react-native-share';
+import { shareAppLink } from '../utils/ShareAppLink';
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer=()=>{
@@ -33,7 +35,7 @@ const CustomDrawer=()=>{
       ? useSelector(state => state.apptheme.primaryThemeColor)
       : '#FF9B00';
     const userData = useSelector(state=>state.appusersdata.userData)
-  console.log(userData)
+  console.log("userData",userData)
 const navigation = useNavigation()
 
 const [
@@ -126,12 +128,13 @@ fetchMenu()
 useEffect(()=>{
   if(getAppMenuData)
   {
+    console.log("usertype",userData.user_type)
     console.log("getAppMenuData",JSON.stringify(getAppMenuData))
    const tempDrawerData = getAppMenuData.body.filter((item)=>{
     return item.user_type===userData.user_type
    })
-   console.log("tempDrawerData",tempDrawerData)
-   setDrawerData(tempDrawerData)
+   console.log("tempDrawerData",JSON.stringify(tempDrawerData))
+   setDrawerData(tempDrawerData[0])
   }
   else if(getAppMenuError)
   {
@@ -210,7 +213,7 @@ const DrawerItems = (props) => {
       else if(props.title.toLowerCase() === "product catalogue"){
         navigation.navigate('ProductCatalogue')
     }
-    else if(props.title.toLowerCase() === "video"){
+    else if(props.title.toLowerCase() === "video" || props.title.toLowerCase() === "videos"){
       navigation.navigate('VideoGallery')
   }
   else if(props.title.toLowerCase() === "gallery"){
@@ -219,6 +222,23 @@ const DrawerItems = (props) => {
 else  if(props.title.substring(0,4).toLowerCase()==="scan" )
 {
     navigation.navigate('QrCodeScanner')
+}
+else  if(props.title.toLowerCase()==="scheme" )
+{
+    navigation.navigate('Scheme')
+}
+else  if(props.title.toLowerCase()==="share app" )
+{
+  const options={
+    title:"Share APP",
+    url:shareAppLink}
+Share.open(options)
+.then((res) => {
+  console.log(res);
+})
+.catch((err) => {
+  err && console.log(err);
+});
 }
           }}>
           <Text style={{color: primaryThemeColor, fontSize: 15}}>{props.title}</Text>
@@ -297,9 +317,9 @@ return (
         </View>
       </View>
     </View>
-    <ScrollView>
+    <ScrollView  style={{marginBottom:140}}>
     {
-      drawerData && drawerData[0].app_menu.map((item,index)=>{
+      drawerData!==undefined && drawerData.app_menu.map((item,index)=>{
         return(
           <DrawerItems
         key ={index}
