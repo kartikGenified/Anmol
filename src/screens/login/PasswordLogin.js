@@ -19,12 +19,14 @@ import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
 
 const PasswordLogin = ({navigation,route}) => {
-  const [username, setUsername] = useState()
-  const [passwords, setPasswords] = useState()
-  const [message, setMessage] = useState();
-  const [error, setError] = useState(false);
+  const [username, setUsername] = useState("influencer_5")
+  const [passwords, setPasswords] = useState("123456")
   const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState("")
   const width = Dimensions.get('window').width;
+
+
 
   // fetching theme for the screen-----------------------
   const dispatch = useDispatch()

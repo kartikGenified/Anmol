@@ -13,6 +13,7 @@ const Feedback = ({ navigation }) => {
     //states
     const [starCount, setStarCount] = useState(0);
     const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
+    const [feedback, setFeedback] = useState("")
 
 
     const ternaryThemeColor = useSelector(
@@ -27,13 +28,20 @@ const Feedback = ({ navigation }) => {
     };
 
     const showSuccessModal = () => {
-        setIsSuccessModalVisible(true);
-        console.log("hello")
+        if(feedback!=""){
+            setIsSuccessModalVisible(true); 
+        }
+        
     };
 
     const hideSuccessModal = () => {
         setIsSuccessModalVisible(false);
     };
+
+    const handleFeedbackChange = (text) => {
+        // console.log(feedback)
+        setFeedback(text);
+      };
 
     return (
         <View style={[styles.container, { backgroundColor: ternaryThemeColor }]}>
@@ -104,7 +112,7 @@ const Feedback = ({ navigation }) => {
                 >
 
                     <View>
-                        <FeedbackTextArea />
+                        <FeedbackTextArea  onFeedbackChange={handleFeedbackChange}/>
                         <View style={{ marginHorizontal: '20%' }}>
                             <ButtonWithPlane title="Submit" navigate="" parmas={{}} type={"feedback"} onModalPress = {showSuccessModal}></ButtonWithPlane>
                         </View>
