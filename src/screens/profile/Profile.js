@@ -367,7 +367,7 @@ const Profile = ({ navigation }) => {
 
             </View>}
             {accountVerified && (
-              <TouchableOpacity
+              <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -382,10 +382,14 @@ const Profile = ({ navigation }) => {
                   style={{ color: 'white' }}
                   content="Account Verified"></PoppinsTextMedium>
 
+
                 <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
 
 
               </TouchableOpacity>
+
+              </View>
+
             )}
           </View>
           <View
@@ -483,6 +487,9 @@ const Profile = ({ navigation }) => {
                   photo={require('../../../assets/images/eye.png')}></DisplayOnlyTextInput>
               );
             })}
+            {
+              showNoDataFoundMessage && <PoppinsTextMedium content="No "></PoppinsTextMedium>
+            }
         </View>
       </View>
     </ScrollView>

@@ -19,13 +19,13 @@ import { setWarrantyForm,setWarrantyFormId} from '../../../redux/slices/formSlic
 import { setLocation } from '../../../redux/slices/userLocationSlice';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
-import { useGetAppMenuDataMutation } from '../../apiServices/dashboard/AppUserDashboardMenuAPi.js';
-
+import { useGetkycStatusMutation } from '../../apiServices/kyc/KycStatusApi';
 
 const Dashboard = ({navigation}) => {
 
     const [dashboardItems, setDashboardItems] = useState()
     const [bannerArray, setBannerArray] = useState()
+    const [showKyc, setShowKyc] = useState(true)
     const userId = useSelector((state)=>state.appusersdata.userId)
     console.log("user id is from dashboard",userId)
     
@@ -37,6 +37,30 @@ const Dashboard = ({navigation}) => {
       isLoading:getDashboardIsLoading,
       isError:getDashboardIsError
     }] =useGetAppDashboardDataMutation()
+
+    const [getKycStatusFunc,{
+      data:getKycStatusData,
+      error:getKycStatusError,
+      isLoading:getKycStatusIsLoading,
+      isError:getKycStatusIsError
+    }] = useGetkycStatusMutation()
+
+    useEffect(()=>{
+      if(getKycStatusData)
+      {
+        console.log("getKycStatusData",getKycStatusData)
+        if(getKycStatusData.success)
+        {
+          const tempStatus = Object.values(getKycStatusData.body)
+          setShowKyc(tempStatus.includes(false))
+        }
+      }
+      else if(getKycStatusError)
+      {
+        console.log("getKycStatusError",getKycStatusError)
+      }
+    },[getKycStatusData,getKycStatusError])
+
     useEffect(()=>{
       if(getDashboardData)
       {
@@ -48,6 +72,7 @@ const Dashboard = ({navigation}) => {
         console.log("getDashboardError",getDashboardError)
       }
     },[getDashboardData,getDashboardError])
+
     const [getBannerFunc,{
         data:getBannerData,
         error:getBannerError,
@@ -67,6 +92,7 @@ const Dashboard = ({navigation}) => {
       isLoading:getFormIsLoading,
       isError:getFormIsError
   }] =useGetFormMutation()
+
     const dispatch = useDispatch()
 
 
@@ -115,7 +141,7 @@ const Dashboard = ({navigation}) => {
                   const form_type = "2"
                   console.log("token from dashboard ", token)
                   token && getDashboardFunc(token)
-                  
+                  token && getKycStatusFunc(token)
                   token && getBannerFunc(token)
                   token && getWorkflowFunc({userId,token})
                   token && getFormFunc({form_type,token})
@@ -196,10 +222,10 @@ const Dashboard = ({navigation}) => {
           </ScrollView>
           {dashboardItems && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}  
             <View style={{width:'100%',alignItems:"center",justifyContent:"center",marginBottom:20}}>
-          <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>
+          {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
             </View>
             <View style={{flexDirection:"row",width:'100%',alignItems:"center",justifyContent:"center"}}>
-                <DashboardSupportBox text="Report an Issue" backgroundColor="#FFF4EB" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
+                <DashboardSupportBox text="Refer and Earn" backgroundColor="#FFF4EB" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
                 <DashboardSupportBox text="Customer support" backgroundColor="#EDEAFE" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
                 <DashboardSupportBox text="Feedback" backgroundColor="#FEE9E9" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
 

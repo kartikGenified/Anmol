@@ -22,6 +22,7 @@ export default function Scheme({navigation}) {
     const [gifts, setGifts] = useState([])
     const [selectedGifts, setSelectedGifts] = useState()
     const [categories, setCategories] =useState()
+    const [selected, setSelected] = useState(false)
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -76,7 +77,12 @@ useEffect(()=>{
         })
         const set = new Set(categoryData)
         const tempArray = Array.from(set)
-        setCategories(categoryData)
+        setCategories(tempArray)
+    }
+
+    const handlePress=(data)=>{
+        setSelectedGifts(data)
+        setSelected(true)
     }
 
   const SchemeComponent = props => {
@@ -130,20 +136,23 @@ useEffect(()=>{
 
   const FilterComp = props => {
     const [color, setColor] = useState('#F0F0F0');
-    const [selected, setSelected] = useState(false);
+    const [selected, setSelected] = useState(props.selected );
     const title = props.title;
     const togglebox = () => {
       setSelected(!selected);
-      if(selected)
+      console.log("selected",selected)
+
+      if(!selected)
       {
         const temp = [...gifts]
         const filteredArray =  temp.filter((item,index)=>{
-            console.log(item.brand,title)
+            console.log("From filter",item.brand,title)
                 return item.brand===title
             
         })
         console.log("filteredArray",filteredArray)
-        setSelectedGifts(filteredArray)
+        // setSelectedGifts(filteredArray)
+        props.handlePress(filteredArray)
       }
     };
     console.log('selected', selected);
@@ -234,7 +243,7 @@ useEffect(()=>{
             {
                 categories && categories.map((item,index)=>{
                     return(
-          <FilterComp key={index} title={item}></FilterComp>
+          <FilterComp selected={selected} handlePress={handlePress} key={index} title={item}></FilterComp>
 
                     )
 
