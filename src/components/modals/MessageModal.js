@@ -24,7 +24,7 @@ const MessageModal = (props) => {
     }
   },[])
   const closeModal=()=>{
-    setModalVisible(!modalVisible)
+    setModalVisible(false)
     props.modalClose()
     navigateTo && navigation.navigate(navigateTo,params)
   }
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    position:"absolute"
   },
   button: {
     borderRadius: 10,

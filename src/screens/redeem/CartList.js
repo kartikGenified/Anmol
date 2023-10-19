@@ -421,16 +421,19 @@ useEffect(()=>{
             <ErrorModal
               modalClose={modalClose}
               message={message}
-              openModal={error}></ErrorModal>
+              openModal={error}
+              navigateTo="Verification"></ErrorModal>
           )}
           {success && (
             <MessageModal
               modalClose={modalClose}
               message={message}
-              openModal={success}></MessageModal>
+              openModal={success}
+              navigateTo="RedeemedHistory"
+              ></MessageModal>
           )}
       <View
-        style={{
+        style={{  
           alignItems: 'center',
           justifyContent: 'flex-start',
           flexDirection: 'row',

@@ -74,6 +74,8 @@ useEffect(()=>{
        const categoryData= data.map((item,index)=>{
            return (item.brand).trim()
         })
+        const set = new Set(categoryData)
+        const tempArray = Array.from(set)
         setCategories(categoryData)
     }
 
@@ -257,7 +259,7 @@ useEffect(()=>{
             {
                 gifts && gifts.map((item,index)=>{
                     return(
-          <SchemeComponent name={item.name} worth={item.value} coin={item.points} image={item.images[0]}></SchemeComponent>
+          <SchemeComponent key={index} name={item.name} worth={item.value} coin={item.points} image={item.images[0]}></SchemeComponent>
                     )
                 })
             }

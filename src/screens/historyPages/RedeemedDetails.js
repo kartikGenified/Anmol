@@ -41,6 +41,18 @@ const RedeemedDetails = ({navigation,route}) => {
     const deliveryStatus = "Approved"
     const image = data.gift.gift[0].images[0]
     const deliveryAddress = "69/5, Gali no -2 Sainik Enclave Sector 2, Mohan Garden,Uttam Nagar, New Delhi - 110059"
+
+
+    const ClickToReport=()=>{
+        return(
+            <View style={{alignItems:"center",justifyContent:'center',width:"100%",position:"absolute",bottom:10}}>
+                <PoppinsTextMedium style={{color:'black',fontSize:16,fontWeight:'700'}} content="Issue with this ?"></PoppinsTextMedium>
+                <TouchableOpacity onPress={()=>{navigation.navigate("ReportAndIssue",{data:data})}} style={{height:50,width:180,backgroundColor:"#D10000",alignItems:"center",justifyContent:"center",borderRadius:4,marginTop:6}}>
+                    <PoppinsTextMedium style={{color:'white',fontSize:16}} content="Click here to report"></PoppinsTextMedium>
+                </TouchableOpacity>
+            </View>
+        )
+    }
     return (
         <View style={{alignItems:"center",justifyContent:"flex-start",height:'100%',backgroundColor:"white",width:"100%"}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
@@ -107,11 +119,7 @@ const RedeemedDetails = ({navigation,route}) => {
                 </View>
             </View>
             </View> */}
-            <View style={{alignItems:"center",justifyContent:"center",marginTop:20}}>
-                <PoppinsTextMedium style={{color:"black",fontSize:18,fontWeight:"700"}} content="Issue With This ?"></PoppinsTextMedium>
-                <ButtonNavigate style={{color:"white"}}  content ="Click Here To Report" backgroundColor="#D10000"></ButtonNavigate>
-            
-            </View>
+           {/* <ClickToReport></ClickToReport> */}
             
             </View>
             </ScrollView>

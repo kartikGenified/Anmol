@@ -13,15 +13,29 @@ const WarrantyDetails = ({navigation,route}) => {
 const warrantyStart=route.params.data.created_at
 const warrantyEnd = route.params.data.end_date
 const warrantyId = route.params.data.id
+const data = route.params.data
 const secondaryThemeColor = useSelector(
     state => state.apptheme.secondaryThemeColor,
   )
     ? useSelector(state => state.apptheme.secondaryThemeColor)
     : '#FFB533';
+
+
+    console.log("data",data)
+    const ClickToReport=()=>{
+        return(
+            <View style={{alignItems:"center",justifyContent:'center',width:"100%",position:"absolute",bottom:10}}>
+                <PoppinsTextMedium style={{color:'black',fontSize:16,fontWeight:'700'}} content="Issue with this ?"></PoppinsTextMedium>
+                <TouchableOpacity onPress={()=>{navigation.navigate("ReportAndIssue",{data:data})}} style={{height:50,width:180,backgroundColor:"#D10000",alignItems:"center",justifyContent:"center",borderRadius:4,marginTop:6}}>
+                    <PoppinsTextMedium style={{color:'white',fontSize:16}} content="Click here to report"></PoppinsTextMedium>
+                </TouchableOpacity>
+            </View>
+        )
+    }
     const ScannedDetailsProductBox=(props)=>{
-        const productName=props.product_name
-        const productSerialNumber = props.product_code
-        const productCode = props.productCode
+        const productName=data.product_name
+        // const productSerialNumber = props.product_code
+        const productCode = data.product_code
         return(
             <View style={{height:200,width:'100%',backgroundColor:'#F7F7F7',alignItems:"center",justifyContent:'center',padding:16,marginTop:120}}>
                <View style={{height:154,width:154,borderRadius:10,borderWidth:1,backgroundColor:'white',position:"absolute",top:-74,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center"}}>
@@ -30,7 +44,7 @@ const secondaryThemeColor = useSelector(
                <View style={{alignItems:"flex-start",justifyContent:"center",position:"absolute",bottom:10,left:20}}>
                <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Product Name : ${productName}`}></PoppinsTextMedium>
                 <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Product Code : ${productCode}`}></PoppinsTextMedium>
-                <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Product S.No : ${productSerialNumber}`}></PoppinsTextMedium>
+                {/* <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Product S.No : ${productSerialNumber}`}></PoppinsTextMedium> */}
                </View>
                 </View>
         )
@@ -63,11 +77,7 @@ const secondaryThemeColor = useSelector(
                 <View style={{height:40,width:240,alignItems:"center",justifyContent:"center",backgroundColor:"#353535",marginTop:20,borderRadius:4}}>
                 <PoppinsTextMedium style={{color:'white', fontSize:18,marginTop:4}} content={`Claim Warranty/View Claim`}></PoppinsTextMedium>
                 </View>
-                <View style={{alignItems:"center",justifyContent:"center",marginTop:20,position:"absolute",bottom:10,borderTopWidth:1,borderColor:'#DDDDDD',width:'90%',paddingTop:10}}>
-                <PoppinsTextMedium style={{color:"black",fontSize:18,fontWeight:"700"}} content="Issue With This ?"></PoppinsTextMedium>
-                <ButtonNavigate style={{color:"white"}}  content ="Click Here To Report" backgroundColor="#D10000"></ButtonNavigate>
-            
-            </View>
+                {/* <ClickToReport></ClickToReport> */}
         </View>
     );
 }

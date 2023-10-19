@@ -15,9 +15,15 @@ import { setAppUserType } from '../../../redux/slices/appUserDataSlice';
 import { setUserData } from '../../../redux/slices/appUserDataSlice';
 import { setId } from '../../../redux/slices/appUserDataSlice';
 import * as Keychain from 'react-native-keychain';
+import ErrorModal from '../../components/modals/ErrorModal';
+import MessageModal from '../../components/modals/MessageModal';
+
 const PasswordLogin = ({navigation,route}) => {
   const [username, setUsername] = useState()
   const [passwords, setPasswords] = useState()
+  const [message, setMessage] = useState();
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false)
   const width = Dimensions.get('window').width;
 
   // fetching theme for the screen-----------------------
@@ -68,16 +74,19 @@ const PasswordLogin = ({navigation,route}) => {
     useEffect(()=>{
       if(passwordLoginData)
       {
-        console.log("Password Login Data",passwordLoginData.body.token)
+        console.log("Password Login Data",passwordLoginData)
         if(passwordLoginData.success)
         {
-          navigation.navigate('Dashboard')
           saveUserDetails(passwordLoginData.body)
           saveToken(passwordLoginData.body.token)
+          setSuccess(true)
+          setMessage(passwordLoginData.message)
         }
       }
-      else{
+      else if(passwordLoginError){
         console.log("Password Login Error",passwordLoginError)
+        setError(true)
+        setMessage("Login Failed")
       }
     },[passwordLoginData,passwordLoginError])
 
@@ -130,6 +139,14 @@ const PasswordLogin = ({navigation,route}) => {
   
       await Keychain.setGenericPassword(token,password);
     }
+
+    const modalClose = () => {
+      setError(false);
+      setSuccess(false)
+      setMessage('')
+      navigation.navigate('Dashboard')
+
+    };
   return (
     <LinearGradient
       colors={["white", "white"]}
@@ -229,6 +246,19 @@ const PasswordLogin = ({navigation,route}) => {
             
           </View>
       </View>
+      {error && (
+            <ErrorModal
+              modalClose={modalClose}
+              message={message}
+              openModal={error}></ErrorModal>
+          )}
+          {success && (
+            <MessageModal
+              modalClose={modalClose}
+              message={message}
+              navigateTo="Dashboard"
+              openModal={success}></MessageModal>
+          )}
       <ScrollView style={{width:'100%'}}>
        
         
