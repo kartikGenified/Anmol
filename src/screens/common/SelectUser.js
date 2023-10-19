@@ -102,7 +102,7 @@ const SelectUser = ({navigation}) => {
             </View>
         {/* </View> */}
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1,width:'100%'}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
        
      
       

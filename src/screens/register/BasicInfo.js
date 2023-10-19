@@ -25,6 +25,11 @@ import { useRegisterUserByBodyMutation } from '../../apiServices/register/UserRe
 import TextInputAadhar from '../../components/atoms/input/TextInputAadhar';
 import TextInputPan from '../../components/atoms/input/TextInputPan';
 import TextInputGST from '../../components/atoms/input/TextInputGST';
+import ErrorModal from '../../components/modals/ErrorModal';
+import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
+import PrefilledTextInput from '../../components/atoms/input/PrefilledTextInput';
+
 const BasicInfo = ({navigation,route}) => {
     const [message, setMessage] = useState();
     const [success, setSuccess] = useState(false);
@@ -34,6 +39,7 @@ const BasicInfo = ({navigation,route}) => {
   const [isManuallyApproved, setIsManuallyApproved] = useState()
   const [modalTitle, setModalTitle] = useState()
   const [needsAadharVerification, setNeedsAadharVerification] = useState(false)
+  const [location, setLocation] = useState()
   
 
   const ternaryThemeColor = useSelector(
@@ -53,6 +59,7 @@ const BasicInfo = ({navigation,route}) => {
   const manualApproval = useSelector(state => state.appusers.manualApproval)
   const userType = route.params.userType
   const userTypeId = route.params.userId
+  const needsApproval = route.params.needsApproval
   const name = route.params?.name
   const mobile = route.params?.mobile
   console.log("appUsers",userType,userTypeId,isManuallyApproved)
@@ -100,6 +107,37 @@ const BasicInfo = ({navigation,route}) => {
     
   },[])
   useEffect(()=>{
+    let lat=''
+    let lon=''
+    Geolocation.getCurrentPosition((res)=>{
+        lat = res.coords.latitude
+        lon = res.coords.longitude
+        getLocation(JSON.stringify(lat),JSON.stringify(lon))
+    })
+    const getLocation=(lat,lon)=>{
+        if(lat!=='' && lon!=='')
+        {
+            console.log("latitude and longitude",lat,lon)
+            try{
+                axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${lat}+&lon=${lon}&format=json`,{headers:{
+                    'Content-Type': 'application/json'
+                }}).then((res)=>{console.log("Addres Data",res.data)
+                setLocation(res.data)
+              })
+            }
+            catch(e)
+            {
+                console.log("Error in fetching location",e)
+            }
+        
+
+        }
+        else{
+            console.log("latitude and longitude",lat,lon)
+        }
+    }
+  },[])
+  useEffect(()=>{
     if(getFormData)
     {
         console.log("Form Fields",getFormData.body.template)
@@ -127,11 +165,14 @@ useEffect(()=>{
   }
   else if(registerUserError){
       console.log("form submission error",registerUserError)
+      setError(true)
+      setMessage(registerUserError.data.message)
+      
   }
 },[registerUserData,registerUserError])
 
 const handleChildComponentData = data => {
-  console.log(data);
+  console.log("from text input",data);
 
   // Update the responseArray state with the new data
   setResponseArray(prevArray => {
@@ -187,18 +228,20 @@ const handleRegistrationFormSubmission=()=>{
         
       }}>
         {error && (
-            <MessageModal
+            <ErrorModal
               modalClose={modalClose}
-              title={modalTitle}
+              
               message={message}
-              openModal={error}></MessageModal>
+              openModal={error}></ErrorModal>
           )}
            {success && (
             <MessageModal
               modalClose={modalClose}
               title={modalTitle}
               message={message}
-              openModal={success}></MessageModal>
+              openModal={success}
+              navigateTo="PasswordLogin"
+              params={{needsApproval:needsApproval, userType:userType, userId:userTypeId}}></MessageModal>
           )}
           
       <View
@@ -253,19 +296,19 @@ const handleRegistrationFormSubmission=()=>{
               
               if (item.type === 'text') {
                 // if (item.required === true ) {
-                  if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile" && item.name!=='aadhaar')
-                  {
-                    return (
-                      <TextInputRectangleMandatory
-                        jsonData={item}
-                        key={index}
-                        handleData={handleChildComponentData}
-                        placeHolder={item.name}>
-                        {' '}
-                      </TextInputRectangleMandatory>
-                    );
-                  }
-                  else if (item.name === 'phone' || item.name==="mobile") {
+                  // if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile" && item.name!=='aadhaar')
+                  // {
+                  //   return (
+                  //     <TextInputRectangleMandatory
+                  //       jsonData={item}
+                  //       key={index}
+                  //       handleData={handleChildComponentData}
+                  //       placeHolder={item.name}>
+                  //       {' '}
+                  //     </TextInputRectangleMandatory>
+                  //   );
+                  // }
+                   if (item.name === 'phone' || item.name==="mobile") {
                     return (
                       <TextInputNumericRectangle
                         jsonData={item}
@@ -314,7 +357,83 @@ const handleRegistrationFormSubmission=()=>{
                       {' '}
                     </TextInputGST>
                   );
-                }else {
+                }
+                else if((item.name).trim().toLowerCase()==="city" && location!==undefined)
+                {
+                  if(location.address.city)
+                  {
+                    return(
+                      <PrefilledTextInput
+                       jsonData={item}
+                       key={index}
+                       handleData={handleChildComponentData}
+                       placeHolder={item.name}
+                       value={location.address.city}
+                       ></PrefilledTextInput>
+                     )
+                  }
+                  else if(location.address.state)
+                  {
+                    <PrefilledTextInput
+                    jsonData={item}
+                    key={index}
+                    handleData={handleChildComponentData}
+                    placeHolder={item.name}
+                    value={location.address.state}
+                    ></PrefilledTextInput>
+                  }
+                  
+                }
+                else if((item.name).trim().toLowerCase()==="pincode" && location!==undefined)
+                {
+                  return(
+                    <PrefilledTextInput
+                    jsonData={item}
+                    key={index}
+                    handleData={handleChildComponentData}
+                    placeHolder={item.name}
+                    value={location.address.postcode}
+                    ></PrefilledTextInput>
+                  )
+                }
+                else if((item.name).trim().toLowerCase()==="state" && location!==undefined)
+                {
+                  return(
+                    <PrefilledTextInput
+                    jsonData={item}
+                    key={index}
+                    handleData={handleChildComponentData}
+                    placeHolder={item.name}
+                    value={location.address.state}
+                    ></PrefilledTextInput>
+                  )
+                }
+                else if((item.name).trim().toLowerCase()==="district" && location!==undefined)
+                {
+                  if(location.address.county)
+                  {
+                    return(
+                      <PrefilledTextInput
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      value={location.address.state_district}
+                      ></PrefilledTextInput>
+                    )
+                  }
+                  else{
+                    <PrefilledTextInput
+                    jsonData={item}
+                    key={index}
+                    handleData={handleChildComponentData}
+                    placeHolder={item.name}
+                    value={location.address.district}
+                    ></PrefilledTextInput>
+                  }
+                  
+                }
+                else {
                   return (
                     <TextInputRectangle
                       jsonData={item}

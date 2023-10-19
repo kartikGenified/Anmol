@@ -15,14 +15,13 @@ import { setAppUserType } from '../../../redux/slices/appUserDataSlice';
 import { setUserData } from '../../../redux/slices/appUserDataSlice';
 import { setId } from '../../../redux/slices/appUserDataSlice';
 import * as Keychain from 'react-native-keychain';
-
 const PasswordLogin = ({navigation,route}) => {
   const [username, setUsername] = useState()
   const [passwords, setPasswords] = useState()
   const width = Dimensions.get('window').width;
 
   // fetching theme for the screen-----------------------
-  
+  const dispatch = useDispatch()
 
   const primaryThemeColor = useSelector(
     state => state.apptheme.primaryThemeColor,
@@ -107,8 +106,8 @@ const PasswordLogin = ({navigation,route}) => {
     const handleNavigationToRegister=()=>{
     // navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:userType, userId:userId})
 
-      navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:userType, userId:userId})
-
+      // navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:userType, userId:userId})
+      navigation.navigate("BasicInfo",{needsApproval:needsApproval, userType:userType, userId:userId})
 
     }
     const saveUserDetails=(data)=>{
@@ -240,12 +239,12 @@ const PasswordLogin = ({navigation,route}) => {
             <TextInputRectangularWithPlaceholder
             placeHolder="UserName"
             handleData={getUserId}
-            maxLength={10}
+           
               ></TextInputRectangularWithPlaceholder>
               <TextInputRectangularWithPlaceholder
             placeHolder="Password"
             handleData={getPassword}
-            maxLength={10}
+            
               ></TextInputRectangularWithPlaceholder>
         </View>
         <View style={{flexDirection:"row",alignItems:"center",justifyContent:'center',width:'90%'}}>

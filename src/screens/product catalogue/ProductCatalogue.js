@@ -87,21 +87,21 @@ const height = Dimensions.get('window').height
         style={{
           height: 180,
           width: '46%',
-          backgroundColor: 'white',
-          borderRadius: 8,
+          backgroundColor: '#DDDDDD',
+          borderRadius: 20,
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
          
           elevation: 10,
         }}>
             
        
           <Image
-            style={{height: 140, width: '100%',borderRadius:4,position:'absolute',top:0}}
+            style={{height: 140, width: '100%',borderTopRightRadius:20,borderTopLeftRadius:20,resizeMode:'contain'}}
             source={{uri:BaseUrlImages+image}}></Image>
-            <View style={{backgroundColor:'black',width:'100%',height:40,alignItems:'center',justifyContent:'center',position:'absolute',bottom:0}}>
+            <View style={{backgroundColor:'white',width:'100%',height:40,alignItems:'center',justifyContent:'center',position:'absolute',bottom:0,elevation:8,borderBottomRightRadius:20,borderBottomLeftRadius:20}}>
             <PoppinsTextMedium
-          style={{color: 'white', fontSize: 20}}
+          style={{color: 'black', fontSize: 20}}
           content={title}></PoppinsTextMedium>
             </View>
        

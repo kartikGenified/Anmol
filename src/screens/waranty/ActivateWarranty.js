@@ -75,7 +75,7 @@ console.log("date console",date)
 
   useEffect(() => {
     if (uploadImageData) {
-      console.log(uploadImageData);
+      console.log("uploadImageData",uploadImageData);
       const uploadArray=[]
       uploadArray.push(uploadImageData.body[0].filename)
       submitDataWithToken(uploadArray);
@@ -104,7 +104,7 @@ console.log("date console",date)
   }, [activateWarrantyData, activateWarrantyError]);
 
   const submitDataWithToken = async data => {
-    console.log('date', date);
+    console.log('image data is', data);
 
     try {
         const body= {
@@ -121,7 +121,7 @@ console.log("date console",date)
           qr_id:qrData.id
       }
      
-      console.log('body is', body);
+      console.log('body is', JSON.stringify(body));
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
         console.log(
@@ -186,7 +186,7 @@ console.log("date console",date)
   //     const result = await launchImageLibrary();
   // };
   const handleChildComponentData = data => {
-    console.log(data);
+    console.log("data",data);
 
     // Update the responseArray state with the new data
     setResponseArray(prevArray => {
@@ -283,6 +283,20 @@ console.log("date console",date)
         justifyContent: 'center',
         backgroundColor: buttonThemeColor,
       }}>
+        {/* {error && (
+            <ErrorModal
+              modalClose={modalClose}
+              
+              message={message}
+              openModal={error}></ErrorModal>
+          )}
+           {success && (
+            <MessageModal
+              modalClose={modalClose}
+              title={modalTitle}
+              message={message}
+              openModal={success}></MessageModal>)
+           } */}
       <View
         style={{
           height: '10%',

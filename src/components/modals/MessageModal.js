@@ -12,6 +12,8 @@ const MessageModal = (props) => {
     : 'grey';
     const navigation = useNavigation()
     const navigateTo = props.navigateTo
+    const params = props.params
+    console.log(navigateTo,params)
   useEffect(()=>{
     if(props.openModal===true)
     {
@@ -24,7 +26,7 @@ const MessageModal = (props) => {
   const closeModal=()=>{
     setModalVisible(!modalVisible)
     props.modalClose()
-    navigateTo && navigation.navigate(navigateTo)
+    navigateTo && navigation.navigate(navigateTo,params)
   }
    
 

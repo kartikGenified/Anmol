@@ -50,6 +50,7 @@ import VideoPage from '../screens/video/VideoPage';
 import VideoGallery from '../screens/video/VideoGallery';
 import ImageGallery from '../screens/image/ImageGallery';
 import ReportAndIssue from '../screens/reportAnIssue/ReportAndIssue';
+import Scheme from '../screens/scheme/Scheme';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator=()=>{
@@ -78,6 +79,11 @@ const StackNavigator=()=>{
                         headerShown:false
                     }
                 } name="BasicInfo" component={BasicInfo}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown:false
+                    }
+                } name="Scheme" component={Scheme}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown:false

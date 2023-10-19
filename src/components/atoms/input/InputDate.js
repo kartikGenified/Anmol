@@ -9,14 +9,15 @@ const InputDate = (props) => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [selected, setSelected] = useState(false)
-    console.log(moment(date).format('DD/MM/YYYY'))
+    console.log(moment(date).format('YYYY-MM-DD'))
     const data =props.data
     const title = props.title
     
     const handleInputEnd=(date,title)=>{
       
       console.log(date,title)
-      props.handleData(moment(date).format("DD-MM-YYYY"),title)
+      let tempJsonData ={...props.jsonData,"value":moment(date).format("YYYY-MM-DD")}
+      props.handleData(tempJsonData)
   }
 
     return (

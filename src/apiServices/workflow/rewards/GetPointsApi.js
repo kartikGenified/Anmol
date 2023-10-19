@@ -74,4 +74,4 @@ export const GetForms = baseApi.injectEndpoints({
   }),
 });
 
-export const {useCheckUserPointMutation, useUserPointsEntryMutation,useAllUserPointsEntryMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation} = GetForms;
+export const {useAllUserPointsEntryMutation,useCheckUserPointMutation,useFetchUserPointsHistoryMutation,useFetchUserPointsMutation,useUserPointsEntryMutation} = GetForms;

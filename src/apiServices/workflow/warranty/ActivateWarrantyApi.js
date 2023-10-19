@@ -7,7 +7,7 @@ export const ActivateWarrantyApi = baseApi.injectEndpoints({
         console.log(token, 'and warrantydata is',  body);
         return {
           method: 'POST',
-          url: `api/app/warranty/add`,
+          url: `/api/app/warranty/add`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
@@ -23,7 +23,7 @@ export const ActivateWarrantyApi = baseApi.injectEndpoints({
         console.log(token, 'and formId is', form_type,body);
         return {
           method: 'POST',
-          url: `api/app/warranty/status`,
+          url: `/api/app/warranty/status`,
           headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
