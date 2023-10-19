@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,17 +6,18 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import DisplayOnlyTextInput from '../../components/atoms/DisplayOnlyTextInput';
-import {useFetchProfileMutation} from '../../apiServices/profile/profileApi';
+import { useFetchProfileMutation } from '../../apiServices/profile/profileApi';
 import * as Keychain from 'react-native-keychain';
-import {useGetFormMutation} from '../../apiServices/workflow/GetForms';
+import { useGetFormMutation } from '../../apiServices/workflow/GetForms';
 import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { useGetActiveMembershipMutation } from '../../apiServices/membership/AppMembershipApi';
 import { useIsFocused } from '@react-navigation/native';
-const Profile = ({navigation}) => {
+import PlatinumModal from '../../components/platinum/PlatinumModal';
+const Profile = ({ navigation }) => {
   const [formFields, setFormFields] = useState();
   const [formValues, setFormValues] = useState();
   const [showProfilePic, setShowProfilePic] = useState(false);
@@ -27,7 +28,7 @@ const Profile = ({navigation}) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
-    const focused = useIsFocused()
+  const focused = useIsFocused()
   const [
     fetchProfileFunc,
     {
@@ -46,49 +47,53 @@ const Profile = ({navigation}) => {
       isError: getFormIsError,
     },
   ] = useGetFormMutation();
-  const [getActiveMembershipFunc,{
-    data:getActiveMembershipData,
-    error:getActiveMembershipError,
-    isLoading:getActiveMembershipIsLoading,
-    isError:getActiveMembershipIsError
-  }]=useGetActiveMembershipMutation()
+  const [getActiveMembershipFunc, {
+    data: getActiveMembershipData,
+    error: getActiveMembershipError,
+    isLoading: getActiveMembershipIsLoading,
+    isError: getActiveMembershipIsError
+  }] = useGetActiveMembershipMutation()
+
+  useEffect(() => {
+    console.log("")
+  }, [formValues])
 
 
-  useEffect(()=>{
-    if(getActiveMembershipData){
-      console.log("getActiveMembershipData",JSON.stringify(getActiveMembershipData))
+  useEffect(() => {
+    if (getActiveMembershipData) {
+      console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
     }
-    else if(getActiveMembershipError){
-      console.log("getActiveMembershipError",getActiveMembershipError)
+    else if (getActiveMembershipError) {
+      console.log("getActiveMembershipError", getActiveMembershipError)
     }
-  },[getActiveMembershipData,getActiveMembershipError])
+  }, [getActiveMembershipData, getActiveMembershipError])
   useEffect(() => {
     if (getFormData) {
-      if(getFormData.body.length!==0)
-      {
+      if (getFormData.body.length !== 0) {
         console.log('Form Fields', JSON.stringify(getFormData));
 
-      const filteredData = Object.values(getFormData.body.template).filter(
-        (item, index) => {
-          if (item.name === 'profile_pic' || item.name=== "picture") {
-            setShowProfilePic(true);
-          }
-          return item.name !== 'profile_pic' || item.name=="picture";
-        },
-      );
+        const filteredData = Object.values(getFormData.body.template).filter(
+          (item, index) => {
+            if (item.name === 'profile_pic' || item.name === "picture") {
+              setShowProfilePic(true);
+            }
+            return item.name !== 'profile_pic' || item.name == "picture";
+          },
+        );
 
-      setFormFields(filteredData);
-      filterNameFromFormFields(filteredData);
+        setFormFields(filteredData);
+        filterNameFromFormFields(filteredData);
       }
-      else{
+      else {
         console.log("no Form")
         setShowNoDataFoundMessage(true)
       }
-      
+
     } else {
       console.log('Form Field Error', getFormError);
     }
   }, [getFormData, getFormError]);
+
   useEffect(() => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -100,13 +105,13 @@ const Profile = ({navigation}) => {
         const form_type = '6';
         fetchProfileFunc(token);
 
-        getFormFunc({form_type, token});
+        getFormFunc({ form_type, token });
       }
     };
     fetchData();
     getMembership()
   }, [focused]);
-  const getMembership=async()=>{
+  const getMembership = async () => {
     const credentials = await Keychain.getGenericPassword();
     if (credentials) {
       console.log(
@@ -192,7 +197,7 @@ const Profile = ({navigation}) => {
               borderColor: ternaryThemeColor,
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/email.png')}></Image>
           </View>
           <PoppinsTextMedium content={email}></PoppinsTextMedium>
@@ -220,7 +225,7 @@ const Profile = ({navigation}) => {
               borderColor: ternaryThemeColor,
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/location.png')}></Image>
           </View>
           <PoppinsTextMedium content={address}></PoppinsTextMedium>
@@ -248,7 +253,7 @@ const Profile = ({navigation}) => {
               borderColor: ternaryThemeColor,
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/aadhaarLogo.png')}></Image>
           </View>
           <PoppinsTextMedium content={aadharNumber}></PoppinsTextMedium>
@@ -276,7 +281,7 @@ const Profile = ({navigation}) => {
               borderColor: ternaryThemeColor,
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/pancard.png')}></Image>
           </View>
           <PoppinsTextMedium content={panNo}></PoppinsTextMedium>
@@ -286,8 +291,21 @@ const Profile = ({navigation}) => {
   };
 
   const ProfileHeader = () => {
+
+    const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false)
+
+
+    const hideSuccessModal = () => {
+      setIsSuccessModalVisible(false);
+    };
+
+    const showSuccessModal = () => {
+      setIsSuccessModalVisible(true);
+      console.log("hello")
+    };
+
     return (
-      <View style={{width: '100%'}}>
+      <View style={{ width: '100%' }}>
         <View
           style={{
             height: 120,
@@ -310,11 +328,11 @@ const Profile = ({navigation}) => {
               }}>
               {fetchProfileData ? (
                 <Image
-                  style={{height: 98, width: 98, resizeMode: 'contain',borderRadius:49}}
-                  source={{uri: BaseUrlImages + fetchProfileData.body.profile_pic}}></Image>
+                  style={{ height: 98, width: 98, resizeMode: 'contain', borderRadius: 49 }}
+                  source={{ uri: BaseUrlImages + fetchProfileData.body.profile_pic }}></Image>
               ) : (
                 <Image
-                  style={{height: 60, width: 60, resizeMode: 'contain'}}
+                  style={{ height: 60, width: 60, resizeMode: 'contain' }}
                   source={require('../../../assets/images/userGrey.png')}></Image>
               )}
             </View>
@@ -328,7 +346,7 @@ const Profile = ({navigation}) => {
               marginLeft: 10,
             }}>
             <PoppinsText
-              style={{color: 'white', fontSize: 20}}
+              style={{ color: 'white', fontSize: 20 }}
               content={name}></PoppinsText>
             {getActiveMembershipData && <View
               style={{
@@ -337,11 +355,16 @@ const Profile = ({navigation}) => {
                 justifyContent: 'center',
               }}>
               <Image
-                style={{height: 16, width: 16, resizeMode: 'contain'}}
+                style={{ height: 16, width: 16, resizeMode: 'contain' }}
                 source={require('../../../assets/images/reward.png')}></Image>
-              <PoppinsTextMedium
-                style={{color: 'white', fontSize: 14}}
-                content={membership}></PoppinsTextMedium>
+              <TouchableOpacity    onPress={
+                  showSuccessModal
+                }>
+                <PoppinsTextMedium
+                  style={{ color: 'white', fontSize: 14 }}
+                  content={membership}></PoppinsTextMedium>
+              </TouchableOpacity>
+
             </View>}
             {accountVerified && (
               <TouchableOpacity
@@ -349,13 +372,19 @@ const Profile = ({navigation}) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}>
+                }}
+              >
                 <Image
-                  style={{height: 16, width: 16, resizeMode: 'contain'}}
+                  style={{ height: 16, width: 16, resizeMode: 'contain' }}
                   source={require('../../../assets/images/verified.png')}></Image>
+
                 <PoppinsTextMedium
-                  style={{color: 'white'}}
+                  style={{ color: 'white' }}
                   content="Account Verified"></PoppinsTextMedium>
+
+                <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
+
+
               </TouchableOpacity>
             )}
           </View>
@@ -370,12 +399,12 @@ const Profile = ({navigation}) => {
                 navigation.navigate('EditProfile', {
                   formFields: formFields,
                   formValues: formValues,
-                  savedImage:fetchProfileData.body.profile_pic
+                  savedImage: fetchProfileData.body.profile_pic
                 });
               }}
-              style={{height: 30, width: 30}}>
+              style={{ height: 30, width: 30 }}>
               <Image
-                style={{height: 30, width: 30, resizeMode: 'contain'}}
+                style={{ height: 30, width: 30, resizeMode: 'contain' }}
                 source={require('../../../assets/images/editWhite.png')}></Image>
             </TouchableOpacity>
           </View>
@@ -400,7 +429,7 @@ const Profile = ({navigation}) => {
 
   return (
     <ScrollView>
-      <View style={{...styles.container, backgroundColor: ternaryThemeColor}}>
+      <View style={{ ...styles.container, backgroundColor: ternaryThemeColor }}>
         <View
           style={{
             height: 50,
@@ -412,21 +441,21 @@ const Profile = ({navigation}) => {
             marginTop: 10,
           }}>
           <TouchableOpacity
-            style={{height: 20, width: 20, position: 'absolute', left: 20}}
+            style={{ height: 20, width: 20, position: 'absolute', left: 20 }}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/blackBack.png')}></Image>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{height: 30, width: 30, position: 'absolute', right: 20}}
+            style={{ height: 30, width: 30, position: 'absolute', right: 20 }}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 30, width: 30, resizeMode: 'contain'}}
+              style={{ height: 30, width: 30, resizeMode: 'contain' }}
               source={require('../../../assets/images/notificationOn.png')}></Image>
           </TouchableOpacity>
         </View>
@@ -436,7 +465,7 @@ const Profile = ({navigation}) => {
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             backgroundColor: 'white',
-           
+
             marginTop: 10,
             alignItems: 'center',
             justifyContent: 'center',
