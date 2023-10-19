@@ -9,7 +9,7 @@ import Logo from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment';
 import RectangularUnderlinedDropDown from '../../components/atoms/dropdown/RectangularUnderlinedDropDown';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
+import ButtonWithPlane from '../../components/atoms/buttons/ButtonWithPlane';
 
 const ReportAndIssue = ({navigation,route}) => {
 
@@ -141,10 +141,7 @@ const ShowImage=(props)=>{
 </ScrollView>
 </View>
 
-<View style={{height:60,width:200,backgroundColor:ternaryThemeColor,alignItems:"center",justifyContent:'center',flexDirection:'row',borderRadius:4,marginLeft:10,marginTop:50}}>
-<Image style={{height:30,width:30,resizeMode:'contain'}} source={require('../../../assets/images/plane.png')}></Image>
-<PoppinsTextMedium content="Submit" style={{fontSize:18,fontWeight:'800',color:'white',marginLeft:10}}></PoppinsTextMedium>
-</View>
+<ButtonWithPlane title="Submit" navigate="" parmas={{}}></ButtonWithPlane>
 </View>
 
 
