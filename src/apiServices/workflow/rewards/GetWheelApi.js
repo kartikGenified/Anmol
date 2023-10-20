@@ -1,5 +1,6 @@
 import {baseApi} from '../../baseApi';
 import {slug} from '../../../utils/Slug';
+
 export const GetWheel = baseApi.injectEndpoints({
   endpoints: builder => ({
     getallWheelsByUserId: builder.mutation({
