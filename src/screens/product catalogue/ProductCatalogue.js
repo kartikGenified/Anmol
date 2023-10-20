@@ -91,7 +91,7 @@ const height = Dimensions.get('window').height
           borderRadius: 20,
           alignItems: 'center',
           justifyContent: 'flex-start',
-         
+         margin:10,
           elevation: 10,
         }}>
             
@@ -170,9 +170,9 @@ const height = Dimensions.get('window').height
             marginTop: 40,
             width: '100%',
             alignItems: 'center',
-            justifyContent: 'space-evenly',
+            justifyContent: 'flex-start',
             flexWrap: 'wrap',
-            flexDirection: 'row',
+            flexDirection: 'row'
           }}>
             {
                 catalogueData && catalogueData.map((item,index)=>{

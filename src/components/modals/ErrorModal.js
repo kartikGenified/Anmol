@@ -2,13 +2,17 @@ import React, {useState,useEffect} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 import { useSelector } from 'react-redux';
 import  Icon  from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
 const ErrorModal = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation()
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
+    const navigateTo = props.navigateTo
+    
   useEffect(()=>{
     if(props.openModal===true)
     {
@@ -21,6 +25,7 @@ const ErrorModal = (props) => {
   const closeModal=()=>{
     setModalVisible(!modalVisible)
     props.modalClose()
+    navigation.navigate(navigateTo)
   }
    
 

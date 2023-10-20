@@ -15,9 +15,9 @@ const handleNavigation=()=>{
     if(text==="Feedback"){
         navigation.navigate('Feedback')
     }
-    else if(text ==="Report an Issue")
+    else if(text ==="Refer and Earn")
     {
-        // navigation.navigate('ReportAndIssue')
+        navigation.navigate('ReferAndEarn')
     }
     else if(text ==="Customer support")
     {

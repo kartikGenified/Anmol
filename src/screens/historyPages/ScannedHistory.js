@@ -30,6 +30,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         isLoading:userPointIsLoading,
         isError:userPointIsError
     }]= useFetchUserPointsMutation()
+    
   const qrData = useSelector(state=>state.qrData.qrData)
   const userId = useSelector(state => state.appusersdata.userId);
   const id = useSelector(state => state.appusersdata.id);
