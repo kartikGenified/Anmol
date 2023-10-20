@@ -47,6 +47,7 @@ const Profile = ({ navigation }) => {
       isError: getFormIsError,
     },
   ] = useGetFormMutation();
+  
   const [getActiveMembershipFunc, {
     data: getActiveMembershipData,
     error: getActiveMembershipError,

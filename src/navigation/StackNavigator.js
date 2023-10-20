@@ -80,6 +80,12 @@ const StackNavigator = () => {
                 } name="Feedback" component={Feedback}></Stack.Screen>
  */}
 
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WheelList" component={WheelList}></Stack.Screen>
+
 
                 <Stack.Screen options={
                     {
@@ -92,6 +98,12 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="Feedback" component={Feedback}></Stack.Screen>
+
+                {/* <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WheelList" component={WheelList}></Stack.Screen> */}
                 <Stack.Screen options={
                     {
                         headerShown: false
