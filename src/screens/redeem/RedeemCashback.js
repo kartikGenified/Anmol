@@ -20,10 +20,14 @@ import * as Keychain from 'react-native-keychain';
 import ErrorModal from '../../components/modals/ErrorModal';
 import { useCashPerPointMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
 import { useFetchUserPointsMutation } from '../../apiServices/workflow/rewards/GetPointsApi';
+import MessageModal from '../../components/modals/MessageModal';
 
 const RedeemCashback = ({navigation}) => {
   const [message, setMessage] = useState();
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false)
+  const [cashConversion,setCashConversion] = useState()
+  const [pointsConversion, setPointsConversion] = useState(1)
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -65,9 +69,8 @@ const RedeemCashback = ({navigation}) => {
     },
   ] = useRedeemCashbackMutation();
 
-  const points = '2000';
-  const pointsConversion = '2000';
-  const cashConversion = '1000';
+  const points =userPointData?.body.point_balance;
+  const minPointsRedeemed = cashPerPointData?.body.min_point_redeem
   const height = Dimensions.get('window').height
   const redeemCashback = async () => {
     const credentials = await Keychain.getGenericPassword();
@@ -77,20 +80,28 @@ const RedeemCashback = ({navigation}) => {
       );
       const token = credentials.username;
       const params = {
-        user_type_id: userData.user_type_id,
+       data :{ user_type_id: userData.user_type_id,
         user_type: userData.user_type,
         platform_id: 1,
         platform: 'mobile',
-        points: points,
+        points: Number(pointsConversion),
         approved_by_id: 1,
         app_user_id: userData.id,
-        remarks: 'demo',
+        remarks: 'demo'},
         token:token
       };
       redeemCashbackFunc(params)
-      
+      console.log("params",params)
     }
   };
+  useEffect(()=>{
+    if(cashPerPointData)
+    {
+     
+      const conversionFactor = cashPerPointData.body.cash_per_point
+      setCashConversion(pointsConversion*conversionFactor)  
+  }
+  },[cashPerPointData,pointsConversion])
   useEffect(()=>{
     fetchToken(userData.id)
     console.log("userData from useeffect",userData.id)
@@ -104,7 +115,7 @@ const RedeemCashback = ({navigation}) => {
       );
       const token = credentials.username;
       
-      const params = {userID:id,token:token}
+      const params = {userId:id,token:token}
       console.log("params",params)
       cashPerPointFunc(token)
       userPointFunc(params)
@@ -125,11 +136,23 @@ const RedeemCashback = ({navigation}) => {
     if(redeemCashbackData)
     {
         console.log("redeemCashbackData",redeemCashbackData)
+        setSuccess(true)
+        setMessage(redeemCashbackData.message)
     }
     else if(redeemCashbackError){
+      if(redeemCashbackError.status=="409")
+      {
+        navigation.navigate("BasicInfo",{
+          "userType":userData.user_type,
+          "userTypeId":userData.user_type_id
+        })
+      }
+      else{
         console.log("redeemCashbackError",redeemCashbackError)
         setError(true)
         setMessage(redeemCashbackError.data.message)
+      }
+        
     }
   },[redeemCashbackData,redeemCashbackError])
   useEffect(()=>{
@@ -159,8 +182,17 @@ const RedeemCashback = ({navigation}) => {
         <ErrorModal
           modalClose={modalClose}
           message={message}
-          openModal={error}></ErrorModal>
+          openModal={error}
+          navigateTo="RedeemCashback"></ErrorModal>
       )}
+
+      
+      {  success && (
+          <MessageModal
+            modalClose={modalClose}
+            message={message}
+            openModal={success}></MessageModal>)
+      }
       <View
         style={{
           alignItems: 'center',
@@ -269,9 +301,7 @@ const RedeemCashback = ({navigation}) => {
                 fontWeight: '600',
                 fontSize: 14,
               }}></PoppinsTextMedium>
-            <PoppinsText
-              style={{fontSize: 20, color: 'black'}}
-              content={pointsConversion}></PoppinsText>
+            <TextInput value={pointsConversion} style={{color:'black',height:40}} onChangeText={(text)=>{setPointsConversion(text)}} placeholder='Enter Points'></TextInput>
           </View>
           <Image
             style={{height: 24, width: 24, resizeMode: 'contain', right: 12}}
@@ -304,7 +334,7 @@ const RedeemCashback = ({navigation}) => {
             marginBottom:20
           }}>
           <PoppinsTextMedium
-            content="You need minimum 2000 points to redeem"
+            content={`You need minimum ${minPointsRedeemed} points to redeem`}
             style={{
               color: 'black',
               fontWeight: '600',

@@ -227,6 +227,10 @@ else  if(props.title.toLowerCase()==="scheme" )
 {
     navigation.navigate('Scheme')
 }
+else  if(props.title.toLowerCase()==="store locator" )
+{
+    navigation.navigate('DataNotFound')
+}
 else  if(props.title.toLowerCase()==="share app" )
 {
   const options={

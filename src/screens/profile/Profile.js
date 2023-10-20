@@ -368,7 +368,7 @@ const Profile = ({ navigation }) => {
 
             </View>}
             {accountVerified && (
-              <View
+              <TouchableOpacity
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -389,7 +389,7 @@ const Profile = ({ navigation }) => {
 
               </TouchableOpacity>
 
-              </View>
+             
 
             )}
           </View>
