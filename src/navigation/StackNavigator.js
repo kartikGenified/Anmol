@@ -52,7 +52,7 @@ import ImageGallery from '../screens/image/ImageGallery';
 import ReportAndIssue from '../screens/reportAnIssue/ReportAndIssue';
 import Feedback from '../screens/feedback/Feedback';
 import Scheme from '../screens/scheme/Scheme';
-import WheelList from '../screens/wheel/WheelList,';
+import WheelList from '../screens/wheel/WheelList';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
@@ -78,6 +78,12 @@ const StackNavigator = () => {
                 } name="Feedback" component={Feedback}></Stack.Screen>
  */}
 
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WheelList" component={WheelList}></Stack.Screen>
+
 
                 <Stack.Screen options={
                     {
@@ -91,11 +97,11 @@ const StackNavigator = () => {
                     }
                 } name="Feedback" component={Feedback}></Stack.Screen>
 
-                <Stack.Screen options={
+                {/* <Stack.Screen options={
                     {
                         headerShown: false
                     }
-                } name="WheelList" component={WheelList}></Stack.Screen>
+                } name="WheelList" component={WheelList}></Stack.Screen> */}
                 {/* <Stack.Screen options={
                     {
                         headerShown: false
