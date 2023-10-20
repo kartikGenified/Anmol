@@ -66,7 +66,7 @@ const HelpAndSupport = ({navigation}) => {
           }}></PoppinsTextMedium>
       </View>
             <View style={{alignItems:'center',justifyContent:'center',width:'100%',height:'40%'}}>
-              <Image style={{height:300,width:300}} source={require('../../../assets/images/helpandsupport.png')}></Image>
+              <Image style={{height:300,width:300,resizeMode:"contain"}} source={require('../../../assets/images/customerSupportnew.png')}></Image>
             </View>
           <View style={{width:'100%',borderTopRightRadius:30,borderTopLeftRadius:30,backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:'flex-start',height:'60%'}}>
             <TouchableOpacity onPress={()=>{Linking.openURL('mailto:Support@genuine.org')}} style={{width:'90%',alignItems:'center',justifyContent:'center',paddingBottom:20,borderBottomWidth:1,borderColor:'#DDDDDD',marginTop:10}}>

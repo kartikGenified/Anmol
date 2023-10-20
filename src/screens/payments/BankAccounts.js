@@ -219,12 +219,12 @@ const setSelectedPaymentMethod=(data)=>{
                 </View>
                 {
                     openDrawer && <View style={{height:60,width:80,borderRadius:4,backgroundColor:"white",alignItems:"flex-start",justifyContent:"center",position:'absolute',elevation:2,left:-20,top:30}}>
-                        <TouchableOpacity onPress={()=>{
+                        {/* <TouchableOpacity onPress={()=>{
 
                         }} style={{height:'50%',flexDirection:'row',alignItems:"center",justifyContent:"flex-start"}}>
                           <Edit style={{marginLeft:4}} name="edit" size={14} color={ternaryThemeColor}></Edit>
                           <PoppinsTextMedium style={{color:ternaryThemeColor,fontSize:14,marginLeft:4}} content="Edit"></PoppinsTextMedium>                        
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity onPress={()=>{
                             console.log(props.id)
                             // deleteData(String(props.id))
@@ -331,11 +331,11 @@ const setSelectedPaymentMethod=(data)=>{
                 </View>
                 {
                     openDrawer && <View style={{height:60,width:80,borderRadius:4,backgroundColor:"white",alignItems:"flex-start",justifyContent:"center",position:'absolute',elevation:2,left:-20,top:30}}>
-                        <TouchableOpacity style={{height:'50%',flexDirection:'row',alignItems:"center",justifyContent:"flex-start"}}>
+                        {/* <TouchableOpacity style={{height:'50%',flexDirection:'row',alignItems:"center",justifyContent:"flex-start"}}>
                           <Edit style={{marginLeft:4}} name="edit" size={14} color={ternaryThemeColor}></Edit>
                           <PoppinsTextMedium style={{color:ternaryThemeColor,fontSize:14,marginLeft:4}} content="Edit"></PoppinsTextMedium>
                          
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity onPress={()=>{
                             console.log(props.id)
                             setModalVisible(true)

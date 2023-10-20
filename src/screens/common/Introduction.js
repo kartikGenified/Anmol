@@ -5,6 +5,8 @@ import  {useGetAppThemeDataMutation}  from '../../apiServices/appTheme/AppThemeA
 import { useSelector, useDispatch } from 'react-redux'
 import { setPrimaryThemeColor,setSecondaryThemeColor,setIcon,setIconDrawer,setTernaryThemeColor,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades,setKycOptions} from '../../../redux/slices/appThemeSlice';
 import { setManualApproval,setAutoApproval,setRegistrationRequired} from '../../../redux/slices/appUserSlice';
+// import VersionCheck from 'react-native-version-check';
+
 const Introduction = ({navigation}) => {
     const [imageIndex, setImageIndex] = useState(0)
     const dispatch = useDispatch()
@@ -22,6 +24,10 @@ const Introduction = ({navigation}) => {
       // calling API to fetch themes for the app
       useEffect(()=>{
         getAppTheme("oopl")
+    //         VersionCheck.getLatestVersion()
+    // .then(latestVersion => {
+    //     console.log(latestVersion);   
+    //     });
       },[])
 
       // fetching data and checking for errors from the API-----------------------

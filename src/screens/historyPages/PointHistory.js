@@ -113,7 +113,7 @@ const PointHistory = ({navigation}) => {
         )
     }
     return (
-        <View style={{alignItems:'center',justifyContent:"center"}}>
+        <View style={{alignItems:'center',justifyContent:"center",backgroundColor:'white'}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
            <TouchableOpacity onPress={()=>{
             navigation.goBack()
@@ -142,6 +142,7 @@ const PointHistory = ({navigation}) => {
                  {fetchUserPointsHistoryData && <FlatList
         data={fetchUserPointsHistoryData.body.data}
         contentContainerStyle={{paddingBottom:200}}
+        showsVerticalScrollIndicator={false}
         renderItem={({item,index}) => {
             // console.log(index+1,item)
             return(

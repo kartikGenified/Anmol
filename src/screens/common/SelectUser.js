@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
   },
   userListContainer: {
     width: '100%',
-    height:800,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',

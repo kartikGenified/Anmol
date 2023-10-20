@@ -30,7 +30,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         isLoading:userPointIsLoading,
         isError:userPointIsError
     }]= useFetchUserPointsMutation()
-    
+
   const qrData = useSelector(state=>state.qrData.qrData)
   const userId = useSelector(state => state.appusersdata.userId);
   const id = useSelector(state => state.appusersdata.id);
@@ -161,16 +161,16 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         return(
             <TouchableOpacity onPress={()=>{
                 navigation.navigate('ScannedDetails',{data:data})
-            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8,width:'100%'}}>
+            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8,width:'100%',backgroundColor:"#F7F7F7",borderRadius:4}}>
                 <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderColor:'#DDDDDD'}}>
                     <Image style={{height:60,width:60,resizeMode:"contain"}} source={{uri:BaseUrlImages+image}}></Image>
                 </View>
                 <View style={{alignItems:"flex-start",justifyContent:"center",marginLeft:10,width:200}}>
-                    <PoppinsTextMedium style={{fontWeight:'600',fontSize:14,textAlign:'auto'}} content={description}></PoppinsTextMedium>
-                    <PoppinsTextMedium style={{fontWeight:'400',fontSize:12}} content={`Product Code : ${productCode}`}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{fontWeight:'600',fontSize:14,textAlign:'auto',color:'black'}} content={description}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{fontWeight:'400',fontSize:12,color:'black'}} content={`Product Code : ${productCode}`}></PoppinsTextMedium>
                     <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
                         <Image style={{height:14,width:14,resizeMode:"contain"}} source={require('..s/../../assets/images/clock.png')}></Image>
-                    <PoppinsTextMedium style={{fontWeight:'200',fontSize:12,marginLeft:4}} content={time}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{fontWeight:'200',fontSize:12,marginLeft:4,color:'black'}} content={time}></PoppinsTextMedium>
                     </View>
                 </View>
                 <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginLeft:10}}>
@@ -181,7 +181,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
         )
     }
     return (
-        <View style={{alignItems:"center",justifyContent:"flex-start",height:"100%"}}>
+        <View style={{alignItems:"center",justifyContent:"flex-start",height:"100%",backgroundColor:"white"}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
                 <TouchableOpacity onPress={()=>{
                     navigation.goBack()
@@ -210,7 +210,7 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                        
                            
                                 return(
-                                   <View style={{alignItems:"center",justifyContent:"center",width:'100%'}} key ={index}>
+                                   <View style={{alignItems:"center",justifyContent:"center",width:'100%',backgroundColor:'#F7F7F7',marginBottom:10}} key ={index}>
                                     <View  style={{alignItems:"flex-start",justifyContent:"center",borderBottomWidth:1,paddingBottom:10,width:'90%',marginTop:20}}>
                                         <PoppinsTextMedium style={{color:'black',fontSize:16}} content ={moment(item.scanned_at).format('DD-MMM-YYYY')}></PoppinsTextMedium>
                                     </View>

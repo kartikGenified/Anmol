@@ -54,10 +54,7 @@ const Profile = ({ navigation }) => {
     isError: getActiveMembershipIsError
   }] = useGetActiveMembershipMutation()
 
-  useEffect(() => {
-    console.log("")
-  }, [formValues])
-
+  
 
   useEffect(() => {
     if (getActiveMembershipData) {
@@ -163,132 +160,37 @@ const Profile = ({ navigation }) => {
   const address =
     '314, 3rd Floor, HB Twin tower NSP, Pitampura, Delhi, India, 110034';
 
-  const ProfileData = () => {
-    return (
-      <View
-        style={{
-          borderWidth: 1,
-          borderStyle: 'dotted',
-          borderColor: ternaryThemeColor,
-          width: '80%',
-          borderRadius: 10,
-          height: 200,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: -14,
-            top: 10,
-            backgroundColor: 'white',
-          }}>
-          <View
-            style={{
-              height: 30,
-              width: 30,
-              borderRadius: 15,
-              borderWidth: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 10,
-              backgroundColor: 'white',
-              borderColor: ternaryThemeColor,
-            }}>
-            <Image
-              style={{ height: 20, width: 20, resizeMode: 'contain' }}
-              source={require('../../../assets/images/email.png')}></Image>
-          </View>
-          <PoppinsTextMedium content={email}></PoppinsTextMedium>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: -14,
-            top: 50,
-            backgroundColor: 'white',
-          }}>
-          <View
-            style={{
-              height: 30,
-              width: 30,
-              borderRadius: 15,
-              borderWidth: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 10,
-              backgroundColor: 'white',
-              borderColor: ternaryThemeColor,
-            }}>
-            <Image
-              style={{ height: 20, width: 20, resizeMode: 'contain' }}
-              source={require('../../../assets/images/location.png')}></Image>
-          </View>
-          <PoppinsTextMedium content={address}></PoppinsTextMedium>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: -14,
-            top: 100,
-            backgroundColor: 'white',
-          }}>
-          <View
-            style={{
-              height: 30,
-              width: 30,
-              borderRadius: 15,
-              borderWidth: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 10,
-              backgroundColor: 'white',
-              borderColor: ternaryThemeColor,
-            }}>
-            <Image
-              style={{ height: 20, width: 20, resizeMode: 'contain' }}
-              source={require('../../../assets/images/aadhaarLogo.png')}></Image>
-          </View>
-          <PoppinsTextMedium content={aadharNumber}></PoppinsTextMedium>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: -14,
-            top: 140,
-            backgroundColor: 'white',
-          }}>
-          <View
-            style={{
-              height: 30,
-              width: 30,
-              borderRadius: 15,
-              borderWidth: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 10,
-              backgroundColor: 'white',
-              borderColor: ternaryThemeColor,
-            }}>
-            <Image
-              style={{ height: 20, width: 20, resizeMode: 'contain' }}
-              source={require('../../../assets/images/pancard.png')}></Image>
-          </View>
-          <PoppinsTextMedium content={panNo}></PoppinsTextMedium>
+  const ProfileBox=(props)=>{
+    const image = props.image
+    const title = props.title
+    const buttonTitle = props.buttonTitle
+    const handleNavigation=()=>{
+      if(title==="Payment Methods")
+      {
+        navigation.navigate("BankAccounts")
+      }
+      else if(title==="Passbook")
+      {
+        navigation.navigate("Passbook")
+      }
+    }
+    return(
+      <View style={{height:70,width:'50%',alignItems:'center',justifyContent:'center',flexDirection:'row',borderWidth:1.4,borderColor:ternaryThemeColor,borderRadius:10,marginLeft:10,backgroundColor:'white',elevation:10}}>
+      <View style={{width:'30%',alignItems:"center",justifyContent:"center",height:'100%'}}>
+        <View style={{height:50,width:50,borderRadius:25,alignItems:"center",justifyContent:'center',borderColor:'#DDDDDD',borderWidth:1,marginLeft:4}}>
+          <Image style={{height:30,width:30,resizeMode:'contain'}} source={image}></Image>
         </View>
       </View>
-    );
-  };
+      <View style={{width:'70%',alignItems:"center",justifyContent:"center",height:'100%'}}>
+        <PoppinsTextMedium style={{color:'black',fontWeight:'600',marginBottom:4}} content={title}></PoppinsTextMedium>
+        <TouchableOpacity onPress={()=>{handleNavigation()}} style={{height:24,width:60,borderRadius:4,backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:'center'}}>
+          <PoppinsTextMedium style={{color:'white'}} content={buttonTitle}></PoppinsTextMedium>
+        </TouchableOpacity>
+      </View>
+    </View>
+    )
+    
+  }
 
   const ProfileHeader = () => {
 
@@ -432,7 +334,6 @@ const Profile = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
       <View style={{ ...styles.container, backgroundColor: ternaryThemeColor }}>
         <View
           style={{
@@ -464,6 +365,8 @@ const Profile = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         {!showNoDataFoundMessage && <ProfileHeader></ProfileHeader>}
+    <ScrollView>
+
         <View
           style={{
             borderTopRightRadius: 30,
@@ -476,7 +379,7 @@ const Profile = ({ navigation }) => {
           }}>
           {/* <ProfileData></ProfileData> */}
           {formFields &&
-            formValues &&
+            
             formFields.map((item, index) => {
               console.log(item, formValues[index]);
               return (
@@ -490,9 +393,19 @@ const Profile = ({ navigation }) => {
             {
               showNoDataFoundMessage && <PoppinsTextMedium content="No "></PoppinsTextMedium>
             }
+        
         </View>
+        <View style={{width:'100%',backgroundColor:"white",alignItems:"center",justifyContent:'center'}}>
+        <View style={{height:100,width:'90%',backgroundColor:"white",alignItems:"flex-start",justifyContent:'center',flexDirection:'row',marginTop:20}}>
+
+      <ProfileBox buttonTitle="+ Add" title="Payment Methods" image={require('../../../assets/images/money.png')}></ProfileBox>
+      <ProfileBox buttonTitle="View" title="Check Passbook" image={require('../../../assets/images/gift.png')}></ProfileBox>
+        </View>
+        </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+   
+    
   );
 };
 

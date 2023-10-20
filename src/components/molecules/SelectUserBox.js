@@ -69,7 +69,7 @@ const SelectUserBox = (props) => {
 
 const styles = StyleSheet.create({
     container:{
-        height:'20%',
+        height:170,
         width:'40%',
         alignItems:"center",
         justifyContent:"center",

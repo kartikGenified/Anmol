@@ -219,7 +219,7 @@ const DrawerItems = (props) => {
   else if(props.title.toLowerCase() === "gallery"){
     navigation.navigate('ImageGallery')
 }
-else  if(props.title.substring(0,4).toLowerCase()==="scan" )
+else  if(props.title.substring(0,4).toLowerCase()==="scan" && (props.title).toLowerCase() !=="scan list" )
 {
     navigation.navigate('QrCodeScanner')
 }
@@ -230,6 +230,10 @@ else  if(props.title.toLowerCase()==="scheme" )
 else  if(props.title.toLowerCase()==="store locator" )
 {
     navigation.navigate('DataNotFound')
+}
+else  if(props.title.toLowerCase()==="scan list" )
+{
+    navigation.navigate('ScannedHistory')
 }
 else  if(props.title.toLowerCase()==="share app" )
 {
