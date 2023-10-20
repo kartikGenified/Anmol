@@ -109,11 +109,7 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="SpinWheel" component={SpinWheel}></Stack.Screen>
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="WheelList" component={WheelList}></Stack.Screen>
+                
                 <Stack.Screen options={
                     {
                         headerShown: false
