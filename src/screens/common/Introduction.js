@@ -55,10 +55,10 @@ const Introduction = ({navigation}) => {
 
 
         }
-        else{
+        else if(getAppThemeError){
             getAppTheme("oopl")
 
-            console.log("getAppThemeIsError",getAppThemeIsError)
+            // console.log("getAppThemeIsError",getAppThemeIsError)
             console.log("getAppThemeError",getAppThemeError)
         }
       },[getAppThemeData,getAppThemeError])
@@ -79,7 +79,7 @@ const Introduction = ({navigation}) => {
             
             if(imageIndex==descriptionImages.length-1)
             {
-                navigation.navigate('SelectLanguage')
+                navigation.navigate('SelectUser')
             }
             else{
                 setImageIndex(imageIndex+1)
@@ -101,7 +101,7 @@ const Introduction = ({navigation}) => {
             
             <View style={{width:"100%",height:'100%'}}>
                 <Text onPress={()=>{console.log("skipped")
-            {getAppThemeData && navigation.navigate('SelectLanguage')}
+            {getAppThemeData && navigation.navigate('SelectUser')}
             }} style={{fontSize:18,color:"#0087A2",position:"absolute",left:40,bottom:20,fontWeight:'600'}}>Skip</Text>
                 <Text onPress={()=>{handleNext()}} style={{fontSize:18,color:"#0087A2",position:"absolute",right:40,bottom:20,fontWeight:'600'}}>Next</Text>
             </View>

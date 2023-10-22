@@ -274,6 +274,7 @@ return (
           marginLeft: 10,
           position: 'absolute',
           left: 4,
+          resizeMode:"contain"
         }}
         source={{uri:BaseUrlImages+profileImage}}></Image>
       <View style={{justifyContent: 'center', marginLeft: 50}}>

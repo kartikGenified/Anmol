@@ -55,7 +55,10 @@ const Profile = ({ navigation }) => {
     isError: getActiveMembershipIsError
   }] = useGetActiveMembershipMutation()
 
-  
+  useEffect(()=>{
+    formFields && filterNameFromFormFields(formFields);
+
+  },[formFields])
 
   useEffect(() => {
     if (getActiveMembershipData) {
@@ -170,20 +173,20 @@ const Profile = ({ navigation }) => {
       {
         navigation.navigate("BankAccounts")
       }
-      else if(title==="Passbook")
+      else if(title==="Check Passbook")
       {
         navigation.navigate("Passbook")
       }
     }
     return(
-      <View style={{height:70,width:'50%',alignItems:'center',justifyContent:'center',flexDirection:'row',borderWidth:1.4,borderColor:ternaryThemeColor,borderRadius:10,marginLeft:10,backgroundColor:'white',elevation:10}}>
-      <View style={{width:'30%',alignItems:"center",justifyContent:"center",height:'100%'}}>
-        <View style={{height:50,width:50,borderRadius:25,alignItems:"center",justifyContent:'center',borderColor:'#DDDDDD',borderWidth:1,marginLeft:4}}>
+      <View style={{padding:4,width:'45%',alignItems:'center',justifyContent:'center',flexDirection:'row',borderWidth:1.4,borderColor:ternaryThemeColor,borderRadius:10,backgroundColor:'white',elevation:10,margin:10}}>
+      <View style={{alignItems:"center",justifyContent:"center",height:'100%',marginRight:10}}>
+        <View style={{height:50,width:50,borderRadius:25,alignItems:"center",justifyContent:'center',borderColor:'#DDDDDD',borderWidth:1}}>
           <Image style={{height:30,width:30,resizeMode:'contain'}} source={image}></Image>
         </View>
       </View>
-      <View style={{width:'70%',alignItems:"center",justifyContent:"center",height:'100%'}}>
-        <PoppinsTextMedium style={{color:'black',fontWeight:'600',marginBottom:4}} content={title}></PoppinsTextMedium>
+      <View style={{alignItems:"center",justifyContent:"center",height:'100%'}}>
+        <PoppinsTextMedium style={{color:'black',fontWeight:'600',marginBottom:4,fontSize:12}} content={title}></PoppinsTextMedium>
         <TouchableOpacity onPress={()=>{handleNavigation()}} style={{height:24,width:60,borderRadius:4,backgroundColor:ternaryThemeColor,alignItems:'center',justifyContent:'center'}}>
           <PoppinsTextMedium style={{color:'white'}} content={buttonTitle}></PoppinsTextMedium>
         </TouchableOpacity>
@@ -244,12 +247,14 @@ const Profile = ({ navigation }) => {
             style={{
               alignItems: 'flex-start',
               justifyContent: 'center',
-              width: 140,
+              width: 180,
               height: 100,
               marginLeft: 10,
+              paddingBottom:20,
+              
             }}>
             <PoppinsText
-              style={{ color: 'white', fontSize: 20 }}
+              style={{ color: 'white', fontSize: 20,width:160 }}
               content={name}></PoppinsText>
             {getActiveMembershipData && <View
               style={{
@@ -299,7 +304,7 @@ const Profile = ({ navigation }) => {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              marginLeft: 50,
+              marginLeft: 10,
             }}>
             <TouchableOpacity
               onPress={() => {
@@ -380,7 +385,7 @@ const Profile = ({ navigation }) => {
           }}>
           {/* <ProfileData></ProfileData> */}
           {formFields &&
-            
+            formValues &&
             formFields.map((item, index) => {
               console.log(item, formValues[index]);
               return (
@@ -391,18 +396,15 @@ const Profile = ({ navigation }) => {
                   photo={require('../../../assets/images/eye.png')}></DisplayOnlyTextInput>
               );
             })}
-            {
-              showNoDataFoundMessage && <PoppinsTextMedium content="No "></PoppinsTextMedium>
-            }
+            
         
         </View>
-        <View style={{width:'100%',backgroundColor:"white",alignItems:"center",justifyContent:'center'}}>
-        <View style={{height:100,width:'90%',backgroundColor:"white",alignItems:"flex-start",justifyContent:'center',flexDirection:'row',marginTop:20}}>
-
-      <ProfileBox buttonTitle="+ Add" title="Payment Methods" image={require('../../../assets/images/money.png')}></ProfileBox>
+        <ScrollView contentContainerStyle={{width:'100%'}} horizontal={true}>
+        <ProfileBox buttonTitle="+ Add" title="Payment Methods" image={require('../../../assets/images/money.png')}></ProfileBox>
       <ProfileBox buttonTitle="View" title="Check Passbook" image={require('../../../assets/images/gift.png')}></ProfileBox>
-        </View>
-        </View>
+       
+        </ScrollView>
+     
         </ScrollView>
       </View>
    
