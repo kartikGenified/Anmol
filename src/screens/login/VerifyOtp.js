@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,29 +9,38 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {BaseUrl} from '../../utils/BaseUrl';
+import { useSelector, useDispatch } from 'react-redux';
+import { BaseUrl } from '../../utils/BaseUrl';
 import LinearGradient from 'react-native-linear-gradient';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
-import {useGetLoginOtpMutation} from '../../apiServices/login/otpBased/SendOtpApi';
-import {useGetAppLoginMutation} from '../../apiServices/login/otpBased/OtpLoginApi';
-import {useVerifyOtpMutation} from '../../apiServices/login/otpBased/VerifyOtpApi';
-import { setAppUserId,setAppUserName,setAppUserType,setUserData,setId} from '../../../redux/slices/appUserDataSlice';
+import { useGetLoginOtpMutation } from '../../apiServices/login/otpBased/SendOtpApi';
+import { useGetAppLoginMutation } from '../../apiServices/login/otpBased/OtpLoginApi';
+import { useVerifyOtpMutation } from '../../apiServices/login/otpBased/VerifyOtpApi';
+import { setAppUserId, setAppUserName, setAppUserType, setUserData, setId } from '../../../redux/slices/appUserDataSlice';
 import OtpInput from '../../components/organisms/OtpInput';
 import * as Keychain from 'react-native-keychain';
 import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
 
-const VerifyOtp = ({navigation, route}) => {
+import ModalWithBorder from '../../components/modals/ModalWithBorder';
+import Icon from 'react-native-vector-icons/Feather';
+import Close from 'react-native-vector-icons/Ionicons';
+import ButtonOval from '../../components/atoms/buttons/ButtonOval';
+
+const VerifyOtp = ({ navigation, route }) => {
   const [mobile, setMobile] = useState(route.params.navigationParams.mobile);
   const [otp, setOtp] = useState('');
   const [message, setMessage] = useState();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false)
-  const dispatch = useDispatch()
+
+  //modal
+  const [openModalWithBorder, setModalWithBorder] = useState(true)
+
+  const dispatch = useDispatch();
   // fetching theme for the screen-----------------------
 
   const primaryThemeColor = useSelector(
@@ -95,10 +104,10 @@ const VerifyOtp = ({navigation, route}) => {
   const [
     getNameFunc,
     {
-      data:getNameData,
-      error:getNameError,
-      isLoading:getLoading,
-      isError:getIsError
+      data: getNameData,
+      error: getNameError,
+      isLoading: getLoading,
+      isError: getIsError
     }
   ] = useGetNameMutation()
   // -----------------------------------------
@@ -112,7 +121,7 @@ const VerifyOtp = ({navigation, route}) => {
   //   const userId = route.params.navigationParams.userId;
 
   // -----------------------------------------
-  
+
 
   const width = Dimensions.get('window').width;
 
@@ -126,36 +135,35 @@ const VerifyOtp = ({navigation, route}) => {
     }
   }, [sendOtpData, sendOtpError]);
 
-  const saveUserDetails=(data)=>{
-    
-    try{
-  console.log("Saving user details",data)
-  dispatch(setAppUserId(data.user_type_id))
-  dispatch(setAppUserName(data.name))
-  dispatch(setAppUserType(data.user_type))
-  dispatch(setUserData(data))
-  dispatch(setId(data.id))
-      }
-catch(e){
-  console.log("error",e)
-}
-}
+  const saveUserDetails = (data) => {
+
+    try {
+      console.log("Saving user details", data)
+      dispatch(setAppUserId(data.user_type_id))
+      dispatch(setAppUserName(data.name))
+      dispatch(setAppUserType(data.user_type))
+      dispatch(setUserData(data))
+      dispatch(setId(data.id))
+    }
+    catch (e) {
+      console.log("error", e)
+    }
+  }
 
   useEffect(() => {
     if (verifyOtpData) {
-      console.log("user Login Data",verifyOtpData)
-      if(verifyOtpData.success)
-      {
-        console.log(verifyOtpData.body.user_type_id,verifyOtpData.body.name,verifyOtpData.body.user_type)
-    
+      console.log("user Login Data", verifyOtpData)
+      if (verifyOtpData.success) {
+        console.log(verifyOtpData.body.user_type_id, verifyOtpData.body.name, verifyOtpData.body.user_type)
+
         console.log("successfullyLoggedIn")
         saveToken(verifyOtpData.body.token)
         saveUserDetails(verifyOtpData.body)
         setMessage("Successfully Loged In")
         setSuccess(true)
-        
       }
-    } else if(verifyOtpError) {
+    } else if (verifyOtpError) {
+      console.log("verifyOtpError", verifyOtpError)
       setError(true)
       setMessage("Login Failed")
       console.log(verifyOtpError)
@@ -164,20 +172,58 @@ catch(e){
 
   useEffect(() => {
     if (verifyLoginOtpData) {
-      console.log(verifyLoginOtpData)
+      console.log("verifyLoginOtpData", verifyLoginOtpData)
       const mobile = navigationParams.mobile;
       const name = navigationParams.name;
       const user_type_id = navigationParams.user_type_id;
       const user_type = navigationParams.user_type;
       if (verifyLoginOtpData.success) {
-        verifyOtpFunc({mobile, name,otp, user_type_id, user_type});
+        verifyOtpFunc({ mobile, name, otp, user_type_id, user_type });
       }
     } else {
-      // console.log(verifyLoginOtpError)
+      console.log("verifyLoginOtpError", verifyLoginOtpError)
+      setError(true)
+      setMessage("Wrong OTP")
     }
   }, [verifyLoginOtpData, verifyLoginOtpError]);
 
   // -------------------------------------------------
+
+  //function for modal
+
+  //function to handle Modal
+  const modalWithBorderClose = () => {
+    setModalWithBorder(false);
+    navigation.navigate("Dashboard")
+  };
+
+  const ModalContent = () => {
+    return (
+      <View style={{width:'100%',alignItems:"center",justifyContent:"center"}}>
+        <View style={{ marginTop: 40, alignItems: 'center',maxWidth:'80%' }}>
+          <Icon name="check-circle" size={53} color={ternaryThemeColor} />
+          <PoppinsTextMedium style={{ fontSize: 27, fontWeight: '600', color: ternaryThemeColor, marginLeft: 5, marginTop: 5 }} content={"Success ! !"}></PoppinsTextMedium>
+
+          <View style={{ marginTop: 10, marginBottom: 30 }}>
+            <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: "#000000", marginLeft: 5, marginTop: 5, }} content={message}></PoppinsTextMedium>
+          </View>
+
+          <View style={{ alignItems: 'center', marginBottom: 30 }}>
+            <ButtonOval handleOperation={modalWithBorderClose} backgroundColor="#000000" content="OK" style={{ color: 'white', paddingVertical: 4 }} />
+          </View>
+
+        </View>
+
+        <TouchableOpacity style={[{
+          backgroundColor: ternaryThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10,right:-10,
+        }]} onPress={modalClose} >
+          <Close name="close" size={17} color="#ffffff" />
+        </TouchableOpacity>
+
+      </View>
+    )
+  }
+
 
   const handleOtpResend = () => {
     console.log('Resend');
@@ -188,7 +234,7 @@ catch(e){
 
     console.log(mobile, name, user_type_id, user_type);
 
-    sendOtpFunc({mobile, name, user_type_id, user_type});
+    sendOtpFunc({ mobile, name, user_type_id, user_type });
   };
 
   const getOtpFromComponent = value => {
@@ -221,39 +267,41 @@ catch(e){
     });
   };
 
-  const saveToken=async(data)=>{
-  const token = data 
-  const password ='17dec1998'
+  const saveToken = async (data) => {
+    const token = data
+    const password = '17dec1998'
 
-    await Keychain.setGenericPassword(token,password);
+    await Keychain.setGenericPassword(token, password);
   }
 
   return (
     <LinearGradient
       colors={["white", "white"]}
       style={styles.container}>
-        
-     <View style={{width:'100%',alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor:ternaryThemeColor,}}>
-      <View
-        style={{
-          height: 120,
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor:ternaryThemeColor,
-          flexDirection:'row',
-          
-        }}>
-        
+
+      <View style={{
+        width: '100%', alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: ternaryThemeColor,
+      }}>
+        <View
+          style={{
+            height: 120,
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: ternaryThemeColor,
+            flexDirection: 'row',
+
+          }}>
+
           <TouchableOpacity
-          style={{height:50,alignItems:"center",justifyContent:'center',position:"absolute",left:10,top:20}}
+            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/blackBack.png')}></Image>
           </TouchableOpacity>
           <Image
@@ -261,52 +309,63 @@ catch(e){
               height: 50,
               width: 100,
               resizeMode: 'contain',
-              top:20,
-            position:"absolute",
-            left:50,
-              borderRadius:10
-              
-              
+              top: 20,
+              position: "absolute",
+              left: 50,
+              borderRadius: 10
+
+
             }}
-            source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-      </View>
-      <View
-            style={{
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginTop: 10,
-              width:'90%'
-            }}>
-            <PoppinsText
-              style={{color: 'white', fontSize: 28}}
-              content="Enter the OTP sent to"></PoppinsText>
-              <PoppinsText
-              style={{color: 'white', fontSize: 28}}
-              content={navigationParams.mobile}></PoppinsText>
-            
-          </View>
-          
+            source={{ uri: `${BaseUrl}/api/images/${icon}` }}></Image>
+        </View>
+        <View
+          style={{
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            marginTop: 10,
+            width: '90%'
+          }}>
+          <PoppinsText
+            style={{ color: 'white', fontSize: 28 }}
+            content="Enter the OTP sent to"></PoppinsText>
+          <PoppinsText
+            style={{ color: 'white', fontSize: 28 }}
+            content={navigationParams.mobile}></PoppinsText>
+
+        </View>
+
       </View>
       {error && (
-            <ErrorModal
-              modalClose={modalClose}
-              message={message}
-              openModal={error}></ErrorModal>
-          )}
-          {success && (
-            <MessageModal
-              modalClose={modalClose}
-              message={message}
-              navigateTo="Dashboard"
-              openModal={success}></MessageModal>
-          )}
-     
-      <ScrollView style={{width: '100%'}}>
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <ErrorModal
+          modalClose={modalClose}
+          message={message}
+          openModal={error}></ErrorModal>
+      )}
+
+      {/* {success && (
+        <MessageModal
+          modalClose={modalClose}
+          message={message}
+          navigateTo="Dashboard"
+          openModal={success}></MessageModal>
+      )} */}
+
+      <View style={{ marginHorizontal: 100 }}>
+        {success &&
+          <ModalWithBorder
+            modalClose={modalWithBorderClose}
+            message={message}
+            openModal={true}
+            comp={ModalContent}>
+          </ModalWithBorder>}
+      </View>
+
+      <ScrollView style={{ width: '100%' }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Image
-            style={{height: 160, width: 160, resizeMode: 'contain'}}
+            style={{ height: 160, width: 160, resizeMode: 'contain' }}
             source={require('../../../assets/images/otpScreenImage.png')}></Image>
-          
+
         </View>
         <OtpInput
           getOtpFromComponent={getOtpFromComponent}
@@ -319,7 +378,7 @@ catch(e){
             justifyContent: 'center',
           }}>
           <PoppinsTextMedium
-            style={{fontSize: 14, color: 'black'}}
+            style={{ fontSize: 14, color: 'black' }}
             content="Didn't you recieve the OTP?"></PoppinsTextMedium>
           <Text
             style={{
@@ -346,7 +405,7 @@ catch(e){
             <ButtonNavigateArrow
               handleOperation={verifyOtp}
               backgroundColor={buttonThemeColor}
-              style={{color: 'white', fontSize: 16}}
+              style={{ color: 'white', fontSize: 16 }}
               content="Verify"></ButtonNavigateArrow>
           )}
         </View>
