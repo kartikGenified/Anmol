@@ -38,7 +38,7 @@ const VerifyOtp = ({ navigation, route }) => {
   const [success, setSuccess] = useState(false)
 
   //modal
-  const [openModalWithBorder, setModalWithBorder] = useState(true)
+  const [openModalWithBorder, setModalWithBorder] = useState(false)
 
   const dispatch = useDispatch();
   // fetching theme for the screen-----------------------
@@ -135,6 +135,17 @@ const VerifyOtp = ({ navigation, route }) => {
     }
   }, [sendOtpData, sendOtpError]);
 
+
+  //modal close
+  useEffect(() => {
+    console.log("running")
+    if (openModalWithBorder == true)
+      setTimeout(() => {
+        console.log("running2")
+        modalWithBorderClose()
+      }, 2000);
+  },[success,openModalWithBorder]);
+
   const saveUserDetails = (data) => {
 
     try {
@@ -161,6 +172,7 @@ const VerifyOtp = ({ navigation, route }) => {
         saveUserDetails(verifyOtpData.body)
         setMessage("Successfully Loged In")
         setSuccess(true)
+        setModalWithBorder(true)
       }
     } else if (verifyOtpError) {
       console.log("verifyOtpError", verifyOtpError)
@@ -182,7 +194,7 @@ const VerifyOtp = ({ navigation, route }) => {
       }
     } else {
       console.log("verifyLoginOtpError", verifyLoginOtpError)
-      setError(true)
+      // setError(true)
       setMessage("Wrong OTP")
     }
   }, [verifyLoginOtpData, verifyLoginOtpError]);
@@ -199,8 +211,8 @@ const VerifyOtp = ({ navigation, route }) => {
 
   const ModalContent = () => {
     return (
-      <View style={{width:'100%',alignItems:"center",justifyContent:"center"}}>
-        <View style={{ marginTop: 40, alignItems: 'center',maxWidth:'80%' }}>
+      <View style={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
+        <View style={{ marginTop: 30, alignItems: 'center', maxWidth: '80%' }}>
           <Icon name="check-circle" size={53} color={ternaryThemeColor} />
           <PoppinsTextMedium style={{ fontSize: 27, fontWeight: '600', color: ternaryThemeColor, marginLeft: 5, marginTop: 5 }} content={"Success ! !"}></PoppinsTextMedium>
 
@@ -208,14 +220,14 @@ const VerifyOtp = ({ navigation, route }) => {
             <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: "#000000", marginLeft: 5, marginTop: 5, }} content={message}></PoppinsTextMedium>
           </View>
 
-          <View style={{ alignItems: 'center', marginBottom: 30 }}>
+          {/* <View style={{ alignItems: 'center', marginBottom: 30 }}>
             <ButtonOval handleOperation={modalWithBorderClose} backgroundColor="#000000" content="OK" style={{ color: 'white', paddingVertical: 4 }} />
-          </View>
+          </View> */}
 
         </View>
 
         <TouchableOpacity style={[{
-          backgroundColor: ternaryThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10,right:-10,
+          backgroundColor: ternaryThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10, right: -10,
         }]} onPress={modalClose} >
           <Close name="close" size={17} color="#ffffff" />
         </TouchableOpacity>

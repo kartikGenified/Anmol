@@ -96,7 +96,7 @@ const PasswordLogin = ({ navigation, route }) => {
       console.log("Password Login Error", passwordLoginError)
       setError(true)
       setMessage("Login Failed")
-      
+
     }
   }, [passwordLoginData, passwordLoginError])
 
@@ -122,6 +122,16 @@ const PasswordLogin = ({ navigation, route }) => {
     passwordLoginfunc({ user_id, password })
 
   }
+
+  //modal close
+  useEffect(() => {
+    console.log("running")
+    if (openModalWithBorder == true)
+      setTimeout(() => {
+        console.log("running2")
+        modalWithBorderClose()
+      }, 2000);
+  },[success,openModalWithBorder]);
 
   const handleNavigationToRegister = () => {
     // navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:userType, userId:userId})
@@ -167,8 +177,8 @@ const PasswordLogin = ({ navigation, route }) => {
 
   const ModalContent = () => {
     return (
-      <View style={{width:'100%',alignItems:"center",justifyContent:"center"}}>
-        <View style={{ marginTop: 40, alignItems: 'center',maxWidth:'80%' }}>
+      <View style={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
+        <View style={{ marginTop: 30, alignItems: 'center', maxWidth: '80%' }}>
           <Icon name="check-circle" size={53} color={ternaryThemeColor} />
           <PoppinsTextMedium style={{ fontSize: 27, fontWeight: '600', color: ternaryThemeColor, marginLeft: 5, marginTop: 5 }} content={"Success ! !"}></PoppinsTextMedium>
 
@@ -176,14 +186,14 @@ const PasswordLogin = ({ navigation, route }) => {
             <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: "#000000", marginLeft: 5, marginTop: 5, }} content={message}></PoppinsTextMedium>
           </View>
 
-          <View style={{ alignItems: 'center', marginBottom: 30 }}>
+          {/* <View style={{ alignItems: 'center', marginBottom: 30 }}>
             <ButtonOval handleOperation={modalWithBorderClose} backgroundColor="#000000" content="OK" style={{ color: 'white', paddingVertical: 4 }} />
-          </View>
+          </View> */}
 
         </View>
 
         <TouchableOpacity style={[{
-          backgroundColor: ternaryThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10,right:-10,
+          backgroundColor: ternaryThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10, right: -10,
         }]} onPress={modalClose} >
           <Close name="close" size={17} color="#ffffff" />
         </TouchableOpacity>
@@ -299,7 +309,7 @@ const PasswordLogin = ({ navigation, route }) => {
           message={message}
           openModal={error}></ErrorModal>
       )}
-      
+
 
       <View style={{ marginHorizontal: 100 }}>
         {openModalWithBorder && <ModalWithBorder
