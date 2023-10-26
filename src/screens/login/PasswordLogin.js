@@ -131,7 +131,7 @@ const PasswordLogin = ({ navigation, route }) => {
         console.log("running2")
         modalWithBorderClose()
       }, 2000);
-  },[success,openModalWithBorder]);
+  }, [success, openModalWithBorder]);
 
   const handleNavigationToRegister = () => {
     // navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:userType, userId:userId})
@@ -319,37 +319,47 @@ const PasswordLogin = ({ navigation, route }) => {
           comp={ModalContent}></ModalWithBorder>}
       </View>
 
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView contentContainerStyle={{ flex: 1 }} style={{ width: '100%', }}>
 
 
         <View style={{ width: "100%", alignItems: "center", justifyContent: "center", marginTop: 30 }}>
           {/* <CustomTextInput sendData={getUserId} title="Username" image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
             <CustomTextInput sendData={getPassword} title="Password" image={require('../../../assets/images/whitePassword.png')}></CustomTextInput> */}
 
-          <TextInputRectangularWithPlaceholder
-            placeHolder="UserName"
-            handleData={getUserId}
-          // maxLength={10}
-          ></TextInputRectangularWithPlaceholder>
-          <TextInputRectangularWithPlaceholder
-            placeHolder="Password"
-            handleData={getPassword}
-          // maxLength={10}
-          ></TextInputRectangularWithPlaceholder>
+       
+            <TextInputRectangularWithPlaceholder
+              placeHolder="UserName"
+              handleData={getUserId}
+            // maxLength={10}
+            ></TextInputRectangularWithPlaceholder>
+      
+
+       
+            <TextInputRectangularWithPlaceholder
+              placeHolder="Password"
+              handleData={getPassword}
+            // maxLength={10}
+            ></TextInputRectangularWithPlaceholder>
+         
+
         </View>
+
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: 'center', width: '90%' }}>
           <PoppinsTextMedium style={{ color: "#727272", fontSize: 14 }} content="Not remembering password? "></PoppinsTextMedium>
           <TouchableOpacity >
             <PoppinsTextMedium style={{ color: ternaryThemeColor, fontSize: 14 }} content="Forget Password"></PoppinsTextMedium>
           </TouchableOpacity>
         </View>
-        <View style={{ width: "100%", alignItems: 'center', justifyContent: "center" }}>
-          <ButtonNavigateArrow
-            handleOperation={handleLogin}
-            backgroundColor={buttonThemeColor}
-            style={{ color: 'white', fontSize: 16 }}
-            content="Login">
-          </ButtonNavigateArrow>
+
+        <View style={{ width: "100%", flex: 1 }}>
+          <View style={{ marginBottom: 27, marginLeft: 20, marginTop: 'auto' }}>
+            <ButtonNavigateArrow
+              handleOperation={handleLogin}
+              backgroundColor={buttonThemeColor}
+              style={{ color: 'white', fontSize: 16 }}
+              content="Login">
+            </ButtonNavigateArrow>
+          </View>
 
         </View>
 

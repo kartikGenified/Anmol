@@ -229,9 +229,9 @@ const Dashboard = ({navigation}) => {
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
           <View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center" }}>
-            <DashboardSupportBox text="Refer and Earn" backgroundColor="#FFF4EB" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
-            <DashboardSupportBox text="Customer support" backgroundColor="#EDEAFE" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
-            <DashboardSupportBox text="Feedback" backgroundColor="#FEE9E9" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
+            <DashboardSupportBox text="Refer and Earn" backgroundColor="#D0C0B0" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
+            <DashboardSupportBox text="Customer support" backgroundColor="#DDD0F5" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
+            <DashboardSupportBox text="Feedback" backgroundColor="#D4B6B6" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
 
           </View>
         </View>

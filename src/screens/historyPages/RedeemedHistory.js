@@ -162,6 +162,7 @@ const RedeemedHistory = ({navigation}) => {
             </View>
         )
     }
+    
     const Header=()=>{
         return(
             <View style={{height:40,width:'100%',backgroundColor:'#DDDDDD',alignItems:"center",justifyContent:"center",flexDirection:"row",marginTop:20}}>

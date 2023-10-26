@@ -530,7 +530,7 @@ const OtpLogin = ({navigation, route}) => {
       </View>
 
      
-      <ScrollView style={{width: '100%'}}>
+      <ScrollView contentContainerStyle={{flex:1}} style={{width: '100%'}}>
         <KeyboardAvoidingView>
           
 
@@ -546,6 +546,7 @@ const OtpLogin = ({navigation, route}) => {
             handleData={getMobile}
             maxLength={10}
               ></TextInputRectangularWithPlaceholder>
+
             <TextInputRectangularWithPlaceholder
             placeHolder="Name"
             handleData={getName}
@@ -553,13 +554,15 @@ const OtpLogin = ({navigation, route}) => {
               ></TextInputRectangularWithPlaceholder>
           </View>
         </KeyboardAvoidingView>
+
         <View
           style={{
             width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
+            marginTop: 'auto',
+            marginBottom:30,
+            marginLeft:20
           }}>
+
           {<ButtonNavigateArrow
           success={success}
             handleOperation={handleButtonPress}

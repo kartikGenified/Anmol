@@ -107,23 +107,37 @@ const [distinctDateArr, setDistinctDateArr] = useState()
 
       }
       var count =0
-    const DisplayEarnings=()=>{
+
+      
+      const DisplayEarnings=()=>{
+        const [modalVisible, setModalVisible] = useState(false);
+        const handleRedeemButtonPress=()=>{
+          if(Number(userPointData.body.point_balance)<=0)
+          {
+            setError(true)
+            setMessage("You dont have enough points !")
+          }
+          else{
+          setModalVisible(true)
+          }
+  
+        }
         return(
-            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
+            <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center", marginTop:20,marginLeft:20}}>
+         
                 <View style={{alignItems:"center",justifyContent:"center"}}>
                     {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_earned}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Earnings"></PoppinsTextMedium>
                 </View>
-                <View style={{alignItems:"center",justifyContent:"center",marginLeft:20}}>
+                <View style={{alignItems:"center",justifyContent:"center",marginLeft:25}}>
                     {userPointData && <PoppinsText style={{color:"black"}} content={userPointData.body.point_redeemed}></PoppinsText>}
                     <PoppinsTextMedium style={{color:"black",fontSize:14}} content="Lifetime Burns"></PoppinsTextMedium>
                 </View>
-                <TouchableOpacity style={{borderRadius:2,height:40,width:100,backgroundColor:"#FFD11E",alignItems:"center",justifyContent:"center",marginLeft:20}}>
-                    <PoppinsTextMedium  style={{color:'black'}} content="Redeem"></PoppinsTextMedium>
-                </TouchableOpacity> 
+          
             </View>
         )
     }
+
     const Header=()=>{
         const [openBottomModal, setOpenBottomModal] = useState(false)
         const [message, setMessage] = useState()
@@ -199,6 +213,9 @@ const [distinctDateArr, setDistinctDateArr] = useState()
                 {userPointData && <PoppinsText style={{color:"black",marginLeft:10,fontSize:24,fontWeight:'600'}} content={userPointData.body.point_balance}></PoppinsText>}
 
                 <PoppinsTextMedium style={{marginLeft:10,fontSize:20,fontWeight:'600',color:'#6E6E6E'}} content="Point Balance"></PoppinsTextMedium>
+
+                <DisplayEarnings></DisplayEarnings>
+                
             </View>
             <Header></Header>
             {
