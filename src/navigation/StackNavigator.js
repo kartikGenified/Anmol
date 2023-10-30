@@ -56,6 +56,7 @@ import WheelList from '../screens/wheel/WheelList';
 import SpinWheel from '../screens/wheel/SpinWheel';
 import DataNotFound from '../screens/data not found/DataNotFound';
 import Splash from '../screens/common/Splash';
+import RegistrationProgress from '../components/organisms/RegistrationProgress';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
@@ -86,7 +87,7 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="WheelList" component={WheelList}></Stack.Screen> */}
-<Stack.Screen options={
+                <Stack.Screen options={
                     {
                         headerShown: false
                     }
@@ -114,7 +115,7 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="SpinWheel" component={SpinWheel}></Stack.Screen>
-                
+
                 <Stack.Screen options={
                     {
                         headerShown: false
@@ -145,6 +146,8 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="ReportAndIssue" component={ReportAndIssue}></Stack.Screen>
+
+               
                 <Stack.Screen options={
                     {
                         headerShown: false

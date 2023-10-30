@@ -12,7 +12,6 @@ import {
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 
 const RegistrationProgress=(props)=>{
-
     const showPan = props.showPan
     const showAadhar = props.showAadhar
     const showGst = props.showGst
@@ -24,28 +23,29 @@ const RegistrationProgress=(props)=>{
       const title = props.title
       const index = props.index
       const data = props.data
-    const margin =index === 1 ? 20 :  100/data.length
+      const margin =(index == 0) ? 0 :  100/(data.length-1)
       
       console.log(margin)
       return(
-        <View style={{alignItems:"center",justifyContent:'center',paddingLeft:`${margin}%`}}>
+        <View style={{alignItems:"center",justifyContent:'center',left:`${margin*index}%`,position:'absolute'}}>
           <View style={{height:26,width:26,borderRadius:13,backgroundColor:color,alignItems:'center',justifyContent:'center'}}>
           {completed && <Image source={require('../../../assets/images/tickBlue.png')} style={{height:20,width:20,resizeMode:'center'}}></Image>}
         </View>
-        <PoppinsTextMedium style={{color:'white',fontSize:12,marginTop:4}} content ={(title).toUpperCase()}></PoppinsTextMedium>
+        {/* <PoppinsTextMedium style={{color:'white',fontSize:12,marginTop:4}} content ={(title).toUpperCase()}></PoppinsTextMedium> */}
         </View>
       )
     }
 
     return(
       <View style={{alignItems:'center',justifyContent:"center",width:"100%"}}>
-        <View style={{height:'10%',width:'100%',alignItems:'center',justifyContent:'center'}}>
-        <View style={{height:2,width:'80%',backgroundColor:'white'}}></View>
-        <View style={{flexDirection:'row',width: '80%',left:4}}>
+        <View style={{height:'10%',width:'80%',alignItems:'center',justifyContent:'center'}}>
+        <View style={{height:2,width:'100%',backgroundColor:'white'}}></View>
+        <View style={{flexDirection:'row',width: '100%',bottom:14}}>
           {
             data && data.map((item,index)=>{
+              console.log( index)
                 return(
-                    <Circle data={data} key={index} completed={false} title={item} index={index+1}></Circle>
+                    <Circle data={data} key={index} completed={false} title={item} index={index}></Circle>
 
 
                 )
@@ -70,6 +70,7 @@ const RegistrationProgress=(props)=>{
 const styles = StyleSheet.create({})
 
 export default RegistrationProgress;
+
 // import React from 'react';
 // import { View, StyleSheet } from 'react-native';
 

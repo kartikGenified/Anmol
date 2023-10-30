@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Platform, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform } from 'react-native';
 import MenuItems from '../../components/atoms/MenuItems';
 import { BaseUrl } from '../../utils/BaseUrl';
 import { useGetAppDashboardDataMutation } from '../../apiServices/dashboard/AppUserDashboardApi';
@@ -20,22 +20,14 @@ import { setLocation } from '../../../redux/slices/userLocationSlice';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import { useGetkycStatusMutation } from '../../apiServices/kyc/KycStatusApi';
+import { setKycData } from '../../../redux/slices/userKycStatusSlice';
 
-const Dashboard = ({navigation}) => {
+const Dashboard = ({ navigation }) => {
 
   const [dashboardItems, setDashboardItems] = useState()
   const [bannerArray, setBannerArray] = useState()
   const [showKyc, setShowKyc] = useState(true)
-
-
-
-  const ternaryThemeColor = useSelector(
-    state => state.apptheme.ternaryThemeColor,
-  )
-    ? useSelector(state => state.apptheme.ternaryThemeColor)
-    : 'grey';
-
-
+  const dispatch = useDispatch()
   const userId = useSelector((state) => state.appusersdata.userId)
   console.log("user id is from dashboard", userId)
 
@@ -55,14 +47,18 @@ const Dashboard = ({navigation}) => {
     isError: getKycStatusIsError
   }] = useGetkycStatusMutation()
 
-  useEffect(()=>{
-    if(getKycStatusData)
-      {
-      console.log("getKycStatusData",getKycStatusData)
-      if(getKycStatusData.success)
-        {
+  useEffect(() => {
+    if (getKycStatusData) {
+      console.log("getKycStatusData", getKycStatusData)
+      if (getKycStatusData.success) {
         const tempStatus = Object.values(getKycStatusData.body)
         setShowKyc(tempStatus.includes(false))
+
+        dispatch(
+          setKycData(getKycStatusData.body)
+        )
+
+
       }
     }
     else if (getKycStatusError) {
@@ -100,40 +96,76 @@ const Dashboard = ({navigation}) => {
     isError: getFormIsError
   }] = useGetFormMutation()
 
-  const dispatch = useDispatch()
-
 
   useEffect(() => {
     let lat = ''
     let lon = ''
     Geolocation.getCurrentPosition((res) => {
+      console.log("res", res)
       lat = res.coords.latitude
       lon = res.coords.longitude
-      getLocation(JSON.stringify(lat), JSON.stringify(lon))
-    })
-    const getLocation = (lat, lon) => {
-      if (lat !== '' && lon !== '') {
-        console.log("latitude and longitude", lat, lon)
-        try {
-          axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${lat}+&lon=${lon}&format=json`, {
-            headers: {
-              'Content-Type': 'application/json'
+      // getLocation(JSON.stringify(lat),JSON.stringify(lon))
+      console.log("latlong", lat, lon)
+      var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
+        &location_type=ROOFTOP&result_type=street_address&key=AIzaSyADljP1Bl-J4lW3GKv0HsiOW3Fd1WFGVQE`
+
+      fetch(url).then(response => response.json()).then(json => {
+        console.log("location address=>", JSON.stringify(json));
+        const formattedAddress = json.results[0].formatted_address
+        const formattedAddressArray = formattedAddress.split(',')
+
+        let locationJson = {
+
+          lat: json.results[0].geometry.location.lat === undefined ? "N/A" : json.results[0].geometry.location.lat,
+          lon: json.results[0].geometry.location.lng === undefined ? "N/A" : json.results[0].geometry.location.lng,
+          address: formattedAddress === undefined ? "N/A" : formattedAddress
+
+        }
+
+        const addressComponent = json.results[0].address_components
+        console.log("addressComponent", addressComponent)
+        for (let i = 0; i <= addressComponent.length; i++) {
+          if (i === addressComponent.length) {
+            dispatch(setLocation(locationJson))
+
+          }
+          else {
+            if (addressComponent[i].types.includes("postal_code")) {
+              console.log("inside if")
+
+              console.log(addressComponent[i].long_name)
+              locationJson["postcode"] = addressComponent[i].long_name
             }
-          }).then((res) => {
-            console.log("Addres Data", res.data)
-            dispatch(setLocation(res.data))
-          })
-        }
-        catch (e) {
-          console.log("Error in fetching location", e)
+            else if (addressComponent[i].types.includes("country")) {
+              console.log(addressComponent[i].long_name)
+
+              locationJson["country"] = addressComponent[i].long_name
+            }
+            else if (addressComponent[i].types.includes("administrative_area_level_1")) {
+              console.log(addressComponent[i].long_name)
+
+              locationJson["state"] = addressComponent[i].long_name
+            }
+            else if (addressComponent[i].types.includes("administrative_area_level_2")) {
+              console.log(addressComponent[i].long_name)
+
+              locationJson["district"] = addressComponent[i].long_name
+            }
+            else if (addressComponent[i].types.includes("locality")) {
+              console.log(addressComponent[i].long_name)
+
+              locationJson["city"] = addressComponent[i].long_name
+            }
+          }
+
         }
 
 
-      }
-      else {
-        console.log("latitude and longitude", lat, lon)
-      }
-    }
+        console.log("formattedAddressArray", locationJson)
+
+      })
+    })
+
   }, [])
 
   useEffect(() => {
@@ -185,6 +217,9 @@ const Dashboard = ({navigation}) => {
       if (getWorkflowData.length === 1 && getWorkflowData[0] === "Genuinity") {
         dispatch(setIsGenuinityOnly())
       }
+      const removedWorkFlow = getWorkflowData.body[0].program.filter((item, index) => {
+        return item !== "Warranty"
+      })
       console.log("getWorkflowData", getWorkflowData.body[0].program)
       dispatch(setProgram(getWorkflowData.body[0].program))
       dispatch(setWorkflow(getWorkflowData.body[0].workflow_id))
@@ -229,9 +264,9 @@ const Dashboard = ({navigation}) => {
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
           <View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center" }}>
-            <DashboardSupportBox text="Refer and Earn" backgroundColor="#D0C0B0" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
-            <DashboardSupportBox text="Customer support" backgroundColor="#DDD0F5" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
-            <DashboardSupportBox text="Feedback" backgroundColor="#D4B6B6" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
+            <DashboardSupportBox text="Refer and Earn" backgroundColor="#FFF4EB" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
+            <DashboardSupportBox text="Customer support" backgroundColor="#EDEAFE" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
+            <DashboardSupportBox text="Feedback" backgroundColor="#FEE9E9" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
 
           </View>
         </View>
