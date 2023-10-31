@@ -36,7 +36,7 @@ const TextInputNumericRectangle = props => {
           left: 16,
         }}>
         <PoppinsTextMedium
-          style={{color: '#000000', padding: 4}}
+          style={{color: '#919191', padding: 4}}
           content={placeHolder}></PoppinsTextMedium>
       </View>
       <TextInput
