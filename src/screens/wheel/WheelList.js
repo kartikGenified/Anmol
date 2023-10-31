@@ -7,6 +7,8 @@ import { useGetAllWheelHistoryMutation } from '../../apiServices/workflow/reward
 import * as Keychain from 'react-native-keychain';
 import { useSelector } from 'react-redux';
 
+
+
 // create a component
 const WheelList = ({ navigation }) => {
 
@@ -108,6 +110,7 @@ const WheelList = ({ navigation }) => {
 
     return (
         <View style={[styles.container, {backgroundColor:ternaryThemeColor}]}>
+    
             {/* Navigator */}
             <View
                 style={{
@@ -174,6 +177,8 @@ const styles = StyleSheet.create({
     //     alignItems: 'center',
     //     backgroundColor: '#2c3e50',
     // },
+    }
+    
 });
 
 //make this component available to the app

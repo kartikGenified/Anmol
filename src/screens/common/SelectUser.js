@@ -98,7 +98,7 @@ const SelectUser = ({navigation}) => {
             }}
             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
             <View style={{width:'80%',alignItems:"center",justifyContent:'center',borderColor:ternaryThemeColor,borderTopWidth:1,borderBottomWidth:1,height:40}}>
-              <PoppinsTextMedium style={{color:'#171717',fontSize:20,fontWeight:'700'}} content="Are You A"></PoppinsTextMedium>
+              <PoppinsTextMedium style={{color:'#171717',fontSize:20,fontWeight:'700',marginBottom:40}} content="Are You A"></PoppinsTextMedium>
             </View>
         {/* </View> */}
       </View>
@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
   },
   userListContainer: {
     width: '100%',
-    height:800,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',

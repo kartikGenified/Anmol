@@ -212,7 +212,7 @@ const RedeemedHistory = ({navigation}) => {
         return(
             <TouchableOpacity onPress={()=>{
                 navigation.navigate('RedeemedDetails',{data:data})
-            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:8,width:"100%"}}>
+            }} style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginTop:10,width:"100%",marginBottom:10}}>
                 <View style={{height:70,width:70,alignItems:"center",justifyContent:"center",borderRadius:10,borderWidth:1,borderColor:'#DDDDDD',right:10}}>
                     <Image style={{height:50,width:50,resizeMode:"contain"}} source={{uri:BaseUrlImages+image}}></Image>
                 </View>
@@ -237,7 +237,7 @@ const RedeemedHistory = ({navigation}) => {
         )
     }
     return (
-        <View style={{alignItems:"center",justifyContent:"flex-start",width:'100%',height:'100%'}}>
+        <View style={{alignItems:"center",justifyContent:"flex-start",width:'100%',height:'100%',backgroundColor:"white"}}>
           {error && (
             <ErrorModal
               modalClose={modalClose}

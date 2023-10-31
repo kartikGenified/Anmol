@@ -82,22 +82,29 @@ const StackNavigator = () => {
                 } name="Feedback" component={Feedback}></Stack.Screen>
  */}
 
+
                 {/* <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="WheelList" component={WheelList}></Stack.Screen> */}
+
+                
+
+
+
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="Splash" component={Splash}></Stack.Screen>
 
+                } name="Introduction" component={Introduction}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
-                } name="Introduction" component={Introduction}></Stack.Screen>
+                } name="WheelList" component={WheelList}></Stack.Screen>
 
                 <Stack.Screen options={
                     {
@@ -116,6 +123,7 @@ const StackNavigator = () => {
                     }
                 } name="SpinWheel" component={SpinWheel}></Stack.Screen>
 
+               
                 <Stack.Screen options={
                     {
                         headerShown: false
