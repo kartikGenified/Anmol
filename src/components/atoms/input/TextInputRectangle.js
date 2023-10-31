@@ -20,7 +20,7 @@ const TextInputSquare = (props) => {
             <View style={{alignItems:"center",justifyContent:'center',backgroundColor:'white',position:"absolute",top:-15,left:16}}>
                 <PoppinsTextMedium style={{color:"black",padding:4}} content = {placeHolder}></PoppinsTextMedium>
             </View>
-            <TextInput onEndEditing={(text)=>{handleInputEnd()}} style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:20}} placeholderTextColor="grey" onChangeText={(text)=>{handleInput(text)}} value={value} placeholder={placeHolder}></TextInput>
+            <TextInput onEndEditing={(text)=>{handleInputEnd()}} style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:20, color:'#000000',}} placeholderTextColor="grey" onChangeText={(text)=>{handleInput(text)}} value={value} placeholder={placeHolder}></TextInput>
         </View>
     );
 }

@@ -1,3 +1,4 @@
+
 import { baseApi } from "../baseApi";
 import { slug } from "../../utils/Slug";
 
@@ -18,9 +19,21 @@ export const RedeemGiftsApi = baseApi.injectEndpoints({
               };
             },
           }),
+          getRedeemedGiftsStatus: builder.mutation({
+            query: (params) => {
+              return {
+                method: "GET",
+                url: `/api/tenant/redeemedGiftsStatus/`,
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + params.token,
+                  slug: slug,
+                },
+              };
+            },
+          }),
     })
 });
 
 
-export const {useRedeemGiftsMutation} = RedeemGiftsApi
-
+export const {useRedeemGiftsMutation,useGetRedeemedGiftsStatusMutation} = RedeemGiftsApi

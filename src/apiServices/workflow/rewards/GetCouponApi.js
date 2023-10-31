@@ -1,5 +1,6 @@
 import {baseApi} from '../../baseApi';
 import {slug} from '../../../utils/Slug';
+
 export const GetForms = baseApi.injectEndpoints({
   endpoints: builder => ({
     getCouponOnCategory: builder.mutation({

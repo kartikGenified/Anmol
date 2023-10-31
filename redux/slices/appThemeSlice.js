@@ -5,6 +5,7 @@ const initialState = {
   secondaryThemeColor:'',
   ternaryThemeColor:'',
   buttonThemeColor:'',
+  lightThemeColor:'',
   icon:'',
   iconDrawer:'',
   otpLogin:[],
@@ -25,6 +26,9 @@ export const appThemeSlice = createSlice({
     setSecondaryThemeColor:(state, action) =>{
         state.secondaryThemeColor = action.payload
     },
+    setLightThemeColor:(state, action) =>{
+      state.lightThemeColor = action.payload
+  },
     setTernaryThemeColor:(state, action)=>{
       state.ternaryThemeColor = action.payload
   },
@@ -54,6 +58,6 @@ export const appThemeSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor ,setIcon,setIconDrawer,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades, setKycOptions} = appThemeSlice.actions
+export const { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor ,setIcon,setIconDrawer,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades, setKycOptions,setLightThemeColor} = appThemeSlice.actions
 
 export default appThemeSlice.reducer

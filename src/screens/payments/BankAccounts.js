@@ -55,6 +55,7 @@ const BankAccounts = ({navigation,route}) => {
         isLoading:deleteBankIsLoading,
         isError:deleteBankIsError
     }]=useDeleteBankMutation()
+
     const focused = useIsFocused()
     const refresh = route.params?.refresh
     const height = Dimensions.get('window').height
@@ -72,7 +73,7 @@ const BankAccounts = ({navigation,route}) => {
             id:id
           }
           deleteBankFunc(params)
-
+          refetchData()
         }
     }
     const refetchData=async()=>{
@@ -114,6 +115,7 @@ const BankAccounts = ({navigation,route}) => {
     useEffect(()=>{
         refetchData()
     },[focused])
+
     useEffect(()=>{
         if(deleteBankData)
         {
@@ -219,6 +221,7 @@ const setSelectedPaymentMethod=(data)=>{
                 </View>
                 {
                     openDrawer && <View style={{height:60,width:80,borderRadius:4,backgroundColor:"white",alignItems:"flex-start",justifyContent:"center",position:'absolute',elevation:2,left:-20,top:30}}>
+                       
                         {/* <TouchableOpacity onPress={()=>{
 
                         }} style={{height:'50%',flexDirection:'row',alignItems:"center",justifyContent:"flex-start"}}>
@@ -227,7 +230,7 @@ const setSelectedPaymentMethod=(data)=>{
                         </TouchableOpacity> */}
                         <TouchableOpacity onPress={()=>{
                             console.log(props.id)
-                            // deleteData(String(props.id))
+                            deleteData(String(props.id))
                             setModalVisible(true)
 
                         }} style={{height:'50%',flexDirection:'row',alignItems:"center",justifyContent:'center'}}>

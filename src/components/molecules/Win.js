@@ -15,7 +15,7 @@ const Win = (props) => {
   return <View style={styles.container}>
     <PoppinsText style={{margin:4,color:ternaryThemeColor,fontSize:18}} content={data}></PoppinsText>
 
-    <PoppinsText content={title}></PoppinsText>
+    <PoppinsText style={{color:'black'}} content={title}></PoppinsText>
     {/* <ButtonModal style={{color:'white',fontSize:12}} content="CLick Here To Avial"></ButtonModal> */}
   </View>;
 };

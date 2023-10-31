@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import TextInputRectangleMandatory from '../../components/atoms/input/TextInputRectangleMandatory';
 import TextInputRectangle from '../../components/atoms/input/TextInputRectangle';
 import TextInputNumericRectangle from '../../components/atoms/input/TextInputNumericRectangle';
@@ -40,7 +40,7 @@ const BasicInfo = ({navigation,route}) => {
   const [modalTitle, setModalTitle] = useState()
   const [needsAadharVerification, setNeedsAadharVerification] = useState(false)
   const [location, setLocation] = useState()
-  
+  const dispatch = useDispatch()
 
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -106,37 +106,86 @@ const BasicInfo = ({navigation,route}) => {
     }
     
   },[])
+
   useEffect(()=>{
     let lat=''
     let lon=''
     Geolocation.getCurrentPosition((res)=>{
+      console.log("res",res)
         lat = res.coords.latitude
         lon = res.coords.longitude
-        getLocation(JSON.stringify(lat),JSON.stringify(lon))
-    })
-    const getLocation=(lat,lon)=>{
-        if(lat!=='' && lon!=='')
-        {
-            console.log("latitude and longitude",lat,lon)
-            try{
-                axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${lat}+&lon=${lon}&format=json`,{headers:{
-                    'Content-Type': 'application/json'
-                }}).then((res)=>{console.log("Addres Data",res.data)
-                setLocation(res.data)
-              })
-            }
-            catch(e)
-            {
-                console.log("Error in fetching location",e)
-            }
+        // getLocation(JSON.stringify(lat),JSON.stringify(lon))
+        console.log("latlong",lat,lon)
+        var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res.coords.latitude},${res.coords.longitude}
+        &location_type=ROOFTOP&result_type=street_address&key=AIzaSyADljP1Bl-J4lW3GKv0HsiOW3Fd1WFGVQE`
+    
+    fetch(url).then(response => response.json()).then(json => {
+      console.log("location address=>", JSON.stringify(json));
+      const formattedAddress = json.results[0].formatted_address
+      const formattedAddressArray = formattedAddress.split(',')
+     
+      let locationJson = {
         
+        lat:json.results[0].geometry.location.lat ===undefined ? "N/A":json.results[0].geometry.location.lat,
+        lon:json.results[0].geometry.location.lng===undefined ? "N/A":json.results[0].geometry.location.lng,
+        address:formattedAddress===undefined ? "N/A" :formattedAddress
+       
+       }
+
+       const addressComponent = json.results[0].address_components
+       console.log("addressComponent",addressComponent)
+       for(let i=0;i<=addressComponent.length;i++)
+       {
+        if(i===addressComponent.length)
+        {
+          dispatch(setLocation(locationJson))
+          setLocation(locationJson)
 
         }
         else{
-            console.log("latitude and longitude",lat,lon)
+          if(addressComponent[i].types.includes("postal_code"))
+          {
+          console.log("inside if")
+
+            console.log(addressComponent[i].long_name)
+            locationJson["postcode"]=addressComponent[i].long_name
+          }
+          else if(addressComponent[i].types.includes("country"))
+          {
+            console.log(addressComponent[i].long_name)
+
+            locationJson["country"]=addressComponent[i].long_name
+          }
+          else if(addressComponent[i].types.includes("administrative_area_level_1"))
+          {
+            console.log(addressComponent[i].long_name)
+
+            locationJson["state"]=addressComponent[i].long_name
+          }
+          else if(addressComponent[i].types.includes("administrative_area_level_2"))
+          {
+            console.log(addressComponent[i].long_name)
+
+            locationJson["district"]=addressComponent[i].long_name
+          }
+          else if(addressComponent[i].types.includes("locality"))
+          {
+            console.log(addressComponent[i].long_name)
+
+            locationJson["city"]=addressComponent[i].long_name
+          }
         }
-    }
+        
+       }
+     
+     
+     console.log("formattedAddressArray",locationJson)
+     
+  })
+    })
+    
   },[])
+
   useEffect(()=>{
     if(getFormData)
     {
@@ -295,19 +344,7 @@ const handleRegistrationFormSubmission=()=>{
               console.log(item);
               
               if (item.type === 'text') {
-                // if (item.required === true ) {
-                  // if( item.name !== 'phone' && item.name !== 'aadhar' && item.name !== 'pan' && item.name!== "mobile" && item.name!=='aadhaar')
-                  // {
-                  //   return (
-                  //     <TextInputRectangleMandatory
-                  //       jsonData={item}
-                  //       key={index}
-                  //       handleData={handleChildComponentData}
-                  //       placeHolder={item.name}>
-                  //       {' '}
-                  //     </TextInputRectangleMandatory>
-                  //   );
-                  // }
+                
                    if (item.name === 'phone' || item.name==="mobile") {
                     return (
                       <TextInputNumericRectangle
@@ -360,28 +397,18 @@ const handleRegistrationFormSubmission=()=>{
                 }
                 else if((item.name).trim().toLowerCase()==="city" && location!==undefined)
                 {
-                  if(location.address.city)
-                  {
+                  
                     return(
                       <PrefilledTextInput
                        jsonData={item}
                        key={index}
                        handleData={handleChildComponentData}
                        placeHolder={item.name}
-                       value={location.address.city}
+                       value={location.city}
                        ></PrefilledTextInput>
                      )
-                  }
-                  else if(location.address.state)
-                  {
-                    <PrefilledTextInput
-                    jsonData={item}
-                    key={index}
-                    handleData={handleChildComponentData}
-                    placeHolder={item.name}
-                    value={location.address.state}
-                    ></PrefilledTextInput>
-                  }
+                  
+                  
                   
                 }
                 else if((item.name).trim().toLowerCase()==="pincode" && location!==undefined)
@@ -392,7 +419,7 @@ const handleRegistrationFormSubmission=()=>{
                     key={index}
                     handleData={handleChildComponentData}
                     placeHolder={item.name}
-                    value={location.address.postcode}
+                    value={location.postcode}
                     ></PrefilledTextInput>
                   )
                 }
@@ -404,33 +431,24 @@ const handleRegistrationFormSubmission=()=>{
                     key={index}
                     handleData={handleChildComponentData}
                     placeHolder={item.name}
-                    value={location.address.state}
+                    value={location.state}
                     ></PrefilledTextInput>
                   )
                 }
                 else if((item.name).trim().toLowerCase()==="district" && location!==undefined)
                 {
-                  if(location.address.county)
-                  {
+                  
                     return(
                       <PrefilledTextInput
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
                       placeHolder={item.name}
-                      value={location.address.state_district}
+                      value={location.district}
                       ></PrefilledTextInput>
                     )
-                  }
-                  else{
-                    <PrefilledTextInput
-                    jsonData={item}
-                    key={index}
-                    handleData={handleChildComponentData}
-                    placeHolder={item.name}
-                    value={location.address.district}
-                    ></PrefilledTextInput>
-                  }
+                  
+                 
                   
                 }
                 else {

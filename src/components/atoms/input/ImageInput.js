@@ -26,7 +26,7 @@ const ImageInput = (props) => {
                {image ? <PoppinsTextMedium content ={image.fileName.slice(0,20)}></PoppinsTextMedium> : <PoppinsTextMedium content ={data}></PoppinsTextMedium>}
             </View>
             <View style={{width:'40%',height:50,backgroundColor:'#D6D6D6',alignItems:"center",justifyContent:"center"}}>
-                <PoppinsTextMedium content ={action}></PoppinsTextMedium>
+                <PoppinsTextMedium style ={{color:'black'}}content ={action}></PoppinsTextMedium>
             </View>
         </TouchableOpacity>
         </View>

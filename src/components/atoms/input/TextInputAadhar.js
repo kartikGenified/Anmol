@@ -130,7 +130,7 @@ const TextInputAadhar = (props) => {
         <View style={{alignItems:"center",justifyContent:'center',backgroundColor:'white',position:"absolute",top:-15,left:16}}>
             <PoppinsTextMedium style={{color:"black",padding:4}} content = "OTP"></PoppinsTextMedium>
         </View>
-        <TextInput maxLength={6}  style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24}} placeholderTextColor="grey" onChangeText={(text)=>{setOtp(text)}} value={otp} placeholder={`OTP`}></TextInput>
+        <TextInput maxLength={6}  style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24, color:'#000000'}} placeholderTextColor="grey" onChangeText={(text)=>{setOtp(text)}} value={otp} placeholder={`OTP`}></TextInput>
     </View>}
         </View>
         

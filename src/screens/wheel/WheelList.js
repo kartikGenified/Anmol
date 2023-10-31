@@ -17,7 +17,7 @@ const WheelList = ({ navigation }) => {
         error: getAllWheelHistoryError,
         isLoading: getAllWheelHistoryIsLoading,
         isError: getAllWheelHistoryIsError
-    }] = useGetAllWheelHistoryMutation()
+    }] = useGetAllWheelHistoryMutation();
 
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
@@ -106,7 +106,7 @@ const WheelList = ({ navigation }) => {
         else if (getAllWheelHistoryError) {
             console.log("getAllWheelHistoryError", getAllWheelHistoryError)
         }
-    }, [getAllWheelHistoryData, getAllWheelHistoryError])
+    }, [getAllWheelHistoryData, getAllWheelHistoryError]);
 
     return (
         <View style={[styles.container, {backgroundColor:ternaryThemeColor}]}>
@@ -133,7 +133,7 @@ const WheelList = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <PoppinsTextMedium style={{ fontSize: 20, color: '#ffffff', marginTop: 5, position: 'absolute', left: 60 }} content={"Wheel"}></PoppinsTextMedium>
-                <PoppinsTextMedium style={{ fontSize: 20, color: '#ffffff', marginTop: 5, position: 'absolute', left: 60 }} content={"FeedBack"}></PoppinsTextMedium>
+                
 
 
             </View>
@@ -171,6 +171,12 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
         height:'100%'
+    },
+
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     backgroundColor: '#2c3e50',
+    // },
     }
     
 });

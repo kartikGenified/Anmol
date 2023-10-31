@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Image } from 'react-native';
 import PoppinsTextMedium from '../electrons/customFonts/PoppinsTextMedium';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
 
 
 // create a component
 const FeedbackModal = ({ isVisible, onClose, user }) => {
+    const ternaryThemeColor = useSelector(
+        state => state.apptheme.ternaryThemeColor,
+      )
+        ? useSelector(state => state.apptheme.ternaryThemeColor)
+        : 'grey';
     return (
         <Modal
             transparent={true}
@@ -23,7 +29,7 @@ const FeedbackModal = ({ isVisible, onClose, user }) => {
                         <PoppinsTextMedium style={{ fontSize: 22, fontWeight: '600', color: '#000000', marginTop: 20, marginHorizontal: 20 }} type={"feedback"} content={"Thank You for submitting your feedback"}></PoppinsTextMedium>
                     </View>
 
-                    <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                    <TouchableOpacity style={[styles.closeButton,{backgroundColor:ternaryThemeColor}]} onPress={onClose}>
                         <Icon name="close" size={27} color="#ffffff" />
                     </TouchableOpacity>
                 </View>
@@ -55,7 +61,7 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         padding:10,
-        backgroundColor: '#E60707',
+     
         borderRadius: 30,
         position: 'absolute',
         top: -10,

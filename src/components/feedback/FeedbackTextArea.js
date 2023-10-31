@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 114,
     fontSize: 16,
+    color:'#000000'
   },
 });
 
