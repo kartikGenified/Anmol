@@ -29,6 +29,9 @@ import ErrorModal from '../../components/modals/ErrorModal';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import PrefilledTextInput from '../../components/atoms/input/PrefilledTextInput';
+import { useGetLocationFromPinMutation } from '../../apiServices/location/getLocationFromPincode';
+import PincodeTextInput from '../../components/atoms/input/PincodeTextInput';
+
 
 const BasicInfo = ({navigation,route}) => {
     const [message, setMessage] = useState();
@@ -40,6 +43,7 @@ const BasicInfo = ({navigation,route}) => {
   const [modalTitle, setModalTitle] = useState()
   const [needsAadharVerification, setNeedsAadharVerification] = useState(false)
   const [location, setLocation] = useState()
+  const [formFound, setFormFound] = useState(true)
   const dispatch = useDispatch()
 
   const ternaryThemeColor = useSelector(
@@ -60,9 +64,10 @@ const BasicInfo = ({navigation,route}) => {
   const userType = route.params.userType
   const userTypeId = route.params.userId
   const needsApproval = route.params.needsApproval
+  const navigatingFrom = route.params.navigatingFrom
   const name = route.params?.name
   const mobile = route.params?.mobile
-  console.log("appUsers",userType,userTypeId,isManuallyApproved)
+  console.log("appUsers",userType,userTypeId,isManuallyApproved,name,mobile)
     const width = Dimensions.get('window').width
     const height = Dimensions.get('window').height
 
@@ -81,21 +86,17 @@ const BasicInfo = ({navigation,route}) => {
     isError:registerUserIsError
   }] = useRegisterUserByBodyMutation()
 
-  useEffect(()=>{
-    const getData=async()=>{
-      const credentials = await Keychain.getGenericPassword();
-                if (credentials) {
-                  console.log(
-                    'Credentials successfully loaded for user ' + credentials.username
-                  );
-                  const token = credentials.username
-                  const AppUserType = userType
-                  
-                  token && getFormFunc({AppUserType})
-                }
+  const [getLocationFromPincodeFunc,{
+    data:getLocationFormPincodeData,
+    error:getLocationFormPincodeError,
+    isLoading:getLocationFormPincodeIsLoading,
+    isError:getLocationFromPincodeIsError
+  } ] = useGetLocationFromPinMutation()
 
-    }
-    getData()
+  useEffect(()=>{
+    
+    const AppUserType = userType
+    getFormFunc({AppUserType})
     if(manualApproval.includes(userType))
     {
       setIsManuallyApproved(true)
@@ -106,7 +107,6 @@ const BasicInfo = ({navigation,route}) => {
     }
     
   },[])
-
   useEffect(()=>{
     let lat=''
     let lon=''
@@ -140,7 +140,6 @@ const BasicInfo = ({navigation,route}) => {
         {
           dispatch(setLocation(locationJson))
           setLocation(locationJson)
-
         }
         else{
           if(addressComponent[i].types.includes("postal_code"))
@@ -185,13 +184,51 @@ const BasicInfo = ({navigation,route}) => {
     })
     
   },[])
+  useEffect(()=>{
+    if(getLocationFormPincodeData)
+    {
+      console.log("getLocationFormPincodeData",getLocationFormPincodeData)
+      if(getLocationFormPincodeData.success)
+      {
+        const address = getLocationFormPincodeData.body[0].office + ", " + getLocationFormPincodeData.body[0].district+ ", " + getLocationFormPincodeData.body[0].state+ ", " + getLocationFormPincodeData.body[0].pincode
+        let locationJson = {
+        
+          lat:"N/A",
+          lon:"N/A",
+          address:address,
+          city: getLocationFormPincodeData.body[0].district,
+          district: getLocationFormPincodeData.body[0].division,
+          state:getLocationFormPincodeData.body[0].state,
+          country:"N/A",
+          postcode:getLocationFormPincodeData.body[0].pincode
+
+         
+         }
+         console.log(locationJson)
+         setLocation(locationJson)
+      }
+    }
+    else if(getLocationFormPincodeError)
+    {
+      console.log("getLocationFormPincodeError",getLocationFormPincodeError)
+    }
+  },[getLocationFormPincodeData,getLocationFormPincodeError])
 
   useEffect(()=>{
     if(getFormData)
     {
-        console.log("Form Fields",getFormData.body.template)
+      if(getFormData.message!=="Not Found")
+      {
+        console.log("Form Fields",getFormData)
         const values = Object.values(getFormData.body.template)
         setRegistrationForm(values)
+      }
+      else{
+        setError(true)
+        setMessage("Form can't be fetched")
+        setFormFound(false)
+      }
+        
     }
     else if(getFormError){
         console.log("Form Field Error",getFormError)
@@ -220,6 +257,14 @@ useEffect(()=>{
   }
 },[registerUserData,registerUserError])
 
+
+const handleFetchPincode=(data)=>{
+console.log("pincode is",data)
+getLocationFromPinCode(data)
+
+}
+
+
 const handleChildComponentData = data => {
   console.log("from text input",data);
 
@@ -243,10 +288,30 @@ const handleChildComponentData = data => {
     }
   });
 };
-console.log(responseArray)
+console.log("responseArray",responseArray)
   const modalClose = () => {
     setError(false);
   };
+
+const getLocationFromPinCode=async(pin)=>{
+  const credentials = await Keychain.getGenericPassword();
+  if (credentials) {
+    console.log(
+      'Credentials successfully loaded for user ' + credentials.username
+    );
+    const token = credentials.username
+    const params = {
+      pincode:pin,
+      token:token
+      
+    }
+  getLocationFromPincodeFunc(params)
+  setLocation()
+
+  }
+} 
+
+
 const handleRegistrationFormSubmission=()=>{
   const inputFormData = {}
   inputFormData["user_type"] = userType;
@@ -262,7 +327,7 @@ const handleRegistrationFormSubmission=()=>{
   }
   const body=inputFormData
   registerUserFunc(body)
-  console.log("responseArray",body)
+  console.log("responseArraybody",body)
 }
   
     return (
@@ -289,7 +354,7 @@ const handleRegistrationFormSubmission=()=>{
               title={modalTitle}
               message={message}
               openModal={success}
-              navigateTo="PasswordLogin"
+              navigateTo={navigatingFrom==="PasswordLogin"? "PasswordLogin":"OtpLogin"}
               params={{needsApproval:needsApproval, userType:userType, userId:userTypeId}}></MessageModal>
           )}
           
@@ -337,11 +402,12 @@ const handleRegistrationFormSubmission=()=>{
       <ScrollView style={{width:'100%'}}>
 
       <View style={{width:width,backgroundColor:"white",alignItems:"center",justifyContent:'flex-start',paddingTop:20}}>
-        <PoppinsTextMedium style={{color:'black',fontWeight:'700',fontSize:18,marginBottom:40}} content="Please Fill The Following Form To Register"></PoppinsTextMedium>
+        {formFound ? <PoppinsTextMedium style={{color:'black',fontWeight:'700',fontSize:18,marginBottom:40}} content="Please Fill The Following Form To Register"></PoppinsTextMedium> : <PoppinsTextMedium style={{color:'black',fontWeight:'700',fontSize:18,marginBottom:40}} content="No Form Available !!"></PoppinsTextMedium>}
+        
         {/* <RegistrationProgress data={["Basic Info","Business Info","Manage Address","Other Info"]}></RegistrationProgress> */}
         {registrationForm &&
             registrationForm.map((item, index) => {
-              console.log(item);
+              
               
               if (item.type === 'text') {
                 
@@ -352,12 +418,33 @@ const handleRegistrationFormSubmission=()=>{
                         key={index}
                         maxLength={10}
                         handleData={handleChildComponentData}
-                        placeHolder={item.name}>
+                        placeHolder={item.name}
+                        value={mobile}
+                        label = {item.label}
+                        
+                        >
                         {' '}
                       </TextInputNumericRectangle>
                     );
                   
                 } 
+                else if((item.name).trim().toLowerCase()==="name")
+                {
+                  
+                    return(
+                      <PrefilledTextInput
+                      jsonData={item}
+                      key={index}
+                      handleData={handleChildComponentData}
+                      placeHolder={item.name}
+                      value={name}
+                      label = {item.label}
+                      ></PrefilledTextInput>
+                    )
+                  
+                 
+                  
+                }
                 // } 
                 else if (item.name === 'aadhaar' || item.name==="aadhar") {
                   console.log("aadhar")
@@ -366,7 +453,9 @@ const handleRegistrationFormSubmission=()=>{
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
-                      placeHolder={item.name}>
+                      placeHolder={item.name}
+                      label = {item.label}
+                      >
                       {' '}
                     </TextInputAadhar>
                   );
@@ -378,7 +467,9 @@ const handleRegistrationFormSubmission=()=>{
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
-                      placeHolder={item.name}>
+                      placeHolder={item.name}
+                      label = {item.label}
+                      >
                       {' '}
                     </TextInputPan>
                   );
@@ -390,7 +481,8 @@ const handleRegistrationFormSubmission=()=>{
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
-                      placeHolder={item.name}>
+                      placeHolder={item.name}
+                      label = {item.label}>
                       {' '}
                     </TextInputGST>
                   );
@@ -405,6 +497,7 @@ const handleRegistrationFormSubmission=()=>{
                        handleData={handleChildComponentData}
                        placeHolder={item.name}
                        value={location.city}
+                       label = {item.label}
                        ></PrefilledTextInput>
                      )
                   
@@ -414,13 +507,16 @@ const handleRegistrationFormSubmission=()=>{
                 else if((item.name).trim().toLowerCase()==="pincode" && location!==undefined)
                 {
                   return(
-                    <PrefilledTextInput
+                    <PincodeTextInput
                     jsonData={item}
                     key={index}
                     handleData={handleChildComponentData}
+                    handleFetchPincode = {handleFetchPincode}
                     placeHolder={item.name}
                     value={location.postcode}
-                    ></PrefilledTextInput>
+                    label = {item.label}
+                    maxLength={6}
+                    ></PincodeTextInput>
                   )
                 }
                 else if((item.name).trim().toLowerCase()==="state" && location!==undefined)
@@ -432,6 +528,7 @@ const handleRegistrationFormSubmission=()=>{
                     handleData={handleChildComponentData}
                     placeHolder={item.name}
                     value={location.state}
+                    label = {item.label}
                     ></PrefilledTextInput>
                   )
                 }
@@ -445,6 +542,7 @@ const handleRegistrationFormSubmission=()=>{
                       handleData={handleChildComponentData}
                       placeHolder={item.name}
                       value={location.district}
+                      label = {item.label}
                       ></PrefilledTextInput>
                     )
                   
@@ -457,7 +555,8 @@ const handleRegistrationFormSubmission=()=>{
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
-                      placeHolder={item.name}>
+                      placeHolder={item.name}
+                      label = {item.label}>
                       {' '}
                     </TextInputRectangle>
                   );
@@ -469,6 +568,7 @@ const handleRegistrationFormSubmission=()=>{
                     handleData={handleChildComponentData}
                     key={index}
                     data={item.name}
+                    label = {item.label}
                     action="Select File"></ImageInput>
                 );
               } else if (item.type === 'date') {
@@ -482,7 +582,7 @@ const handleRegistrationFormSubmission=()=>{
               }
             })}
 
-             <ButtonOval
+             {formFound && <ButtonOval
             handleOperation={() => {
               handleRegistrationFormSubmission();
             }}
@@ -493,7 +593,7 @@ const handleRegistrationFormSubmission=()=>{
               padding: 10,
               color: 'white',
               fontSize: 16,
-            }}></ButtonOval>
+            }}></ButtonOval>}
       </View>
       </ScrollView>
             

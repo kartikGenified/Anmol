@@ -13,6 +13,7 @@ const ModalWithBorder = (props) => {
     : 'grey';
   const navigation = useNavigation()
   const navigateTo = props.navigateTo 
+  const parameters = props.parameters
   const Comp = props.comp
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const ModalWithBorder = (props) => {
 
     setModalVisible(!modalVisible)
     props.modalClose()
-    navigateTo && navigation.navigate(navigateTo)
+    navigateTo && navigation.navigate(navigateTo,parameters)
   }
 
 
