@@ -57,12 +57,12 @@ const VideoGallery = ({navigation}) => {
     const type = props.type
     const date = props.date
     return(
-      <TouchableOpacity onPress={()=>{Linking.openURL(video)}} style={{height:180,width:'48%',borderRadius:10,backgroundColor:'white',elevation:10,margin:10,alignItems:'center',justifyContent:'flex-end'}}>
+      <TouchableOpacity onPress={()=>{Linking.openURL(video)}} style={{height:180,width:'40%',borderRadius:10,backgroundColor:'white',elevation:10,margin:10,alignItems:'center',justifyContent:'flex-end'}}>
        <View style={{width:'100%',backgroundColor:"#DDDDDD",alignItems:"center",justifyContent:'center',height:'50%'}}>
         <Logo name="youtube" size={60} color="red"></Logo>
        </View>
         <View style={{backgroundColor:'black',width:'100%',alignItems:'flex-start',height:'50%',justifyContent:"center"}}>
-        <PoppinsTextMedium style={{color:'white',fontSize:13,marginLeft:8}} content = {`Title : ${title}`}></PoppinsTextMedium>
+        <PoppinsTextMedium style={{color:'white',fontSize:13,marginLeft:8}} content = {`Title : ${title.substring(0,16)}`}></PoppinsTextMedium>
         <PoppinsTextMedium style={{color:'white',fontSize:13,marginLeft:8}} content = {`Type : ${type}`}></PoppinsTextMedium>
         <PoppinsTextMedium style={{color:'white',fontSize:13,marginBottom:6,marginLeft:8}} content = {`Date : ${moment(date).format("DD MMM YYYY")}`}></PoppinsTextMedium>
         
@@ -123,10 +123,13 @@ const VideoGallery = ({navigation}) => {
           backgroundColor: 'white',
           minHeight:height-100,
           marginTop: 10,
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
           width: '100%',
           paddingBottom: 40,
+          flexDirection:"row",
+          flexWrap:'wrap'
+
         }}>
           {
             videoData && videoData.map((item,index)=>{

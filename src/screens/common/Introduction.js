@@ -1,6 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Text,Image, TouchableOpacity} from 'react-native';
 import DotHorizontalList from '../../components/molecules/DotHorizontalList';
+import  {useGetAppThemeDataMutation}  from '../../apiServices/appTheme/AppThemeApi';
+import { useSelector, useDispatch } from 'react-redux'
+import { setPrimaryThemeColor,setSecondaryThemeColor,setIcon,setIconDrawer,setTernaryThemeColor,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades,setKycOptions} from '../../../redux/slices/appThemeSlice';
+import { setManualApproval,setAutoApproval,setRegistrationRequired} from '../../../redux/slices/appUserSlice';
+// import VersionCheck from 'react-native-version-check';
+
+const Introduction = ({navigation}) => {
+    const [imageIndex, setImageIndex] = useState(0)
+    const dispatch = useDispatch()
+    // generating functions and constants for API use cases---------------------
+    const [
+        getAppTheme,
+        {
+          data: getAppThemeData,
+          error: getAppThemeError,
+          isLoading: getAppThemeIsLoading,
+          isError: getAppThemeIsError,
+        }
+      ] = useGetAppThemeDataMutation();
+
+      // calling API to fetch themes for the app
+      useEffect(()=>{
+        getAppTheme("oopl")
+    //         VersionCheck.getLatestVersion()
+    // .then(latestVersion => {
+    //     console.log(latestVersion);   
+    //     });
+      },[])
+
+      // fetching data and checking for errors from the API-----------------------
+      useEffect(()=>{
+        if(getAppThemeData)
+        {
+            
+            console.log("getAppThemeData",JSON.stringify(getAppThemeData.body))
+            dispatch(setPrimaryThemeColor(getAppThemeData.body.theme.color_shades["500"]))
+            dispatch(setSecondaryThemeColor(getAppThemeData.body.theme.color_shades["300"]))
+            dispatch(setTernaryThemeColor(getAppThemeData.body.theme.color_shades["600"]))
+            dispatch(setIcon(getAppThemeData.body.logo[0]))
+            dispatch(setIconDrawer(getAppThemeData.body.logo[1]))
+            dispatch(setOptLogin(getAppThemeData.body.login_options.Otp.users))
+            dispatch(setPasswordLogin(getAppThemeData.body.login_options.Password.users))
+            dispatch(setButtonThemeColor(getAppThemeData.body.theme.color_shades["700"]))
+            dispatch(setManualApproval(getAppThemeData.body.approval_flow_options.Manual.users))
+            dispatch(setAutoApproval(getAppThemeData.body.approval_flow_options.AutoApproval.users))
+            dispatch(setRegistrationRequired(getAppThemeData.body.registration_options.Registration.users))
+            dispatch(setColorShades(getAppThemeData.body.theme.color_shades))
+            dispatch(setKycOptions(getAppThemeData.body.kyc_options))
+
 
 
 const Introduction = ({navigation}) => {
@@ -13,6 +62,19 @@ const Introduction = ({navigation}) => {
          }, 1500);
          
     },[])
+
+        }
+        else if(getAppThemeError){
+            getAppTheme("oopl")
+
+            // console.log("getAppThemeIsError",getAppThemeIsError)
+            console.log("getAppThemeError",getAppThemeError)
+        }
+      },[getAppThemeData,getAppThemeError])
+
+
+      
+
     // This is the array used to display images, add or remove image from the array to modify as per clients need----------------
     const descriptionImages = [require('../../../assets/images/genuinemarkDescription.png'), require('../../../assets/images/rewardifyDescription.png'), require('../../../assets/images/supplybeamDescription.png')]
     
@@ -27,7 +89,7 @@ const Introduction = ({navigation}) => {
             
             if(imageIndex==descriptionImages.length-1)
             {
-                navigation.navigate('SelectLanguage')
+                navigation.navigate('SelectUser')
             }
             else{
                 setImageIndex(imageIndex+1)
@@ -57,6 +119,9 @@ const Introduction = ({navigation}) => {
                 <Text style={{fontSize:18,color:"#0087A2",fontWeight:'600'}}>Skip</Text>
 
                 </TouchableOpacity>}
+                <Text onPress={()=>{console.log("skipped")
+            {getAppThemeData && navigation.navigate('SelectUser')}
+            }} style={{fontSize:18,color:"#0087A2",position:"absolute",left:40,bottom:20,fontWeight:'600'}}>Skip</Text>
                 <Text onPress={()=>{handleNext()}} style={{fontSize:18,color:"#0087A2",position:"absolute",right:40,bottom:20,fontWeight:'600'}}>Next</Text>
             </View>
             </View>

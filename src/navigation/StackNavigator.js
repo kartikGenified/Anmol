@@ -87,12 +87,18 @@ const StackNavigator = () => {
                 } name="Feedback" component={Feedback}></Stack.Screen>
  */}
 
+
                 {/* <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="WheelList" component={WheelList}></Stack.Screen> */}
+<<<<<<< HEAD
 
+=======
+
+                
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
 
 
@@ -102,10 +108,12 @@ const StackNavigator = () => {
                     }
                 } name="Splash" component={Splash}></Stack.Screen>
 
+                } name="Introduction" component={Introduction}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
+<<<<<<< HEAD
                 } name="GenunityDetails" component={GenunityDetails}></Stack.Screen>
 
                 <Stack.Screen options={
@@ -129,6 +137,9 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="Introduction" component={Introduction}></Stack.Screen>
+=======
+                } name="WheelList" component={WheelList}></Stack.Screen>
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
                 <Stack.Screen options={
                     {
@@ -154,6 +165,7 @@ const StackNavigator = () => {
                     }
                 } name="SpinWheel" component={SpinWheel}></Stack.Screen>
 
+               
                 <Stack.Screen options={
                     {
                         headerShown: false

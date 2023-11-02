@@ -117,12 +117,21 @@ const PointHistory = ({ navigation }) => {
         )
     }
     return (
+<<<<<<< HEAD
         <View style={{ alignItems: 'center', justifyContent: "center" }}>
             <View style={{ alignItems: "center", justifyContent: "flex-start", flexDirection: "row", width: '100%', marginTop: 10, height: 40, marginLeft: 20 }}>
                 <TouchableOpacity onPress={() => {
                     navigation.goBack()
                 }}>
                     <Image style={{ height: 24, width: 24, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/blackBack.png')}></Image>
+=======
+        <View style={{alignItems:'center',justifyContent:"center",backgroundColor:'white'}}>
+            <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
+           <TouchableOpacity onPress={()=>{
+            navigation.goBack()
+           }}>
+            <Image style={{height:24,width:24,resizeMode:'contain',marginLeft:10}} source={require('../../../assets/images/blackBack.png')}></Image>
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
                 </TouchableOpacity>
                 <PoppinsTextMedium content="Point History" style={{ marginLeft: 10, fontSize: 16, fontWeight: '600', color: '#171717' }}></PoppinsTextMedium>
@@ -139,6 +148,7 @@ const PointHistory = ({ navigation }) => {
                     }
                     <PoppinsTextMedium style={{ marginLeft: 10, fontSize: 20, fontWeight: '600', color: '#6E6E6E' }} content="Points"></PoppinsTextMedium>
                 </View>
+<<<<<<< HEAD
                 <Image style={{ height: 80, width: 80, resizeMode: 'contain', position: 'absolute', right: 20 }} source={require('../../../assets/images/points.png')}></Image>
             </View>
             <DisplayEarnings></DisplayEarnings>
@@ -171,6 +181,24 @@ const PointHistory = ({ navigation }) => {
 
 
 
+=======
+                <Image style={{height:80,width:80,resizeMode:'contain',position:'absolute',right:20}} source={require('../../../assets/images/points.png')}></Image>
+                 </View>
+                 <DisplayEarnings></DisplayEarnings>
+                 <Header></Header>
+                 {fetchUserPointsHistoryData && <FlatList
+        data={fetchUserPointsHistoryData.body.data}
+        contentContainerStyle={{paddingBottom:200}}
+        showsVerticalScrollIndicator={false}
+        renderItem={({item,index}) => {
+            // console.log(index+1,item)
+            return(
+                <ListItem description={item.product_name} productCode={item.product_code} amount={item.points} time={moment(item.created_at).format('HH:MM')}/>
+            )
+        }}
+        keyExtractor={item => item.id}
+      />}
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
         </View>
     );
 }

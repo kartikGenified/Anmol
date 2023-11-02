@@ -255,7 +255,110 @@ const CustomDrawer = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
+<<<<<<< HEAD
         <Image
+=======
+        <TouchableOpacity
+          onPress={() => {
+            if(props.title==="Scan QR Code" || props.title==="Scan and Win")
+            {
+                navigation.navigate('QrCodeScanner')
+            }
+            else if(props.title.toLowerCase()==="passbook")
+            {
+                navigation.navigate("Passbook")
+            }
+            else if(props.title.toLowerCase()==="rewards"){
+                navigation.navigate('RedeemRewardHistory')
+            }
+            else if(props.title.toLowerCase()==="gift catalogue"){
+              navigation.navigate('RedeemGifts')
+          }
+            else if(props.title.toLowerCase() === "bank details" || props.title.toLowerCase() === "bank account"){
+              navigation.navigate('BankAccounts')
+          }
+          else if(props.title.toLowerCase() === "profile"){
+            navigation.navigate('Profile')
+        }
+        else if(props.title.toLowerCase() === "refer and earn"){
+          navigation.navigate('ReferAndEarn')
+      }
+        else if(props.title.toLowerCase() === "warranty list"){
+            navigation.navigate('WarrantyHistory')
+        }
+        else if(props.title.toLowerCase() === "help and support"){
+          navigation.navigate('HelpAndSupport')
+      }
+      else if(props.title.toLowerCase() === "product catalogue"){
+        navigation.navigate('ProductCatalogue')
+    }
+    else if(props.title.toLowerCase() === "video" || props.title.toLowerCase() === "videos"){
+      navigation.navigate('VideoGallery')
+  }
+  else if(props.title.toLowerCase() === "gallery"){
+    navigation.navigate('ImageGallery')
+}
+else  if(props.title.substring(0,4).toLowerCase()==="scan" && (props.title).toLowerCase() !=="scan list" )
+{
+    navigation.navigate('QrCodeScanner')
+}
+else  if(props.title.toLowerCase()==="scheme" )
+{
+    navigation.navigate('Scheme')
+}
+else  if(props.title.toLowerCase()==="store locator" )
+{
+    navigation.navigate('DataNotFound')
+}
+else  if(props.title.toLowerCase()==="scan list" )
+{
+    navigation.navigate('ScannedHistory')
+}
+else  if(props.title.toLowerCase()==="share app" )
+{
+  const options={
+    title:"Share APP",
+    url:shareAppLink}
+Share.open(options)
+.then((res) => {
+  console.log(res);
+})
+.catch((err) => {
+  err && console.log(err);
+});
+}
+          }}>
+          <Text style={{color: primaryThemeColor, fontSize: 15}}>{props.title}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+return (
+  <View>
+    <View
+      style={{
+        height: 125,
+        backgroundColor: ternaryThemeColor,
+        borderBottomLeftRadius: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Image
+        style={{
+          height: 60,
+          width: 60,
+          borderRadius: 30,
+          marginLeft: 10,
+          position: 'absolute',
+          left: 4,
+          resizeMode:"contain"
+        }}
+        source={{uri:BaseUrlImages+profileImage}}></Image>
+      <View style={{justifyContent: 'center', marginLeft: 50}}>
+      {userData && <Text
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
           style={{
             height: 60,
             width: 60,
