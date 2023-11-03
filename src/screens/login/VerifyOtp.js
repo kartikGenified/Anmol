@@ -206,6 +206,7 @@ const VerifyOtp = ({ navigation, route }) => {
   //function to handle Modal
   const modalWithBorderClose = () => {
     setModalWithBorder(false);
+    setMessage('')
     navigation.navigate("Dashboard")
   };
 
@@ -259,6 +260,7 @@ const VerifyOtp = ({ navigation, route }) => {
     setError(false);
     setSuccess(false)
     setMessage('')
+    setModalWithBorder(false)
   };
   const verifyOtp = () => {
     console.log("first")
@@ -347,32 +349,29 @@ const VerifyOtp = ({ navigation, route }) => {
         </View>
 
       </View>
+      <View style={{ marginHorizontal: 100 }}>
       {error && (
         <ErrorModal
           modalClose={modalClose}
           message={message}
-          openModal={error}></ErrorModal>
+          openModal={error}
+          
+          ></ErrorModal>
       )}
-
-      {/* {success && (
-        <MessageModal
-          modalClose={modalClose}
-          message={message}
-          navigateTo="Dashboard"
-          openModal={success}></MessageModal>
-      )} */}
+  </View>
+      
 
       <View style={{ marginHorizontal: 100 }}>
-        {success &&
+        {openModalWithBorder &&
           <ModalWithBorder
             modalClose={modalWithBorderClose}
             message={message}
-            openModal={true}
+            openModal={openModalWithBorder}
             comp={ModalContent}>
           </ModalWithBorder>}
       </View>
 
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView contentContainerStyle={{flex:1}} style={{ width: '100%' }}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Image
             style={{ height: 160, width: 160, resizeMode: 'contain' }}
@@ -411,7 +410,7 @@ const VerifyOtp = ({ navigation, route }) => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            marginTop: 20,
+            position:"absolute",bottom:30,width:'100%'
           }}>
           {otp && (
             <ButtonNavigateArrow

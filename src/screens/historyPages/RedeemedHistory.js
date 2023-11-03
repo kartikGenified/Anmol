@@ -11,6 +11,7 @@ import { BaseUrlImages } from '../../utils/BaseUrlImages';
 import { useIsFocused } from '@react-navigation/native';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
+import FastImage from 'react-native-fast-image';
 
 const RedeemedHistory = ({navigation}) => {
   const [message, setMessage] = useState();
@@ -34,6 +35,9 @@ const RedeemedHistory = ({navigation}) => {
       userPointFunc(params)
 
   }
+
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+
   useEffect(()=>{
     fetchPoints()
   },[focused])
@@ -250,6 +254,7 @@ const RedeemedHistory = ({navigation}) => {
               message={message}
               openModal={success}></MessageModal>
           )}
+
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
                 <TouchableOpacity onPress={()=>{
                     navigation.goBack()
@@ -303,6 +308,18 @@ const RedeemedHistory = ({navigation}) => {
         })
       }
       </ScrollView>
+
+      {
+                fetchGiftsRedemptionsOfUserIsLoading &&
+                <FastImage
+                    style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
+                    source={{
+                        uri: gifUri, // Update the path to your GIF
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={FastImage.resizeMode.contain}
+                />
+            }
 
         </View>
     );

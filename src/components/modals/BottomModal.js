@@ -24,25 +24,22 @@ const BottomModal = (props) => {
         setModalVisible(false)
     }
   },[])
-  const closeModal=()=>{
-   
-    setModalVisible(!modalVisible)
-    props.modalClose()
-    navigateTo && navigation.navigate(navigateTo)
-  }
-   
+  
 
 
   return (
     <View style={styles.centeredView}>
+      
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={modalVisible}  
         onRequestClose={() => {
             props.modalClose()
           setModalVisible(!modalVisible);
-        }}>
+        }}
+        >
+
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <Comp></Comp>

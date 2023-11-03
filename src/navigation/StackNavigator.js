@@ -57,6 +57,11 @@ import SpinWheel from '../screens/wheel/SpinWheel';
 import DataNotFound from '../screens/data not found/DataNotFound';
 import Splash from '../screens/common/Splash';
 import RegistrationProgress from '../components/organisms/RegistrationProgress';
+import WarrantyClaimDetails from '../screens/waranty/WarrantyClaimDetails';
+import ScanAndRedirectToGenuinity from '../screens/genuinity/ScanAndRedirectToGenuinity';
+import ScanAndRedirectToWarranty from '../screens/waranty/ScanAndRedirectToWarranty';
+import GiftCatalogue from '../screens/giftCatalogue/GiftCatalogue';
+import GenunityDetails from '../screens/genuinity/GenuinityDetails';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
@@ -88,8 +93,12 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="WheelList" component={WheelList}></Stack.Screen> */}
+<<<<<<< HEAD
+
+=======
 
                 
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
 
 
@@ -104,13 +113,46 @@ const StackNavigator = () => {
                     {
                         headerShown: false
                     }
+<<<<<<< HEAD
+                } name="GenunityDetails" component={GenunityDetails}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="GiftCatalogue" component={GiftCatalogue}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ScanAndRedirectToGenuinity" component={ScanAndRedirectToGenuinity}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ScanAndRedirectToWarranty" component={ScanAndRedirectToWarranty}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="Introduction" component={Introduction}></Stack.Screen>
+=======
                 } name="WheelList" component={WheelList}></Stack.Screen>
+>>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="Feedback" component={Feedback}></Stack.Screen>
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WarrantyClaimDetails" component={WarrantyClaimDetails}></Stack.Screen>
 
                 {/* <Stack.Screen options={
                     {
@@ -155,7 +197,7 @@ const StackNavigator = () => {
                     }
                 } name="ReportAndIssue" component={ReportAndIssue}></Stack.Screen>
 
-               
+
                 <Stack.Screen options={
                     {
                         headerShown: false
