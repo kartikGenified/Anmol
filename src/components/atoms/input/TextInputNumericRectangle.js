@@ -47,6 +47,7 @@ const TextInputNumericRectangle = props => {
         <PoppinsTextMedium
           style={{color: '#919191', padding: 4,fontSize:16}}
           content={label}></PoppinsTextMedium>
+
       </View>
       <TextInput
         maxLength={maxLength}

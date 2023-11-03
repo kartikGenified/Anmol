@@ -126,6 +126,7 @@ const TextInputAadhar = (props) => {
                 <PoppinsTextMedium style={{color:"#919191",padding:4,fontSize:16}} content = {label}></PoppinsTextMedium>
             </View>
             <TextInput maxLength={12} onSubmitEditing={(text)=>{handleInputEnd()}} onEndEditing={(text)=>{handleInputEnd()}} style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24,color:'black',fontSize:14}} placeholderTextColor="grey" onChangeText={(text)=>{handleInput(text)}} value={value} placeholder={`${placeHolder} *`}></TextInput>
+
         </View>
        {sendAadharOtpData  && <View style={{height:60,width:'86%',borderWidth:1,borderColor:'#DDDDDD',alignItems:"center",justifyContent:"center",backgroundColor:'white',margin:10}}>
         
@@ -133,6 +134,7 @@ const TextInputAadhar = (props) => {
             <PoppinsTextMedium style={{color:"#919191",padding:4,fontSize:16}} content = "OTP"></PoppinsTextMedium>
         </View>
         <TextInput maxLength={6}  style={{height:50,width:'100%',alignItems:"center",justifyContent:"flex-start",fontWeight:'500',marginLeft:24,color:'black',fontSize:14}} placeholderTextColor="grey" onChangeText={(text)=>{setOtp(text)}} value={otp} placeholder={`OTP`}></TextInput>
+
     </View>}
         </View>
         
