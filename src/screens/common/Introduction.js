@@ -15,7 +15,7 @@ const Introduction = ({navigation}) => {
     },[])
     // This is the array used to display images, add or remove image from the array to modify as per clients need----------------
     
-    const descriptionImages=[require('../../../assets/images/genuinemarkDescription.png'),require('../../../assets/images/rewardifyDescription.png'),require('../../../assets/images/dwamDescription.png'),require('../../../assets/images/scanAndWinDescription.png')]
+    const descriptionImages=[require('../../../assets/images/genuinemarkDescription.png'),require('../../../assets/images/rewardifyDescription.png')]
 
     
     

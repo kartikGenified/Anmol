@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     //     alignItems: 'center',
     //     backgroundColor: '#2c3e50',
     // },
-    }
+    // }
     
 });
 
