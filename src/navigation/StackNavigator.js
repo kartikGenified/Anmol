@@ -93,12 +93,8 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="WheelList" component={WheelList}></Stack.Screen> */}
-<<<<<<< HEAD
-
-=======
 
                 
->>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
 
 
@@ -107,39 +103,17 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="Splash" component={Splash}></Stack.Screen>
-
-                } name="Introduction" component={Introduction}></Stack.Screen>
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-<<<<<<< HEAD
-                } name="GenunityDetails" component={GenunityDetails}></Stack.Screen>
-
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="GiftCatalogue" component={GiftCatalogue}></Stack.Screen>
-
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="ScanAndRedirectToGenuinity" component={ScanAndRedirectToGenuinity}></Stack.Screen>
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="ScanAndRedirectToWarranty" component={ScanAndRedirectToWarranty}></Stack.Screen>
-                <Stack.Screen options={
+<Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="Introduction" component={Introduction}></Stack.Screen>
-=======
+                
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
                 } name="WheelList" component={WheelList}></Stack.Screen>
->>>>>>> d2438e1706eca9a840d5da1f3767d494b2e6d9b3
 
                 <Stack.Screen options={
                     {
