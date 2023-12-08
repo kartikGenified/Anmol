@@ -4,13 +4,15 @@ import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import ButtonNavigateArrow from '../../components/atoms/buttons/ButtonNavigateArrow';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-const DataNotFound = ({navigation}) => {
+const DataNotFound = () => {
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
       )
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
+        const navigation = useNavigation()
     const handleButton=()=>{
     navigation.navigate("Dashboard")
     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -24,7 +24,7 @@ import * as Keychain from 'react-native-keychain';
 import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalWithBorder from '../../components/modals/ModalWithBorder';
 import Icon from 'react-native-vector-icons/Feather';
 import Close from 'react-native-vector-icons/Ionicons';
@@ -37,11 +37,19 @@ const VerifyOtp = ({ navigation, route }) => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false)
 
+  const [timer, setTimer] = useState(60)
+
+  const timeOutCallback = useCallback(() => setTimer(currTimer => currTimer - 1), []);
+
   //modal
   const [openModalWithBorder, setModalWithBorder] = useState(false)
 
   const dispatch = useDispatch();
   // fetching theme for the screen-----------------------
+
+  useEffect(() => {
+    timer > 0 && setTimeout(timeOutCallback, 1000);
+  }, [timer, timeOutCallback]);
 
   const primaryThemeColor = useSelector(
     state => state.apptheme.primaryThemeColor,
@@ -63,8 +71,10 @@ const VerifyOtp = ({ navigation, route }) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : '#ef6110';
+  const fcmToken = useSelector(state => state.fcmToken.fcmToken)
 
 
+  console.log("fcmToken from login", fcmToken)
   const icon = useSelector(state => state.apptheme.icon)
     ? useSelector(state => state.apptheme.icon)
     : require('../../../assets/images/demoIcon.png');
@@ -101,15 +111,7 @@ const VerifyOtp = ({ navigation, route }) => {
       isError: verifyOtpIsError,
     },
   ] = useVerifyOtpMutation();
-  const [
-    getNameFunc,
-    {
-      data: getNameData,
-      error: getNameError,
-      isLoading: getLoading,
-      isError: getIsError
-    }
-  ] = useGetNameMutation()
+
   // -----------------------------------------
 
   // fetching navigation route params ------------------------
@@ -144,8 +146,16 @@ const VerifyOtp = ({ navigation, route }) => {
         console.log("running2")
         modalWithBorderClose()
       }, 2000);
-  },[success,openModalWithBorder]);
+  }, [success, openModalWithBorder]);
 
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('loginData', jsonValue);
+    } catch (e) {
+      console.log("Error while saving loginData", e)
+    }
+  };
   const saveUserDetails = (data) => {
 
     try {
@@ -169,6 +179,7 @@ const VerifyOtp = ({ navigation, route }) => {
 
         console.log("successfullyLoggedIn")
         saveToken(verifyOtpData.body.token)
+        storeData(verifyOtpData.body)
         saveUserDetails(verifyOtpData.body)
         setMessage("Successfully Loged In")
         setSuccess(true)
@@ -189,13 +200,14 @@ const VerifyOtp = ({ navigation, route }) => {
       const name = navigationParams.name;
       const user_type_id = navigationParams.user_type_id;
       const user_type = navigationParams.user_type;
+      const fcm_token = fcmToken
       if (verifyLoginOtpData.success) {
-        verifyOtpFunc({ mobile, name, otp, user_type_id, user_type });
+        verifyOtpFunc({ mobile, name, otp, user_type_id, user_type, fcm_token });
       }
-    } else {
+    } else if (verifyLoginOtpError) {
       console.log("verifyLoginOtpError", verifyLoginOtpError)
-      // setError(true)
-      setMessage("Wrong OTP")
+      setError(true)
+      setMessage("Please enter the correct OTP")
     }
   }, [verifyLoginOtpData, verifyLoginOtpError]);
 
@@ -256,12 +268,29 @@ const VerifyOtp = ({ navigation, route }) => {
       console.log('From Verify Otp', value);
     }
   };
+
+  useEffect(() => {
+    if (otp.length === 6) {
+      // setOtp(value);
+      verifyOtp()
+      // console.log('From Verify Otp', value);
+    }
+  }, [otp]);
+
   const modalClose = () => {
     setError(false);
     setSuccess(false)
     setMessage('')
     setModalWithBorder(false)
   };
+
+  const handleTimer=()=>{
+    if (!timer) {
+      setTimer(60);
+      handleOtpResend()
+    }
+  }
+  
   const verifyOtp = () => {
     console.log("first")
     const mobile = navigationParams.mobile;
@@ -269,6 +298,7 @@ const VerifyOtp = ({ navigation, route }) => {
     const user_type_id = navigationParams.user_type_id;
     const user_type = navigationParams.user_type;
     const is_approved_needed = navigationParams.needsApproval;
+    const fcm_token = fcmToken
     console.log(mobile, name, user_type_id, user_type, otp, is_approved_needed);
 
     verifyLoginOtpFunc({
@@ -278,6 +308,7 @@ const VerifyOtp = ({ navigation, route }) => {
       user_type,
       otp,
       is_approved_needed,
+      fcm_token
     });
   };
 
@@ -350,16 +381,16 @@ const VerifyOtp = ({ navigation, route }) => {
 
       </View>
       <View style={{ marginHorizontal: 100 }}>
-      {error && (
-        <ErrorModal
-          modalClose={modalClose}
-          message={message}
-          openModal={error}
-          
+        {error && (
+          <ErrorModal
+            modalClose={modalClose}
+            message={message}
+            openModal={error}
+
           ></ErrorModal>
-      )}
-  </View>
-      
+        )}
+      </View>
+
 
       <View style={{ marginHorizontal: 100 }}>
         {openModalWithBorder &&
@@ -371,7 +402,7 @@ const VerifyOtp = ({ navigation, route }) => {
           </ModalWithBorder>}
       </View>
 
-      <ScrollView contentContainerStyle={{flex:1}} style={{ width: '100%' }}>
+      <ScrollView contentContainerStyle={{ flex: 1 }} style={{ width: '100%' }}>
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Image
             style={{ height: 160, width: 160, resizeMode: 'contain' }}
@@ -382,43 +413,39 @@ const VerifyOtp = ({ navigation, route }) => {
           getOtpFromComponent={getOtpFromComponent}
           color={'white'}></OtpInput>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <PoppinsTextMedium
-            style={{ fontSize: 14, color: 'black' }}
-            content="Didn't you recieve the OTP?"></PoppinsTextMedium>
-          <Text
-            style={{
-              color: buttonThemeColor,
-              fontSize: 14,
-              marginLeft: 4,
-              fontWeight: '800',
-            }}
-            onPress={() => {
-              handleOtpResend();
-            }}>
-            Resend
-          </Text>
-        </View>
-
+<View style={{alignItems:'center',justifyContent:'center'}}>
+              <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',marginTop:4}}>
+              <Image
+                  style={{
+                    height: 20,
+                    width: 20,
+                    resizeMode: 'contain',
+                    
+                  }}
+                  source={require('../../../assets/images/clock.png')}></Image>
+                  <Text style={{color:ternaryThemeColor,marginLeft:4}}>{timer}</Text>
+              </View>
+              <View style={{alignItems:'center',justifyContent:'center'}}>
+                <Text style={{color:ternaryThemeColor,marginTop:10}}>Didn't you recieve any code?</Text>
+                
+                <Text onPress={handleTimer} style={{color:ternaryThemeColor,marginTop:6,fontWeight:'600',fontSize:16}}>Resend Code</Text>
+                
+              </View>
+            </View>
         <View
           style={{
             width: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            position:"absolute",bottom:30,width:'100%'
+            position: "absolute", bottom: 30, width: '100%'
           }}>
-          {otp && (
+          {/* {otp && (
             <ButtonNavigateArrow
               handleOperation={verifyOtp}
               backgroundColor={buttonThemeColor}
               style={{ color: 'white', fontSize: 16 }}
               content="Verify"></ButtonNavigateArrow>
-          )}
+          )} */}
         </View>
       </ScrollView>
     </LinearGradient>

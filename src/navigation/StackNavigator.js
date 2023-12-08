@@ -56,77 +56,159 @@ import WheelList from '../screens/wheel/WheelList';
 import SpinWheel from '../screens/wheel/SpinWheel';
 import DataNotFound from '../screens/data not found/DataNotFound';
 import Splash from '../screens/common/Splash';
-import RegistrationProgress from '../components/organisms/RegistrationProgress';
-import WarrantyClaimDetails from '../screens/waranty/WarrantyClaimDetails';
-import ScanAndRedirectToGenuinity from '../screens/genuinity/ScanAndRedirectToGenuinity';
 import ScanAndRedirectToWarranty from '../screens/waranty/ScanAndRedirectToWarranty';
+import ScanAndRedirectToGenuinity from '../screens/genuinity/ScanAndRedirectToGenuinity';
 import GiftCatalogue from '../screens/giftCatalogue/GiftCatalogue';
 import GenunityDetails from '../screens/genuinity/GenuinityDetails';
+import SharedPointsHistory from '../screens/historyPages/SharedPointsHistory';
+import WarrantyClaimDetails from '../screens/waranty/WarrantyClaimDetails';
+import WhatsNew from '../screens/community/WhatsNew';
+import InstallationVideo from '../screens/knowledgeHub/InstallationVideo';
+import ListAddress from '../screens/address/ListAddress';
+import AddAddress from '../screens/address/AddAddress';
+import ProductCategory from '../screens/productCategories/ProductCategory';
+import TierDetails from '../screens/community/TierDetails';
+import FAQ from '../screens/myProgram/FAQ';
+import Tutorial from '../screens/myProgram/Tutorial';
+import AddUser from '../screens/addUser/AddUser';
+import ListUsers from '../screens/addUser/ListUsers';
+import AddedUserScanList from '../screens/addUser/AddedUserScanList';
+import RequestAppointment from '../screens/requestAppointment/RequestAppointment';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                {/* <Stack.Screen options={
-                    {
-                        headerShown:false
-                    }
-                } name="EditProfile" component={EditProfile}></Stack.Screen>
-
-                <Stack.Screen options={
-                    {
-                        headerShown:false
-                    }
-                } name="Profile" component={Profile}></Stack.Screen> */}
-                {/* 
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="Feedback" component={Feedback}></Stack.Screen>
- */}
-
-
-                {/* <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="WheelList" component={WheelList}></Stack.Screen> */}
-
-                
-
-
 
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="Splash" component={Splash}></Stack.Screen>
-<Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="Introduction" component={Introduction}></Stack.Screen>
-                
+
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
-                } name="WheelList" component={WheelList}></Stack.Screen>
+                } name="GenunityDetails" component={GenunityDetails}></Stack.Screen>
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="RequestAppointment" component={RequestAppointment}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="AddUser" component={AddUser}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ListUsers" component={ListUsers}></Stack.Screen>
+
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="SharedPointsHistory" component={SharedPointsHistory}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ListAddress" component={ListAddress}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="Tutorial" component={Tutorial}></Stack.Screen>
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="FAQ" component={FAQ}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="TierDetails" component={TierDetails}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ProductCategory" component={ProductCategory}></Stack.Screen>
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="AddAddress" component={AddAddress}></Stack.Screen>
+
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="InstallationVideo" component={InstallationVideo}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WhatsNew" component={WhatsNew}></Stack.Screen>
+
+
+
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="GiftCatalogue" component={GiftCatalogue}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ScanAndRedirectToGenuinity" component={ScanAndRedirectToGenuinity}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="ScanAndRedirectToWarranty" component={ScanAndRedirectToWarranty}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="AddedUserScanList" component={AddedUserScanList}></Stack.Screen>
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="Introduction" component={Introduction}></Stack.Screen>
 
                 <Stack.Screen options={
                     {
                         headerShown: false
                     }
                 } name="Feedback" component={Feedback}></Stack.Screen>
-
-
-                <Stack.Screen options={
-                    {
-                        headerShown: false
-                    }
-                } name="WarrantyClaimDetails" component={WarrantyClaimDetails}></Stack.Screen>
 
                 {/* <Stack.Screen options={
                     {
@@ -138,8 +220,16 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="SpinWheel" component={SpinWheel}></Stack.Screen>
-
-               
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WheelList" component={WheelList}></Stack.Screen>
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="WarrantyClaimDetails" component={WarrantyClaimDetails}></Stack.Screen>
                 <Stack.Screen options={
                     {
                         headerShown: false
@@ -170,8 +260,6 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="ReportAndIssue" component={ReportAndIssue}></Stack.Screen>
-
-
                 <Stack.Screen options={
                     {
                         headerShown: false

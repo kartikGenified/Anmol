@@ -5,13 +5,17 @@ const initialState = {
   secondaryThemeColor:'',
   ternaryThemeColor:'',
   buttonThemeColor:'',
-  lightThemeColor:'',
   icon:'',
   iconDrawer:'',
   otpLogin:[],
   passwordLogin:[],
   colorShades:{},
-  kycOptions:{}
+  kycOptions:{},
+  isOnlineVerification:false,
+  socials:{},
+  website:'',
+  customerSupportMobile:'',
+  customerSupportMail:''
 
 }
 
@@ -26,9 +30,6 @@ export const appThemeSlice = createSlice({
     setSecondaryThemeColor:(state, action) =>{
         state.secondaryThemeColor = action.payload
     },
-    setLightThemeColor:(state, action) =>{
-      state.lightThemeColor = action.payload
-  },
     setTernaryThemeColor:(state, action)=>{
       state.ternaryThemeColor = action.payload
   },
@@ -52,12 +53,27 @@ export const appThemeSlice = createSlice({
   },
   setKycOptions:(state,action)=>{
     state.kycOptions = action.payload
+  },
+  setIsOnlineVeriification:(state,action)=>{
+    state.isOnlineVerification = true
+  },
+  setSocials:(state,action)=>{
+    state.socials = action.payload
+  },
+  setWebsite:(state, action)=>{
+    state.website = action.payload
+  },
+  setCustomerSupportMobile:(state,action)=>{
+    state.customerSupportMobile = action.payload
+  },
+  setCustomerSupportMail:(state,action)=>{
+    state.customerSupportMail = action.payload
   }
   
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor ,setIcon,setIconDrawer,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades, setKycOptions,setLightThemeColor} = appThemeSlice.actions
+export const { setPrimaryThemeColor, setSecondaryThemeColor, setTernaryThemeColor ,setIcon,setIconDrawer,setOptLogin,setPasswordLogin,setButtonThemeColor,setColorShades, setKycOptions,setIsOnlineVeriification, setSocials, setWebsite, setCustomerSupportMail, setCustomerSupportMobile} = appThemeSlice.actions
 
 export default appThemeSlice.reducer

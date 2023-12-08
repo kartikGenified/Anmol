@@ -1,6 +1,6 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import React, { Component, } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions, Linking, ToastAndroid } from 'react-native';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { useSelector } from 'react-redux';
@@ -12,16 +12,39 @@ const height = Dimensions.get('window').height
 const GenunityDetails = ({ navigation, route }) => {
     const productData = route.params?.productData
 
-    console.log("product data gdetails", productData.products?.[0]?.images[0])
+    // console.log("product data gdetails", productData.products?.[0]?.images[0]);    
 
-    const uriImage = BaseUrlImages + productData.products?.[0]?.images[0];
+    const uriImage = BaseUrlImages + productData.products?.[0]?.images?.[0];
+    // console.log("uriImage",uriImage)
+    // const website = "";
 
+    const productVideo = "";
+
+    const facebook = "";
+    const twitter = "";
+    const insta = "";
+    const youtube = "";
+
+    const socials = useSelector(
+        state => state.apptheme.socials,
+    );
+
+    const website = useSelector(
+        state => state.apptheme.website,
+    );
+
+    console.log("usshss", socials,website)
+      
 
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
     )
         ? useSelector(state => state.apptheme.ternaryThemeColor)
         : 'grey';
+
+        const showToast = () => {
+            ToastAndroid.show(`Video Not Available : ${productData.products?.[0]?.product_id}`, ToastAndroid.LONG);
+          };
 
 
 
@@ -101,10 +124,16 @@ const GenunityDetails = ({ navigation, route }) => {
                             <View style={styles.card}>
                                 {/* Image in the center */}
                                 <View style={styles.centeredImage}>
-                                    <Image
-                                        source={{ uri: uriImage }} // Replace with your image source
-                                        style={styles.centeredImage}
-                                    />
+                                    {
+                                    productData.products?.[0]?.images?.[0]!==undefined ? 
+                                      <Image
+                                      source={{ uri: uriImage }} // Replace with your image source
+                                      style={styles.centeredImage}
+                                  />
+                                  :
+                                  <Text style={{color:"black", alignSelf:'center',fontWeight:'800'}}>NO IMAGE</Text>
+                                    }
+                                  
                                 </View>
 
                                 {/* Image at the top-right corner */}
@@ -119,14 +148,14 @@ const GenunityDetails = ({ navigation, route }) => {
 
                             {/* Product Details */}
                             <View style={{ marginTop: 20, marginLeft: 16 }}>
-                                <PoppinsTextLeftMedium style={{ color: 'black', fontSize: 15, fontWeight: '600', }} content={`Product Name : ${productData.products?.[0]?.name}`}></PoppinsTextLeftMedium>
-                                <PoppinsTextLeftMedium style={{ color: '#353535', fontSize: 12, fontWeight: '600', marginTop: 5 }} content={`Code : ${productData.products?.[0]?.product_code}`}></PoppinsTextLeftMedium>
+                                <PoppinsTextLeftMedium style={{ color: 'black', fontSize: 15, fontWeight: '800', }} content={`Product Name : ${productData.products?.[0]?.name}`}></PoppinsTextLeftMedium>
+                                <PoppinsTextLeftMedium style={{ color: '#353535', fontSize: 14, fontWeight: '600', marginTop: 5 }} content={`Code : ${productData.products?.[0]?.product_code}`}></PoppinsTextLeftMedium>
                                 <PoppinsTextLeftMedium style={{ color: '#353535', fontSize: 12, fontWeight: '600', marginTop: 10 }} content={`${productData.products?.[0]?.description}`}></PoppinsTextLeftMedium>
 
                             </View>
 
                             <View style={{
-                                height: 112,
+                                // height: 160,
                                 width: "100%",
                                 // alignSelf: 'center',
                                 justifyContent: 'space-around',
@@ -137,30 +166,35 @@ const GenunityDetails = ({ navigation, route }) => {
                                 overflow: 'hidden', // Clip contents to the card's boundaries
                                 padding: 10, // Adjust padding as needed
                             }}>
-                                <TouchableOpacity>
+                                {/* <TouchableOpacity>
                                     <Image
                                         source={require('../../../assets/images/brochure.png')} // Replace with your image source
                                         style={styles.middleLogo}
                                     />
                                     <PoppinsTextMedium style={{ color: '#353535', fontSize: 12, fontWeight: '800', marginTop: 5 }} content={`BROCHURE`}></PoppinsTextMedium>
 
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
 
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{
+                                   productData.products?.[0]?.video ? Linking.openURL(productData.products?.[0]?.video) : showToast()
+                                }}>
                                     <Image
                                         source={require('../../../assets/images/productVideo.png')} // Replace with your image source
                                         style={styles.middleLogo}
                                     />
-                                    <PoppinsTextMedium style={{ color: '#353535', fontSize: 12, fontWeight: '800', marginTop: 5 }} content={`PRODUCT VIDEO`}></PoppinsTextMedium>
+                                    
+                                    <PoppinsTextMedium style={{ color: '#353535', fontSize: 14, fontWeight: '800', marginTop: 5,  }} content={`PRODUCT VIDEO`}></PoppinsTextMedium>
 
                                 </TouchableOpacity>
 
-                                <TouchableOpacity>
+                                
+
+                                <TouchableOpacity onPress={()=>{Linking.openURL(website)}}>
                                     <Image
                                         source={require('../../../assets/images/website.png')} // Replace with your image source
                                         style={styles.middleLogo}
                                     />
-                                    <PoppinsTextMedium style={{ color: '#000000', fontSize: 12, fontWeight: '800', marginTop: 5 }} content={`WEBSITE`}></PoppinsTextMedium>
+                                    <PoppinsTextMedium style={{ color: '#000000', fontSize: 14, fontWeight: '800', marginTop: 5 }} content={`WEBSITE`}></PoppinsTextMedium>
 
                                 </TouchableOpacity>
 
@@ -171,21 +205,25 @@ const GenunityDetails = ({ navigation, route }) => {
                                 <PoppinsTextMedium style={{ color: '#010101', fontSize: 20, fontWeight: '800', marginTop: 40 }} content={`FOLLOW US ON`}></PoppinsTextMedium>
 
                                 <View style={{ width: "80%", alignSelf: 'center', marginTop: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{Linking.openURL(socials.facebook)}}>
                                         <Image
                                             source={require('../../../assets/images/fb.png')} // Replace with your image source
                                             style={styles.middleLogo}
                                         />
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{
+                                        Linking.openURL(socials.twitter)
+                                    }}>
                                         <Image
                                             source={require('../../../assets/images/twitter.png')} // Replace with your image source
                                             style={styles.middleLogo}
                                         />
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{
+                                        Linking.openURL(socials.instagram)
+                                    }}>
 
                                         <Image
                                             source={require('../../../assets/images/insta.png')} // Replace with your image source
@@ -193,7 +231,9 @@ const GenunityDetails = ({ navigation, route }) => {
                                         />
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{
+                                        Linking.openURL(socials.youtube)
+                                    }}>
 
                                         <Image
                                             source={require('../../../assets/images/youtube.png')} // Replace with your image source
@@ -256,9 +296,9 @@ const styles = StyleSheet.create({
         // Other styling for the top-right image
     },
     middleLogo: {
-        width: 53,
-        height: 55,
-        margin: 10
+        width: 80,
+        height: 85,
+        margin: 10,
         // Other styling for the top-right image
 
     }

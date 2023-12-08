@@ -6,12 +6,18 @@ const TextInputNumericRectangle = props => {
   const placeHolder = props.placeHolder;
   const maxLength = props.maxLength;
   const label = props.label
-  console.log("label",label)
+  const required = props.required
+  const isEditable = props.isEditable
+  console.log("label",isEditable)
 
   useEffect(()=>{
-    let tempJsonData = {...props.jsonData, value: value};
-    console.log(tempJsonData);
-    props.handleData(tempJsonData);
+    if(props.value!==undefined)
+    {
+      let tempJsonData = {...props.jsonData, value: value};
+      console.log(tempJsonData);
+      props.handleData(tempJsonData);
+    }
+
   },[props.value])
 
   const handleInput = text => {
@@ -45,9 +51,8 @@ const TextInputNumericRectangle = props => {
           left: 16,
         }}>
         <PoppinsTextMedium
-          style={{color: '#919191', padding: 4,fontSize:16}}
+          style={{color: '#919191', padding: 4,fontSize:18}}
           content={label}></PoppinsTextMedium>
-
       </View>
       <TextInput
         maxLength={maxLength}
@@ -62,14 +67,15 @@ const TextInputNumericRectangle = props => {
           justifyContent: 'flex-start',
           fontWeight: '500',
           marginLeft: 20,
-          color:'black',fontSize:14
+          color:'black',fontSize:16
         }}
+        editable = {isEditable ===false ? isEditable : true }
         placeholderTextColor="grey"
         onChangeText={text => {
           handleInput(text);
         }}
         value={value}
-        placeholder={`${placeHolder} *`}></TextInput>
+        placeholder={required ? `${placeHolder} *` : `${placeHolder}`}></TextInput>
     </View>
   );
 };

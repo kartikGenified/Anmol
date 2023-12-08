@@ -27,7 +27,7 @@ const ButtonNavigate = props => {
     props.handleOperation()
   }
   else{
-    console.log('buttonpressed');
+    console.log('buttonpressed',navigateTo);
     navigateTo &&  navigation.navigate(navigateTo)
   }
   

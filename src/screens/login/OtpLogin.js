@@ -1,4 +1,4 @@
-// import React, {useEffect, useState} from 'react';
+// import React, { useEffect, useState } from 'react';
 // import {
 //   View,
 //   StyleSheet,
@@ -7,9 +7,10 @@
 //   ScrollView,
 //   KeyboardAvoidingView,
 //   TouchableOpacity,
+//   Keyboard
 // } from 'react-native';
-// import {useSelector, useDispatch} from 'react-redux';
-// import {BaseUrl} from '../../utils/BaseUrl';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { BaseUrl } from '../../utils/BaseUrl';
 // import LinearGradient from 'react-native-linear-gradient';
 // import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 // import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
@@ -20,14 +21,20 @@
 // import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 // import ErrorModal from '../../components/modals/ErrorModal';
 // import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
-
-
-// const OtpLogin = ({navigation, route}) => {
+// import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
+// import { useIsFocused } from '@react-navigation/native';
+// import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
+// import { useFetchLegalsMutation } from '../../apiServices/fetchLegal/FetchLegalApi';
+// import * as Keychain from 'react-native-keychain';  
+// import Checkbox from '../../components/atoms/checkbox/Checkbox';
+// const OtpLogin = ({ navigation, route }) => {
 //   const [mobile, setMobile] = useState()
 //   const [name, setName] = useState()
 //   const [success, setSuccess] = useState(false)
 //   const [message, setMessage] = useState()
-//   const [error,setError] = useState(false)
+//   const [error, setError] = useState(false)
+//   const [isChecked, setIsChecked] = useState(false);
+
 //   // fetching theme for the screen-----------------------
 
 //   const primaryThemeColor = useSelector(
@@ -56,214 +63,270 @@
 //     : require('../../../assets/images/demoIcon.png');
 
 //   // ------------------------------------------------
-
+//   const focused = useIsFocused()
 //   // send otp for login--------------------------------
 //   const [sendOtpFunc, {
-//     data:sendOtpData,
-//     error:sendOtpError,
-//     isLoading:sendOtpIsLoading,
-//     isError:sendOtpIsError
+//     data: sendOtpData,
+//     error: sendOtpError,
+//     isLoading: sendOtpIsLoading,
+//     isError: sendOtpIsError
 //   }] = useGetLoginOtpMutation()
+
+//   const [getTermsAndCondition, {
+//     data: getTermsData,
+//     error: getTermsError,
+//     isLoading: termsLoading,
+//     isError: termsIsError
+//   }] = useFetchLegalsMutation()
+
+
 
 //   const [
 //     getNameFunc,
 //     {
-//       data:getNameData,
-//       error:getNameError,
-//       isLoading:getLoading,
-//       isError:getIsError
+//       data: getNameData,
+//       error: getNameError,
+//       isLoading: getLoading,
+//       isError: getIsError
 //     }
 //   ] = useGetNameMutation()
-
-  
 
 //   const needsApproval = route.params.needsApproval;
 //   const user_type_id = route.params.userId;
 //   const user_type = route.params.userType;
 //   const registrationRequired = route.params.registrationRequired
-//   console.log("registrationRequired",registrationRequired)
+//   console.log("registrationRequired", registrationRequired)
 //   const width = Dimensions.get('window').width;
-//   const navigationParams = {"needsApproval":needsApproval,"user_type_id":user_type_id,"user_type":user_type,"mobile":mobile,"name":name}
-//   // useEffect(()=>{
-//   //   getActiveMembershipFunc()
+//   const navigationParams = { "needsApproval": needsApproval, "user_type_id": user_type_id, "user_type": user_type, "mobile": mobile, "name": name }
 
-//   // },[])
 //   useEffect(()=>{
-//     if(sendOtpData){
-//       console.log("data",sendOtpData)
-//       if(sendOtpData.success===true)
-//       {
-//         navigation.navigate('VerifyOtp',{navigationParams})
+//     fetchTerms();
+//   },[])
+
+//   useEffect(()=>{
+//     if(getTermsData){
+//       console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
+//     }
+//     else if(getTermsError){
+//       console.log("gettermserror", getTermsError)
+//     }
+//   },[getTermsData,getTermsError])
+
+
+
+//   useEffect(() => {
+//     if (sendOtpData) {
+//       console.log("data", sendOtpData)
+//       if (sendOtpData.success === true && mobile.length === 10) {
+//         navigation.navigate('VerifyOtp', { navigationParams })
 //       }
-//       else
-//       {
+//       else {
 //         console.log("Trying to open error modal")
 //       }
 //     }
-//     else if(sendOtpError)
-//     {
-//       console.log("err",sendOtpError)
+//     else if (sendOtpError) {
+//       console.log("err", sendOtpError)
 //       setError(true)
 //       setMessage(sendOtpError.data.message)
 //     }
-     
-    
 
-//   },[sendOtpData,sendOtpError])
 
-//   useEffect(()=>{
-//     if(getNameData){
-//       console.log("getNameData",getNameData)
-//       if(getNameData.success)
-//       {
+
+//   }, [sendOtpData, sendOtpError])
+
+//   useEffect(() => {
+//     if (getNameData) {
+//       console.log("getNameData", getNameData)
+//       if (getNameData.success) {
 //         setName(getNameData.body.name)
 //       }
 //     }
-//     else if(getNameError)
-//     {
-//       console.log("getNameError",getNameError)
+//     else if (getNameError) {
+//       console.log("getNameError", getNameError)
 //     }
-//   },[getNameData,getNameError])
+//   }, [getNameData, getNameError])
+
+//   useEffect(() => {
+//     setName('')
+//     setMobile('')
+
+//   }, [focused])
 
 //   const getMobile = data => {
 //     // console.log(data)
 //     setMobile(data)
-//     if(data.length===10)
-//     {
-//       getNameFunc({mobile:data})
+//     if (data !== undefined) {
+//       if (data.length === 10) {
+//         getNameFunc({ mobile: data })
+//         Keyboard.dismiss();
+//       }
 //     }
+
 //   };
+
+//   const fetchTerms = async () => {
+//     const credentials = await Keychain.getGenericPassword();
+//     const token = credentials.username;
+//     const params = {
+//       token: token
+//     }
+//     getTermsAndCondition(params)
+//   }
+
 
 //   const getName = data => {
 //     // console.log(data)
 //     setName(data)
 //   };
-  
-//   const handleButtonPress=()=>{
-//     console.log("first",getNameData.message)
-//     if(getNameData.message==="Not Found")
-//     {
-//       console.log("registrationRequired",registrationRequired)
-//     registrationRequired && navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id,name:name,mobile:mobile})
 
-//     }
-//     else{
-//       sendOtpFunc({mobile,name,user_type,user_type_id})
-//     navigation.navigate('VerifyOtp',{navigationParams})
+//   const getCheckBoxData = (data) => {
+//     setIsChecked(data)
+//     console.log("Checkbox data", data)
+//   }
 
+//   const navigateToOtp = () => {
+//     sendOtpFunc({ mobile, name, user_type, user_type_id })
+//     // navigation.navigate('VerifyOtp',{navigationParams})
+//   }
+//   const handleButtonPress = () => {
+//     // console.log("first",getNameData.message)
+//     if (getNameData && isChecked) {
+//       if (getNameData.message === "Not Found") {
+//         console.log("registrationRequired", registrationRequired)
+//         registrationRequired ? navigation.navigate('BasicInfo', { needsApproval: needsApproval, userType: user_type, userId: user_type_id, name: name, mobile: mobile, navigatingFrom: "OtpLogin" }) : navigateToOtp()
+//         // setName('')
+//         // setMobile('')
+//       }
+//       else {
+//         sendOtpFunc({ mobile, name, user_type, user_type_id })
+
+//         // navigation.navigate('VerifyOtp',{navigationParams})
+
+//       }
 //     }
 //   }
-//   const handleNavigationToRegister=()=>{
-//     navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id})
-//   }
-//   const modalClose=()=>{
+
+//   const modalClose = () => {
 //     setError(false)
 //   }
 //   return (
 //     <LinearGradient
-//       colors={[ternaryThemeColor, secondaryThemeColor]}
+//       colors={["white", "white"]}
 //       style={styles.container}>
 
-//       {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
-//       <View
-//         style={{
-//           height: 140,
-//           width: '100%',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//         }}>
+
+//       <View style={{
+//         width: '100%', alignItems: 'center',
+//         justifyContent: 'center',
+//         backgroundColor: ternaryThemeColor,
+//       }}>
 //         <View
 //           style={{
-//             ...styles.semicircle,
-//             width: width + 60,
-//             borderRadius: (width + width) / 2,
-//             height: width + 60,
-//             top: -(width / 2),
+//             height: 120,
+//             width: '100%',
+//             alignItems: 'center',
+//             justifyContent: 'center',
+//             backgroundColor: ternaryThemeColor,
+//             flexDirection: 'row',
+
 //           }}>
+
 //           <TouchableOpacity
+//             style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
 //             onPress={() => {
 //               navigation.goBack();
 //             }}>
 //             <Image
-//               style={{height: 20, width: 20, resizeMode: 'contain', right: 80}}
+//               style={{ height: 20, width: 20, resizeMode: 'contain' }}
 //               source={require('../../../assets/images/blackBack.png')}></Image>
 //           </TouchableOpacity>
 //           <Image
 //             style={{
-//               height: 110,
-//               width: 140,
+//               height: 50,
+//               width: 100,
 //               resizeMode: 'contain',
-//               top: width / 8,
+//               top: 20,
+//               position: "absolute",
+//               left: 50,
+
+
+
 //             }}
-//             source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
+//             source={require('../../../assets/images/ozoneWhiteLogo.png')}></Image>
+//         </View>
+//         <View
+//           style={{
+//             alignItems: 'flex-start',
+//             justifyContent: 'center',
+//             marginTop: 10,
+//             width: '90%'
+//           }}>
+//           <PoppinsText
+//             style={{ color: 'white', fontSize: 28 }}
+//             content="Tell us your mobile number"></PoppinsText>
+
 //         </View>
 //       </View>
 
-//       <View
-//         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-//         <View
-//           style={{
-//             ...styles.banner,
-//             backgroundColor: ternaryThemeColor,
-//             elevation: 10,
-//             shadowColor: '#000',
-//             shadowOffset: {width: 0, height: 2},
-//             shadowOpacity: 0.5,
-//             shadowRadius: 2,
-//           }}></View>
-//       </View>
-//       <ScrollView style={{width: '100%'}}>
+
+//       <ScrollView contentContainerStyle={{ flex: 1 }} style={{ width: '100%' }}>
 //         <KeyboardAvoidingView>
-//           <View
-//             style={{
-//               alignItems: 'center',
-//               justifyContent: 'center',
-//               marginTop: 10,
-//             }}>
-//             <PoppinsText
-//               style={{color: 'white', fontSize: 22}}
-//               content="Welcome"></PoppinsText>
-//             <PoppinsTextMedium
-//               style={{color: 'white', fontSize: 16}}
-//               content="Login To Your Account"></PoppinsTextMedium>
-//           </View>
+
 
 //           <View
 //             style={{
 //               width: '100%',
 //               alignItems: 'center',
 //               justifyContent: 'center',
-//               marginTop: 10,
+//               marginTop: 40,
 //             }}>
-//             <CustomTextInputNumeric
-//               sendData={getMobile}
-//               title="Mobile No"
-//               image={require('../../../assets/images/whitePhone.png')}></CustomTextInputNumeric>
-//             <CustomTextInput
-//               name={name}
-//               sendData={getName}
-//               title="Name"
-//               image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
+//             <TextInputRectangularWithPlaceholder
+//               placeHolder="Mobile No"
+//               handleData={getMobile}
+//               maxLength={10}
+//             ></TextInputRectangularWithPlaceholder>
+
+//             <TextInputRectangularWithPlaceholder
+//               placeHolder="Name"
+//               handleData={getName}
+//               value={name}
+//             ></TextInputRectangularWithPlaceholder>
 //           </View>
 //         </KeyboardAvoidingView>
+
 //         <View
 //           style={{
 //             width: '100%',
-//             alignItems: 'center',
-//             justifyContent: 'center',
-//             marginTop: 20,
+//             // marginTop: 20,
+//             marginBottom: 30,
+//             marginLeft: 10
 //           }}>
+//           <View style={{ flexDirection: 'row', marginHorizontal: 24, }}>
+//             <Checkbox CheckBoxData={getCheckBoxData} />
+//             <TouchableOpacity onPress={()=>{
+//                   navigation.navigate('PdfComponent',{pdf:getTermsData.body.data?.[0]?.files[0]})
+//             }}>
+//               <PoppinsTextLeftMedium content={"I agree to the Terms & Conditions"} style={{ color: '#808080', marginHorizontal: 30, marginBottom: 20, fontSize: 15, marginLeft: 8, marginTop:16 }}></PoppinsTextLeftMedium>
+//             </TouchableOpacity>
+//           </View>
+
+
 //           {<ButtonNavigateArrow
-//           success={success}
+//             success={success}
 //             handleOperation={handleButtonPress}
 //             backgroundColor={buttonThemeColor}
-//             style={{color: 'white', fontSize: 16}}
+//             style={{ color: 'white', fontSize: 16 }}
 //             content="Login"
 //             navigateTo="VerifyOtp"
 //             navigationParams={navigationParams}
-//             ></ButtonNavigateArrow>}
+//             isChecked={isChecked}
+//           ></ButtonNavigateArrow>}
+
+
 //         </View>
-//        {/* {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
+//         {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
+
+//         {/* {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
 //         <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium>
 //         <ButtonNavigate
 //               handleOperation={handleNavigationToRegister}
@@ -286,7 +349,7 @@
 //     alignItems: 'center',
 //   },
 //   semicircle: {
-//     backgroundColor: 'white',
+
 //     position: 'absolute',
 //     alignItems: 'center',
 //     justifyContent: 'center',
@@ -309,7 +372,8 @@
 // });
 
 // export default OtpLogin;
-import React, {useEffect, useState} from 'react';
+
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -318,9 +382,10 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Keyboard
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {BaseUrl} from '../../utils/BaseUrl';
+import { useSelector, useDispatch } from 'react-redux';
+import { BaseUrl } from '../../utils/BaseUrl';
 import LinearGradient from 'react-native-linear-gradient';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
 import PoppinsText from '../../components/electrons/customFonts/PoppinsText';
@@ -332,13 +397,21 @@ import ButtonNavigate from '../../components/atoms/buttons/ButtonNavigate';
 import ErrorModal from '../../components/modals/ErrorModal';
 import { useGetNameMutation } from '../../apiServices/login/GetNameByMobile';
 import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
+import { useIsFocused } from '@react-navigation/native';
+import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
+import Checkbox from '../../components/atoms/checkbox/Checkbox';
+import { useFetchLegalsMutation } from '../../apiServices/fetchLegal/FetchLegalApi';
+import * as Keychain from 'react-native-keychain';  
 
-const OtpLogin = ({navigation, route}) => {
+
+const OtpLogin = ({ navigation, route }) => {
   const [mobile, setMobile] = useState()
   const [name, setName] = useState()
   const [success, setSuccess] = useState(false)
   const [message, setMessage] = useState()
-  const [error,setError] = useState(false)
+  const [error, setError] = useState(false)
+  const [isChecked, setIsChecked] = useState(false);
+
   // fetching theme for the screen-----------------------
 
   const primaryThemeColor = useSelector(
@@ -367,22 +440,31 @@ const OtpLogin = ({navigation, route}) => {
     : require('../../../assets/images/demoIcon.png');
 
   // ------------------------------------------------
-
+  const focused = useIsFocused()
   // send otp for login--------------------------------
   const [sendOtpFunc, {
-    data:sendOtpData,
-    error:sendOtpError,
-    isLoading:sendOtpIsLoading,
-    isError:sendOtpIsError
+    data: sendOtpData,
+    error: sendOtpError,
+    isLoading: sendOtpIsLoading,
+    isError: sendOtpIsError
   }] = useGetLoginOtpMutation()
+
+  const [getTermsAndCondition, {
+    data: getTermsData,
+    error: getTermsError,
+    isLoading: termsLoading,
+    isError: termsIsError
+  }] = useFetchLegalsMutation()
+
+
 
   const [
     getNameFunc,
     {
-      data:getNameData,
-      error:getNameError,
-      isLoading:getLoading,
-      isError:getIsError
+      data: getNameData,
+      error: getNameError,
+      isLoading: getLoading,
+      isError: getIsError
     }
   ] = useGetNameMutation()
 
@@ -390,85 +472,127 @@ const OtpLogin = ({navigation, route}) => {
   const user_type_id = route.params.userId;
   const user_type = route.params.userType;
   const registrationRequired = route.params.registrationRequired
-  console.log("registrationRequired",registrationRequired)
+  console.log("registrationRequired", registrationRequired)
   const width = Dimensions.get('window').width;
-  const navigationParams = {"needsApproval":needsApproval,"user_type_id":user_type_id,"user_type":user_type,"mobile":mobile,"name":name}
-  
+  const navigationParams = { "needsApproval": needsApproval, "user_type_id": user_type_id, "user_type": user_type, "mobile": mobile, "name": name }
+
   useEffect(()=>{
-    if(sendOtpData){
-      console.log("data",sendOtpData)
-      if(sendOtpData.success===true && mobile.length===10)
-      {
-        navigation.navigate('VerifyOtp',{navigationParams})
+    fetchTerms();
+  },[])
+
+  useEffect(()=>{
+    if(getTermsData){
+      console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
+    }
+    else if(getTermsError){
+      console.log("gettermserror", getTermsError)
+    }
+  },[getTermsData,getTermsError])
+
+
+
+  useEffect(() => {
+    if (sendOtpData) {
+      console.log("data", sendOtpData)
+      if (sendOtpData.success === true && mobile.length === 10) {
+        navigation.navigate('VerifyOtp', { navigationParams })
       }
-      else
-      {
+      else {
         console.log("Trying to open error modal")
       }
     }
-    else if(sendOtpError)
-    {
-      console.log("err",sendOtpError)
+    else if (sendOtpError) {
+      console.log("err", sendOtpError)
       setError(true)
       setMessage(sendOtpError.data.message)
     }
-     
-    
 
-  },[sendOtpData,sendOtpError])
 
-  useEffect(()=>{
-    if(getNameData){
-      console.log("getNameData",getNameData)
-      if(getNameData.success)
-      {
+
+  }, [sendOtpData, sendOtpError])
+
+  useEffect(() => {
+    if (getNameData) {
+      console.log("getNameData", getNameData)
+      if (getNameData.success) {
         setName(getNameData.body.name)
       }
     }
-    else if(getNameError)
-    {
-      console.log("getNameError",getNameError)
+    else if (getNameError) {
+      console.log("getNameError", getNameError)
     }
-  },[getNameData,getNameError])
+  }, [getNameData, getNameError])
+
+  // useEffect(() => {
+  //   setName('')
+  //   setMobile('')
+
+  // }, [focused])
 
   const getMobile = data => {
     // console.log(data)
     setMobile(data)
-    if(data.length===10)
-    {
-      getNameFunc({mobile:data})
+    if (data !== undefined) {
+      if (data.length === 10) {
+        getNameFunc({ mobile: data })
+        Keyboard.dismiss();
+      }
     }
+
   };
+
+  const fetchTerms = async () => {
+    const credentials = await Keychain.getGenericPassword();
+    const token = credentials.username;
+    const params = {
+      type:"term-and-condition"
+    }
+    getTermsAndCondition(params)
+  }
+
 
   const getName = data => {
-    // console.log(data)
-    setName(data)
+    if(data!==undefined)
+    {
+    console.log("name data is",typeof data, data.length)
+     
+        setName(data)
+      
+    }
+   
+   
   };
-  const navigateToOtp=()=>{
-    sendOtpFunc({mobile,name,user_type,user_type_id})
-    navigation.navigate('VerifyOtp',{navigationParams})
+
+  const getCheckBoxData = (data) => {
+    setIsChecked(data)
+    console.log("Checkbox data", data)
   }
-  const handleButtonPress=()=>{
+
+  const navigateToOtp = () => {
+    sendOtpFunc({ mobile, name, user_type, user_type_id })
+    // navigation.navigate('VerifyOtp',{navigationParams})
+  }
+  const handleButtonPress = () => {
     // console.log("first",getNameData.message)
-    if(getNameData)
-    {
-      if(getNameData.message==="Not Found")
-    {
-      console.log("registrationRequired",registrationRequired)
-    registrationRequired ? navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id,name:name,mobile:mobile}) : navigateToOtp()
+    // console.log("mobile",mobile,name.length,name,isChecked,getNameData)
+    if (getNameData && isChecked && name!==undefined && mobile!==undefined && mobile.length!==0 && name.length!==0) {
+      // console.log("mobile",mobile,name.length)
+      if (getNameData.message === "Not Found") {
+        console.log("registrationRequired", registrationRequired)
+        registrationRequired ? navigation.navigate('BasicInfo', { needsApproval: needsApproval, userType: user_type, userId: user_type_id, name: name, mobile: mobile, navigatingFrom: "OtpLogin" }) : navigateToOtp()
+        // setName('')
+        // setMobile('')
+      }
+      else {
+        sendOtpFunc({ mobile, name, user_type, user_type_id })
 
-    }
-    else{
-      sendOtpFunc({mobile,name,user_type,user_type_id})
-    navigation.navigate('VerifyOtp',{navigationParams})
+        // navigation.navigate('VerifyOtp',{navigationParams})
 
-    }
+      }
     }
   }
-  const handleNavigationToRegister=()=>{
-    navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:user_type, userId:user_type_id})
-  }
-  const modalClose=()=>{
+
+  const modalClose = () => {
     setError(false)
   }
   return (
@@ -476,29 +600,30 @@ const OtpLogin = ({navigation, route}) => {
       colors={["white", "white"]}
       style={styles.container}>
 
-      {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
-      
-      <View style={{width:'100%',alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor:ternaryThemeColor,}}>
-      <View
-        style={{
-          height: 120,
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor:ternaryThemeColor,
-          flexDirection:'row',
-          
-        }}>
-        
+
+      <View style={{
+        width: '100%', alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: ternaryThemeColor,
+      }}>
+        <View
+          style={{
+            height: 120,
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: ternaryThemeColor,
+            flexDirection: 'row',
+
+          }}>
+
           <TouchableOpacity
-          style={{height:50,alignItems:"center",justifyContent:'center',position:"absolute",left:10,top:20}}
+            style={{ height: 50, alignItems: "center", justifyContent: 'center', position: "absolute", left: 10, top: 20 }}
             onPress={() => {
               navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20, resizeMode: 'contain'}}
+              style={{ height: 20, width: 20, resizeMode: 'contain' }}
               source={require('../../../assets/images/blackBack.png')}></Image>
           </TouchableOpacity>
           <Image
@@ -506,33 +631,33 @@ const OtpLogin = ({navigation, route}) => {
               height: 50,
               width: 100,
               resizeMode: 'contain',
-              top:20,
-            position:"absolute",
-            left:50,
-              borderRadius:10
-              
-              
+              top: 20,
+              position: "absolute",
+              left: 50,
+
+
+
             }}
-            source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-      </View>
-      <View
-            style={{
-              alignItems: 'flex-start',
-              justifyContent: 'center',
-              marginTop: 10,
-              width:'90%'
-            }}>
-            <PoppinsText
-              style={{color: 'white', fontSize: 28}}
-              content="Tell us your mobile number"></PoppinsText>
-            
-          </View>
+            source={require('../../../assets/images/ozoneWhiteLogo.png')}></Image>
+        </View>
+        <View
+          style={{
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            marginTop: 10,
+            width: '90%'
+          }}>
+          <PoppinsText
+            style={{ color: 'white', fontSize: 28 }}
+            content="Tell us your mobile number"></PoppinsText>
+
+        </View>
       </View>
 
-     
-      <ScrollView contentContainerStyle={{flex:1}} style={{width: '100%'}}>
+
+      <ScrollView contentContainerStyle={{ flex: 1 }} style={{ width: '100%' }}>
         <KeyboardAvoidingView>
-          
+
 
           <View
             style={{
@@ -542,38 +667,52 @@ const OtpLogin = ({navigation, route}) => {
               marginTop: 40,
             }}>
             <TextInputRectangularWithPlaceholder
-            placeHolder="Mobile No"
-            handleData={getMobile}
-            maxLength={10}
-              ></TextInputRectangularWithPlaceholder>
+              placeHolder="Mobile No"
+              handleData={getMobile}
+              maxLength={10}
+            ></TextInputRectangularWithPlaceholder>
 
             <TextInputRectangularWithPlaceholder
-            placeHolder="Name"
-            handleData={getName}
-            value={name}
-              ></TextInputRectangularWithPlaceholder>
+              placeHolder="Name"
+              handleData={getName}
+              value={name}
+            ></TextInputRectangularWithPlaceholder>
           </View>
         </KeyboardAvoidingView>
 
         <View
           style={{
             width: '100%',
-            marginTop: 'auto',
-            marginBottom:30,
-            marginLeft:20
+            // marginTop: 20,
+            marginBottom: 30,
+            marginLeft: 10
           }}>
+          <View style={{ flexDirection: 'row', marginHorizontal: 24, }}>
+            <Checkbox CheckBoxData={getCheckBoxData} />
+            <TouchableOpacity onPress={()=>{
+                  navigation.navigate('PdfComponent',{pdf:getTermsData.body.data?.[0]?.files[0]})
+            }}>
+              <PoppinsTextLeftMedium content={"I agree to the Terms & Conditions"} style={{ color: '#808080', marginHorizontal: 30, marginBottom: 20, fontSize: 15, marginLeft: 8, marginTop:16 }}></PoppinsTextLeftMedium>
+            </TouchableOpacity>
+          </View>
+
 
           {<ButtonNavigateArrow
-          success={success}
+            success={success}
             handleOperation={handleButtonPress}
             backgroundColor={buttonThemeColor}
-            style={{color: 'white', fontSize: 16}}
+            style={{ color: 'white', fontSize: 16 }}
             content="Login"
             navigateTo="VerifyOtp"
             navigationParams={navigationParams}
-            ></ButtonNavigateArrow>}
+            isChecked={isChecked}
+          ></ButtonNavigateArrow>}
+
+
         </View>
-       {/* {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
+        {error && <ErrorModal modalClose={modalClose} message={message} openModal={error}></ErrorModal>}
+
+        {/* {registrationRequired && <View style={{width:"100%",alignItems:'center',justifyContent:"center",marginTop:20}}>
         <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium>
         <ButtonNavigate
               handleOperation={handleNavigationToRegister}
@@ -596,7 +735,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   semicircle: {
-   
+
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

@@ -12,7 +12,6 @@ export const appUserSlice = createSlice({
   name: 'appusers',
   initialState,
   reducers: {
-    
     setAppUsers: (state, action) => {
       state.value = action.payload
     },

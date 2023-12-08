@@ -17,11 +17,15 @@ import { setId } from '../../../redux/slices/appUserDataSlice';
 import * as Keychain from 'react-native-keychain';
 import ErrorModal from '../../components/modals/ErrorModal';
 import MessageModal from '../../components/modals/MessageModal';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalWithBorder from '../../components/modals/ModalWithBorder';
 import Icon from 'react-native-vector-icons/Feather';
 import Close from 'react-native-vector-icons/Ionicons';
 import ButtonOval from '../../components/atoms/buttons/ButtonOval';
+import Checkbox from '../../components/atoms/checkbox/Checkbox';
+import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
+import { useFetchLegalsMutation } from '../../apiServices/fetchLegal/FetchLegalApi';
+// import * as Keychain from 'react-native-keychain';  
 
 const PasswordLogin = ({ navigation, route }) => {
   const [username, setUsername] = useState("influencer_2")
@@ -29,6 +33,7 @@ const PasswordLogin = ({ navigation, route }) => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const [message, setMessage] = useState("")
+  const [isChecked, setIsChecked] = useState("")
 
   //modal
   const [openModalWithBorder, setModalWithBorder] = useState(false);
@@ -39,7 +44,8 @@ const PasswordLogin = ({ navigation, route }) => {
 
   // fetching theme for the screen-----------------------
   const dispatch = useDispatch()
-
+  const userData = useSelector(state => state.appusersdata.userData)
+  console.log("userdata",userData)
   const primaryThemeColor = useSelector(
     state => state.apptheme.primaryThemeColor,
   )
@@ -66,6 +72,8 @@ const PasswordLogin = ({ navigation, route }) => {
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : '#ef6110';
 
+  const fcmToken = useSelector(state=> state.fcmToken.fcmToken)
+
   // ------------------------------------------
 
   // initializing mutations --------------------------------
@@ -78,6 +86,13 @@ const PasswordLogin = ({ navigation, route }) => {
     isError: passwordIsError
   }] = usePasswordLoginMutation()
 
+  const [getTermsAndCondition, {
+    data: getTermsData,
+    error: getTermsError,
+    isLoading: termsLoading,
+    isError: termsIsError
+  }] = useFetchLegalsMutation()
+
   // ------------------------------------------
 
   // retrieving data from api calls--------------------------
@@ -86,6 +101,7 @@ const PasswordLogin = ({ navigation, route }) => {
     if (passwordLoginData) {
       console.log("Password Login Data", passwordLoginData)
       if (passwordLoginData.success) {
+        storeData(passwordLoginData.body)
         saveUserDetails(passwordLoginData.body)
         saveToken(passwordLoginData.body.token)
         setMessage(passwordLoginData.message)
@@ -119,8 +135,10 @@ const PasswordLogin = ({ navigation, route }) => {
     console.log(username, passwords)
     const user_id = username
     const password = passwords
-    passwordLoginfunc({ user_id, password })
-
+    const fcm_token = fcmToken
+    if (user_id !== "" && password !== "" && isChecked) {
+      passwordLoginfunc({ user_id, password, fcm_token })
+    }
   }
 
   //modal close
@@ -133,13 +151,59 @@ const PasswordLogin = ({ navigation, route }) => {
       }, 2000);
   }, [success, openModalWithBorder]);
 
+  useEffect(() => {
+    fetchTerms();
+  }, [])
+
+
+  useEffect(() => {
+    if (getTermsData) {
+      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
+    }
+    else if (getTermsError) {
+      console.log("gettermserror", getTermsError)
+    }
+  }, [getTermsData, getTermsError])
+
+
+
   const handleNavigationToRegister = () => {
     // navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:userType, userId:userId})
 
     // navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:userType, userId:userId})
-    navigation.navigate("BasicInfo", { needsApproval: needsApproval, userType: userType, userId: userId })
+    navigation.navigate("BasicInfo", { needsApproval: needsApproval, userType: userType, userId: userId,navigatingFrom:"PasswordLogin" })
 
   }
+
+  
+  // const handleAppointment = () => {
+  //   // navigation.navigate('BasicInfo',{needsApproval:needsApproval, userType:userType, userId:userId})
+
+  //   // navigation.navigate('RegisterUser',{needsApproval:needsApproval, userType:userType, userId:userId})
+  //   // navigation.navigate("BasicInfo", { needsApproval: needsApproval, userType: userType, userId: userId,navigatingFrom:"PasswordLogin" })
+  //   navigation.navigate('RequestAppointment');
+
+
+  // }
+
+  const fetchTerms = async () => {
+    const credentials = await Keychain.getGenericPassword();
+    const token = credentials.username;
+    const params = {
+      type: "term-and-condition"
+    }
+    getTermsAndCondition(params)
+  }
+  
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('loginData', jsonValue);
+    } catch (e) {
+      console.log("Error while saving loginData", e)
+    }
+  };
+
   const saveUserDetails = (data) => {
 
     try {
@@ -154,6 +218,12 @@ const PasswordLogin = ({ navigation, route }) => {
       console.log("error", e)
     }
   }
+
+  const getCheckBoxData = (data) => {
+    setIsChecked(data)
+    console.log("Checkbox data", data)
+  }
+
   const saveToken = async (data) => {
     const token = data
     const password = '17dec1998'
@@ -161,11 +231,13 @@ const PasswordLogin = ({ navigation, route }) => {
     await Keychain.setGenericPassword(token, password);
   }
 
+
+
   const modalClose = () => {
     setError(false);
     setSuccess(false)
     setMessage('')
-    navigation.navigate('Dashboard')
+    // navigation.navigate('Dashboard')
 
   };
 
@@ -180,7 +252,7 @@ const PasswordLogin = ({ navigation, route }) => {
       <View style={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
         <View style={{ marginTop: 30, alignItems: 'center', maxWidth: '80%' }}>
           <Icon name="check-circle" size={53} color={ternaryThemeColor} />
-          <PoppinsTextMedium style={{ fontSize: 27, fontWeight: '600', color: ternaryThemeColor, marginLeft: 5, marginTop: 5 }} content={"Success ! !"}></PoppinsTextMedium>
+          <PoppinsTextMedium style={{ fontSize: 27, fontWeight: '600', color: ternaryThemeColor, marginLeft: 5, marginTop: 5 }} content={"Success!"}></PoppinsTextMedium>
 
           <View style={{ marginTop: 10, marginBottom: 30 }}>
             <PoppinsTextMedium style={{ fontSize: 16, fontWeight: '600', color: "#000000", marginLeft: 5, marginTop: 5, }} content={message}></PoppinsTextMedium>
@@ -268,27 +340,57 @@ const PasswordLogin = ({ navigation, route }) => {
             style={{
               height: 50,
               width: 100,
-              resizeMode: 'contain',
+              resizeMode: 'center',
               top: 20,
               position: "absolute",
               left: 50,
-              borderRadius: 10
+
 
 
             }}
-            source={{ uri: `${BaseUrl}/api/images/${icon}` }}></Image>
-
-          <View style={{ alignItems: 'center', justifyContent: "center", position: 'absolute', right: 10, top: 10 }}>
+            source={require('../../../assets/images/ozoneWhiteLogo.png')}></Image>
+          {/* ozone change */}
+         {route.params.userType==="influencer" && 
+          <View style={{width:150, alignItems: 'center', justifyContent: "center", position: 'absolute', right: 10, top: 10 }}>
             {/* <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium> */}
             <ButtonNavigate
               handleOperation={handleNavigationToRegister}
               backgroundColor="#353535"
               style={{ color: 'white', fontSize: 16 }}
-              content="Register"
+              content="Request Appointment"
             >
             </ButtonNavigate>
 
-          </View>
+          </View>}
+
+          {route.params.userType==="dealer" &&  <View style={{width:150, alignItems: 'center', justifyContent: "center", position: 'absolute', right: 10, top: 10 }}>
+            {/* <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium> */}
+            <ButtonNavigate
+              // handleOperation={handleAppointment}
+              backgroundColor="#353535"
+              style={{ color: 'white', fontSize: 12, }}
+              content="Request Appointment"
+              navigateTo="RequestAppointment"
+            >
+            </ButtonNavigate>
+
+          </View>}
+
+          {route.params.userType==="sales" &&  <View style={{width:150, alignItems: 'center', justifyContent: "center", position: 'absolute', right: 10, top: 10 }}>
+            <PoppinsTextMedium style={{fontSize:18}} content ="Don't have an account ?"></PoppinsTextMedium>
+            <ButtonNavigate
+              // handleOperation={handleAppointment}
+              backgroundColor="#353535"
+              style={{ color: 'white', fontSize: 16 }}
+              content="Request Appointment"
+              navigateTo="RequestAppointment"
+            >
+            </ButtonNavigate>
+
+          </View>}
+
+          
+
         </View>
         <View
           style={{
@@ -326,22 +428,31 @@ const PasswordLogin = ({ navigation, route }) => {
           {/* <CustomTextInput sendData={getUserId} title="Username" image={require('../../../assets/images/whiteUser.png')}></CustomTextInput>
             <CustomTextInput sendData={getPassword} title="Password" image={require('../../../assets/images/whitePassword.png')}></CustomTextInput> */}
 
-       
-            <TextInputRectangularWithPlaceholder
-              placeHolder="UserName"
-              handleData={getUserId}
-            // maxLength={10}
-            ></TextInputRectangularWithPlaceholder>
-      
 
-       
-            <TextInputRectangularWithPlaceholder
-              placeHolder="Password"
-              handleData={getPassword}
-            // maxLength={10}
-            ></TextInputRectangularWithPlaceholder>
-         
+          <TextInputRectangularWithPlaceholder
+            placeHolder="UserName"
+            handleData={getUserId}
+          // maxLength={10}
+          ></TextInputRectangularWithPlaceholder>
 
+
+
+          <TextInputRectangularWithPlaceholder
+            placeHolder="Password"
+            handleData={getPassword}
+          // maxLength={10}
+          ></TextInputRectangularWithPlaceholder>
+
+
+        </View>
+
+        <View style={{ flexDirection: 'row', marginHorizontal: 24, marginLeft: 32, marginBottom: 8 }}>
+          <Checkbox CheckBoxData={getCheckBoxData} />
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('PdfComponent', { pdf: getTermsData.body.data?.[0]?.files[0] })
+          }}>
+            <PoppinsTextLeftMedium content={"I agree to the Terms & Conditions"} style={{ color: '#808080', marginHorizontal: 30, marginBottom: 20, fontSize: 15, marginLeft: 8, marginTop: 16 }}></PoppinsTextLeftMedium>
+          </TouchableOpacity>
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: 'center', width: '90%' }}>
@@ -357,6 +468,7 @@ const PasswordLogin = ({ navigation, route }) => {
               handleOperation={handleLogin}
               backgroundColor={buttonThemeColor}
               style={{ color: 'white', fontSize: 16 }}
+              isChecked={isChecked}
               content="Login">
             </ButtonNavigateArrow>
           </View>

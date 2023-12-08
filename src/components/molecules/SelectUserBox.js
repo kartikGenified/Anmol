@@ -53,6 +53,7 @@ const SelectUserBox = (props) => {
         console.log("Needs Approval",needsApproval)
         if(otpLogin.includes(props.content)
         ){
+            console.log("{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired}",{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
             props.navigation.navigate('OtpLogin',{needsApproval:needsApproval, userType:props.content, userId:props.id,registrationRequired:registrationRequired})
         }
         else{

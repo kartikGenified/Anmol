@@ -1,16 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Dimensions, Image, ScrollView} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {BaseUrl} from '../../utils/BaseUrl';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { BaseUrl } from '../../utils/BaseUrl';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetAppUsersDataMutation} from '../../apiServices/appUsers/AppUsersApi';
+import { useGetAppUsersDataMutation } from '../../apiServices/appUsers/AppUsersApi';
 import SelectUserBox from '../../components/molecules/SelectUserBox';
 import { setAppUsers } from '../../../redux/slices/appUserSlice';
 import { slug } from '../../utils/Slug';
+import { setAppUserType, setAppUserName, setAppUserId, setUserData, setId } from '../../../redux/slices/appUserDataSlice';
 import PoppinsTextMedium from '../../components/electrons/customFonts/PoppinsTextMedium';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import FastImage from 'react-native-fast-image';
 
-const SelectUser = ({navigation}) => {
+const SelectUser = ({ navigation }) => {
   const [listUsers, setListUsers] = useState();
+  const [showSplash, setShowSplash] = useState(true)
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState(false)
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+
   const [
     getUsers,
     {
@@ -23,20 +31,57 @@ const SelectUser = ({navigation}) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    
+    getData()
     getUsers();
   }, []);
   useEffect(() => {
     if (getUsersData) {
-      console.log("type of users",getUsersData.body);
+      console.log("type of users", getUsersData.body);
       dispatch(setAppUsers(getUsersData.body))
       setListUsers(getUsersData.body);
-    } else if(getUsersError) {
-      console.log("getUsersError",getUsersError);
+    } else if (getUsersError) {
+      setError(true)
+      setMessage("Couldn't get type of user data")
+      console.log("getUsersError", getUsersError);
     }
   }, [getUsersData, getUsersError]);
 
 
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('loginData');
+      console.log("loginData", JSON.parse(jsonValue))
+      saveUserDetails(JSON.parse(jsonValue))
+
+    } catch (e) {
+      console.log("Error is reading loginData", e)
+    }
+  };
+  const saveUserDetails = (data) => {
+
+    try {
+      console.log("Saving user details", data.name)
+      dispatch(setAppUserId(data.user_type_id))
+      dispatch(setAppUserName(data.name))
+      dispatch(setAppUserType(data.user_type))
+      dispatch(setUserData(data))
+      dispatch(setId(data.id))
+      handleNavigation()
+    }
+    catch (e) {
+      console.log("error", e)
+    }
+
+  }
+
+  const handleNavigation = () => {
+
+    setTimeout(() => {
+      setShowSplash(false)
+      navigation.navigate('Dashboard')
+
+    }, 5000);
+  }
   const primaryThemeColor = useSelector(
     state => state.apptheme.primaryThemeColor,
   )
@@ -57,18 +102,18 @@ const SelectUser = ({navigation}) => {
     ? useSelector(state => state.apptheme.icon)
     : require('../../../assets/images/demoIcon.png');
 
-    const otpLogin = useSelector(state => state.apptheme.otpLogin)
-    // console.log(useSelector(state => state.apptheme.otpLogin))
-    const passwordLogin = useSelector(state => state.apptheme.passwordLogin)
-    // console.log(useSelector(state => state.apptheme.passwordLogin))
-    const manualApproval = useSelector(state => state.appusers.manualApproval)
-    const autoApproval = useSelector(state => state.appusers.autoApproval)
-    const registrationRequired = useSelector(state => state.appusers.registrationRequired)
-    console.log("registration required",registrationRequired)
+  const otpLogin = useSelector(state => state.apptheme.otpLogin)
+  // console.log(useSelector(state => state.apptheme.otpLogin))
+  const passwordLogin = useSelector(state => state.apptheme.passwordLogin)
+  // console.log(useSelector(state => state.apptheme.passwordLogin))
+  const manualApproval = useSelector(state => state.appusers.manualApproval)
+  const autoApproval = useSelector(state => state.appusers.autoApproval)
+  const registrationRequired = useSelector(state => state.appusers.registrationRequired)
+  console.log("registration required", registrationRequired)
 
   const width = Dimensions.get('window').width;
-    
-  
+
+
 
   return (
     <LinearGradient
@@ -81,37 +126,32 @@ const SelectUser = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        {/* <View
+
+        <Image
           style={{
-            ...styles.semicircle,
-            width: width + 60,
-            borderRadius: (width + width) / 2,
-            height: width + 60,
-            top: -(width / 2),
-          }}> */}
-          <Image
-            style={{
-              height: 110,
-              width: 140,
-              resizeMode: 'contain',
-              top: 20,
-            }}
-            source={{uri: `${BaseUrl}/api/images/${icon}`}}></Image>
-            <View style={{width:'80%',alignItems:"center",justifyContent:'center',borderColor:ternaryThemeColor,borderTopWidth:1,borderBottomWidth:1,height:40}}>
-              <PoppinsTextMedium style={{color:'#171717',fontSize:20,fontWeight:'700',marginBottom:40}} content="Are You A"></PoppinsTextMedium>
-            </View>
+            height: 200,
+            width: 240,
+            resizeMode: 'contain',
+            top: 60,
+          }}
+          source={{ uri: `${BaseUrl}/api/images/${icon}` }}></Image>
+
+        <View style={{ width: '80%', alignItems: "center", justifyContent: 'center', borderColor: ternaryThemeColor, borderTopWidth: 1, borderBottomWidth: 1, height: 40, marginTop: 40 }}>
+          <PoppinsTextMedium style={{ color: '#171717', fontSize: 20, fontWeight: '700' }} content="Chose your profile "></PoppinsTextMedium>
+        </View>
         {/* </View> */}
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{flex:1}}>
-       
-     
-      
+      <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+
+
+
         <View style={styles.userListContainer}>
           {listUsers &&
             listUsers.map((item, index) => {
               return (
                 <SelectUserBox
-                  navigation = {navigation}
+                  style={{}}
+                  navigation={navigation}
                   otpLogin={otpLogin}
                   passwordLogin={passwordLogin}
                   autoApproval={autoApproval}
@@ -124,6 +164,29 @@ const SelectUser = ({navigation}) => {
                   id={item.user_type_id}></SelectUserBox>
               );
             })}
+
+          {getUsersDataIsLoading &&
+            <FastImage
+              style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '60%' }}
+              source={{
+                uri: gifUri, // Update the path to your GIF
+                priority: FastImage.priority.normal
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          }
+
+          {error &&
+
+            <ErrorModal
+              modalClose={()=>{setError(false)}}
+              message={message}
+              openModal={error}></ErrorModal>
+
+          }
+
+
+
         </View>
       </ScrollView>
     </LinearGradient>
@@ -133,7 +196,7 @@ const SelectUser = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height:'100%',
+    height: '100%',
     width: '100%',
     alignItems: 'center'
   },
@@ -154,8 +217,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop:20,
-    
+    marginTop: 100,
+
   },
 });
 

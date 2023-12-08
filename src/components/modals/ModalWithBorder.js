@@ -27,7 +27,6 @@ const ModalWithBorder = (props) => {
   }, [])
   
   const closeModal = () => {
-
     setModalVisible(!modalVisible)
     props.modalClose()
     navigateTo && navigation.navigate(navigateTo,parameters)
@@ -40,7 +39,7 @@ const ModalWithBorder = (props) => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={props.openModal}
         onRequestClose={() => {
           closeModal()
         }}>

@@ -25,7 +25,10 @@ const BottomModal = (props) => {
     }
   },[])
   
-
+  const handleFilter=(data,type)=>{
+    console.log("filter",data,type)
+    props.handleFilter(data,type)
+  }
 
   return (
     <View style={styles.centeredView}>
@@ -42,7 +45,7 @@ const BottomModal = (props) => {
 
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-          <Comp></Comp>
+          <Comp handleFilter={handleFilter}></Comp>
           </View>
         </View>
       </Modal>

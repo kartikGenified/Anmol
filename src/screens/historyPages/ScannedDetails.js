@@ -10,7 +10,7 @@ const ScannedDetails = ({navigation,route}) => {
     const data = route.params.data
     console.log(data)
     const points = data.points_on_product
-    const image = data.images[0]
+    const image = data.images!==null ? data.images[0] : null
     const date = data.scanned_at
 
 
@@ -24,8 +24,8 @@ const ScannedDetails = ({navigation,route}) => {
                 <Image style={{height:100,width:100,resizeMode:'contain'}} source={{uri:BaseUrlImages+image}}></Image>
                </View>
                <View style={{alignItems:"flex-start",justifyContent:"center",position:"absolute",bottom:10,left:20}}>
-               <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Product Name : ${productName}`}></PoppinsTextMedium>
-                <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Product S.No : ${productSerialNumber}`}></PoppinsTextMedium>
+               <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700',color:'black'}} content={`Product Name : ${productName}`}></PoppinsTextMedium>
+                <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700',color:'black'}} content={`Product S.No : ${productSerialNumber}`}></PoppinsTextMedium>
                 {/* <PoppinsTextMedium style={{margin:4,fontSize:18,fontWeight:'700'}} content={`Recieved In `}></PoppinsTextMedium> */}
                </View>
                 </View>
@@ -60,12 +60,12 @@ const ScannedDetails = ({navigation,route}) => {
             <StatusBox status={status}></StatusBox>
             {/* <Image style={{height:70,width:70,resizeMode:"contain",marginTop:20}} source={require('../../../assets/images/greenTick.png')}></Image> */}
             
-            <View style={{alignItems:"center",justifyContent:"center",flexDirection:"row",marginTop:20}}>
+            {/* <View style={{alignItems:"center",justifyContent:"center",flexDirection:"row",marginTop:20}}>
             <PoppinsTextMedium style={{fontSize:20,fontWeight:'800',color:'black'}} content="Points : "></PoppinsTextMedium>
             <View style={{backgroundColor:'#FFD11E',padding:10,borderRadius:24,paddingLeft:24,paddingRight:24}}>
             <PoppinsTextMedium style={{fontSize:20,fontWeight:'800',color:'black'}} content={points}></PoppinsTextMedium>
             </View>           
-            </View>
+            </View> */}
 
             <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginTop:10}}>
                 <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center"}}>
@@ -76,7 +76,7 @@ const ScannedDetails = ({navigation,route}) => {
                 <View style={{width:2,height:'100%',backgroundColor:"grey",marginLeft:20}}></View>
                 <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",marginLeft:10}}>
                     <Image style={{height:16,width:16,resizeMode:'contain'}} source={require('../../../assets/images/clock.png')}></Image>
-                    <PoppinsTextMedium style={{fontSize:16,fontWeight:'800',color:'black',marginLeft:4}} content={moment(date).format("HH:MM A")}></PoppinsTextMedium>
+                    <PoppinsTextMedium style={{fontSize:16,fontWeight:'800',color:'black',marginLeft:4}} content={moment(date).format("HH:mm A")}></PoppinsTextMedium>
                 </View>
             </View>
             <ScannedDetailsProductBox></ScannedDetailsProductBox>

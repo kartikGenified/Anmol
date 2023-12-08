@@ -26,7 +26,7 @@ const InputDate = (props) => {
             setOpen(true)
         }} style={{height:54,width:'86%',backgroundColor:'#0000000D',borderRadius:2,borderColor:'#DDDDDD',alignItems:'center',justifyContent:"center",flexDirection:'row',margin:20}}>
            
-           {selected ? (<PoppinsTextMedium style={{position:'absolute',left:20,color:'black'}} content={moment(date).format('DD/MM/YYYY')}></PoppinsTextMedium>) : (<PoppinsTextMedium style={{position:'absolute',left:20,color:'black'}} content={data===null ? "N/A":data}></PoppinsTextMedium>)
+           {selected ? (<PoppinsTextMedium style={{position:'absolute',left:20,color:'black'}} content={moment(date).format('DD/MM/YYYY')}></PoppinsTextMedium>) : (<PoppinsTextMedium style={{position:'absolute',left:20,color:'black'}} content={data===null ? "Please select date":data}></PoppinsTextMedium>)
             
            }
             <View style={{position:"absolute",right:10}}>
@@ -37,6 +37,7 @@ const InputDate = (props) => {
         open={open}
         date={date}
         mode='date'
+        maximumDate={new Date()}
         onConfirm={(date) => {
           setSelected(true)
           setOpen(false)
@@ -54,4 +55,4 @@ const InputDate = (props) => {
 
 const styles = StyleSheet.create({})
 
-export default InputDate;
+export default InputDate; 

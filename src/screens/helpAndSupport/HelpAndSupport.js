@@ -24,6 +24,9 @@ const HelpAndSupport = ({navigation}) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : 'grey';
+  const supportMobile = useSelector(state=>state.apptheme.customerSupportMobile)
+  const supportMail = useSelector(state=>state.apptheme.customerSupportMail)
+  console.log(supportMail,supportMobile)
     return (
         <View
       style={{
@@ -74,7 +77,7 @@ const HelpAndSupport = ({navigation}) => {
                 <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/whitemail.png')}></Image>
               </View>
               <PoppinsTextMedium
-          content="Mail Us"
+          content="Mail us"
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -82,7 +85,7 @@ const HelpAndSupport = ({navigation}) => {
             color: 'white',
           }}></PoppinsTextMedium>
           <PoppinsTextMedium
-          content="Support@genuine.org"
+          content={supportMail}
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -95,7 +98,7 @@ const HelpAndSupport = ({navigation}) => {
                 <Image style={{height:40,width:40,resizeMode:"contain"}} source={require('../../../assets/images/whitemobile.png')}></Image>
               </View>
               <PoppinsTextMedium
-          content="Call Us"
+          content="Call us"
           style={{
             marginLeft: 10,
             fontSize: 16,
@@ -103,7 +106,7 @@ const HelpAndSupport = ({navigation}) => {
             color: 'white',
           }}></PoppinsTextMedium>
           <PoppinsTextMedium
-          content="+91-8888888888"
+          content={supportMobile}
           style={{
             marginLeft: 10,
             fontSize: 16,

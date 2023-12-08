@@ -5,7 +5,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useUploadImagesMutation } from '../../../apiServices/imageApi/imageApi';
 
 const ImageInputWithUpload = (props) => {
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState()
     const data = props.data
     const action = props.action
     // const [
@@ -29,42 +29,40 @@ const ImageInputWithUpload = (props) => {
     // }, [uploadImageData, uploadImageError])
 
     // Memoize the handleOpenImageGallery function to prevent re-renders
-    const handleOpenImageGallery = async () => {
+    const handleOpenImageGallery = useCallback(async () => {
         const result = await launchImageLibrary();
         console.log(result);
-        console.log("result", result.assets[0].uri);
-        setImage(result.assets[0].uri);
+        console.log(result.assets[0].uri);
+        setImage(result.assets[0]);
         const imageData = {
             uri: result.assets[0].uri,
             name: result.assets[0].uri.slice(0, 10),
             type: 'jpg/png',
         };
-        console.log("image Data", result.assets[0])
         props.handleData(imageData);
-    }
+    }, [props.handleData]);
 
-    // Memoize the image state to prevent re-renders
-    console.log("imgimg", image)
-
-
+      // Memoize the image state to prevent re-renders
+      const memoizedImage = useMemo(() => image, [image]);
 
 
-
+    console.log("imaggg", image)
     return (
-        <TouchableOpacity onPress={() => {
-            handleOpenImageGallery()
-        }} style={{ width: '100%', alignItems: "center", justifyContent: "center", backgroundColor: '#EBF3FA', paddingVertical: 10, borderWidth: 1, borderColor: '#85BFF1', borderStyle: 'dotted' }}>
+        <View style={{ width: '100%', alignItems: "center", justifyContent: "center", backgroundColor: '#EBF3FA',paddingVertical:40, borderWidth: 1, borderColor: '#85BFF1', borderStyle:'dotted' }}>
             <View style={{ alignItems: 'center' }}>
-                <Image style={{ height: 33, width: 35, }} source={require('../../../../assets/images/uploadIcon.png')} />
+                {!memoizedImage && <Image style={{ height: 33, width: 35, }} source={require('../../../../assets/images/uploadIcon.png')} />}
             </View>
 
+            {memoizedImage && <Image style={{ width: 100, height: 100, resizeMode: "center", marginTop: 40 }} source={{ uri: image.uri }}></Image>}
 
-            <View style={{ width: '86%', borderColor: '#DDDDDD', marginTop: 10, height: 20 }}>
+            <TouchableOpacity onPress={() => {
+                handleOpenImageGallery()
+            }} style={{ width: '86%',  borderColor: '#DDDDDD', marginTop: 10,height:20 }}>
 
                 <PoppinsTextMedium style={{ color: 'black', alignSelf: 'center', }} content={"Upload the product Image"}></PoppinsTextMedium>
-            </View>
-
-        </TouchableOpacity>
+            </TouchableOpacity>
+            
+        </View>
     );
 }
 

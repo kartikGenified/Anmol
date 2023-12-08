@@ -24,4 +24,3 @@ export const VerifyQrApi = baseApi.injectEndpoints({
 
 
 export const {useVerifyQrMutation} = VerifyQrApi
-

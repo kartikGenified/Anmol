@@ -27,6 +27,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import Close from 'react-native-vector-icons/Ionicons';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 import ErrorModal from '../../components/modals/ErrorModal';
+import FastImage from 'react-native-fast-image';
+
+
 
 
 const ActivateWarranty = ({ navigation, route }) => {
@@ -36,11 +39,16 @@ const ActivateWarranty = ({ navigation, route }) => {
   const [phone, setPhone] = useState();
   const [invoice, setInvoice] = useState();
   const [date, setDate] = useState();
-  const[message, setMessage] = useState();
+  const [message, setMessage] = useState();
   const [error, setError] = useState(false)
+
+  
+
 
   //modal
   const [openModalWithBorder, setModalWithBorder] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [
     uploadImageFunc,
     {
@@ -50,6 +58,9 @@ const ActivateWarranty = ({ navigation, route }) => {
       isError: uploadImageIsError,
     },
   ] = useUploadImagesMutation();
+
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+
 
   const [
     activateWarrantyFunc,
@@ -79,11 +90,12 @@ const ActivateWarranty = ({ navigation, route }) => {
   const formTemplateId = useSelector(state => state.form.warrantyFormId);
   const userType = useSelector(state => state.appusersdata.userType);
   const userTypeId = useSelector(state => state.appusersdata.userId);
-  const userData = useSelector(state=>state.appusersdata.userData)
+  const userData = useSelector(state => state.appusersdata.userData)
   const location = useSelector(state => state.userLocation.location)
 
-  console.log("userData",userData);
+  console.log("userData", userData);
   const workflowProgram = route.params.workflowProgram;
+
 
   useEffect(() => {
     if (uploadImageData) {
@@ -93,7 +105,7 @@ const ActivateWarranty = ({ navigation, route }) => {
       submitDataWithToken(uploadArray);
 
       if (uploadImageData.success) {
-       console.log(uploadImageData.success)
+        console.log(uploadImageData.success)
       }
 
     } else {
@@ -120,7 +132,14 @@ const ActivateWarranty = ({ navigation, route }) => {
       setError(true)
       setMessage(activateWarrantyError.data.message)
     }
-  }, [activateWarrantyData, activateWarrantyError]);
+
+    // console.log('activate warranty is loading', activateWarantyIsLoading);
+    setIsLoading(activateWarantyIsLoading);
+
+  }, [activateWarrantyData, activateWarrantyError, activateWarantyIsLoading]);
+
+ 
+
 
   const submitDataWithToken = async data => {
     console.log('image data is', data);
@@ -177,7 +196,7 @@ const ActivateWarranty = ({ navigation, route }) => {
 
         <TouchableOpacity style={[{
           backgroundColor: buttonThemeColor, padding: 6, borderRadius: 5, position: 'absolute', top: -10, right: -10,
-        }]} onPress={()=>{
+        }]} onPress={() => {
           setModalWithBorder(false)
         }} >
           <Close name="close" size={17} color="#ffffff" />
@@ -228,11 +247,12 @@ const ActivateWarranty = ({ navigation, route }) => {
 
 
   const handleWarrantyFormSubmission = () => {
+    setIsLoading(true);
     responseArray &&
       responseArray.map(item => {
         if (item.name === 'name' || item.name === 'Name') {
           setName(item.value);
-        } else if (item.name === 'phone' || item.name === 'Phone' || item.name === "mobile" || item.name ==="Mobile") {
+        } else if (item.name === 'phone' || item.name === 'Phone' || item.name === "mobile" || item.name === "Mobile") {
           setPhone(item.value);
         } else if (item.name === 'invoice' || item.name === 'Invoice') {
           console.log('Inside file');
@@ -288,10 +308,10 @@ const ActivateWarranty = ({ navigation, route }) => {
         workflowProgram: workflowProgram.slice(1),
       });
     } else {
-      setTimeout(()=>{
+      setTimeout(() => {
         navigation.navigate('Dashboard');
 
-      },1000)
+      }, 1000)
     }
   };
 
@@ -305,29 +325,29 @@ const ActivateWarranty = ({ navigation, route }) => {
         backgroundColor: buttonThemeColor,
       }}>
       {error && (
-            <ErrorModal
-              modalClose={()=>{
-                setError(false)
-                setMessage('')
-              }}
-              
-              message={message}
-              openModal={error}></ErrorModal>
-          )}
-           {/* {success && (
+        <ErrorModal
+          modalClose={() => {
+            setError(false)
+            setMessage('')
+          }}
+
+          message={message}
+          openModal={error}></ErrorModal>
+      )}
+      {/* {success && (
             <MessageModal
               modalClose={modalClose}
               title={modalTitle}
               message={message}
               openModal={success}></MessageModal>)
            } */}
-          {openModalWithBorder && 
-          <ModalWithBorder
+      {openModalWithBorder &&
+        <ModalWithBorder
           modalClose={() => setModalWithBorder(false)}
           message={message}
           openModal={openModalWithBorder}
           comp={ModalContent}></ModalWithBorder>
-          }
+      }
       <View
         style={{
           height: '10%',
@@ -367,6 +387,7 @@ const ActivateWarranty = ({ navigation, route }) => {
           borderTopRightRadius: 30,
           borderTopLeftRadius: 30,
         }}>
+
         <View
           style={{
             height: '100%',
@@ -379,7 +400,7 @@ const ActivateWarranty = ({ navigation, route }) => {
             warrantyForm.map((item, index) => {
               console.log(item);
               if (item.type === 'text') {
-                 if (item.name === 'name') {
+                if (item.name === 'name') {
                   return (
                     <TextInputRectangleMandatory
                       jsonData={item}
@@ -406,6 +427,7 @@ const ActivateWarranty = ({ navigation, route }) => {
 
 
                 }
+
                 else if ((item.name).trim().toLowerCase() === "pincode" && location !== undefined) {
                   return (
                     <PrefilledTextInput
@@ -417,6 +439,7 @@ const ActivateWarranty = ({ navigation, route }) => {
                     ></PrefilledTextInput>
                   )
                 }
+
                 else if ((item.name).trim().toLowerCase() === "state" && location !== undefined) {
                   return (
                     <PrefilledTextInput
@@ -442,26 +465,26 @@ const ActivateWarranty = ({ navigation, route }) => {
 
 
 
-                } else if (item.name === 'phone' || item.name==="mobile") {
+                } else if (item.name === 'phone' || item.name === "mobile") {
                   return (
                     <TextInputNumericRectangle
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
-                      value = {userData.mobile}
+                      value={userData.mobile}
                       label={item.label}
                       placeHolder={item.name}>
                       {' '}
                     </TextInputNumericRectangle>
                   );
-                } 
+                }
                 else {
                   return (
                     <TextInputRectangle
                       jsonData={item}
                       key={index}
                       handleData={handleChildComponentData}
-                      label = {item.label}
+                      label={item.label}
                       placeHolder={item.name}>
                       {' '}
                     </TextInputRectangle>
@@ -486,6 +509,20 @@ const ActivateWarranty = ({ navigation, route }) => {
                 );
               }
             })}
+
+
+
+          {
+            isLoading && <FastImage
+              style={{ width: 100, height: 100, alignSelf: 'center', position: 'absolute', marginTop: '50%' }}
+              source={{
+                uri: gifUri, // Update the path to your GIF
+                priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+          }
+
           <ButtonOval
             handleOperation={() => {
               handleWarrantyFormSubmission();
@@ -498,8 +535,13 @@ const ActivateWarranty = ({ navigation, route }) => {
               color: 'white',
               fontSize: 16,
             }}></ButtonOval>
+
+
+
         </View>
-        
+
+
+
       </ScrollView>
     </View>
   );

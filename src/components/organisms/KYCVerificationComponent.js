@@ -44,7 +44,7 @@ container:{
     justifyContent:"center",
     height:90,
     width:'90%',
-    borderRadius:20,
+    borderRadius:10,
     marginTop:20,
     
     
@@ -57,7 +57,7 @@ button:{
     alignItems:"center",
     justifyContent:"center",
     marginTop:4,
-    borderRadius:16,
+    borderRadius:10,
     
 }
 

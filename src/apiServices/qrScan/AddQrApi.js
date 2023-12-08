@@ -23,7 +23,7 @@ export const AddQrApi = baseApi.injectEndpoints({
             query: (body) => {
               return {
                 method: "GET",
-                url: `api/app/qrScanHistory/${body.query_params}`,
+                url: `api/app/qrScanHistory/${body.query_params}&limit=${1000}&offset=${0}`,
                 headers: {
                   "Content-Type": "application/json",
                   Authorization: "Bearer " + body.token,
@@ -37,4 +37,3 @@ export const AddQrApi = baseApi.injectEndpoints({
 
 
 export const {useAddQrMutation,useFetchAllQrScanedListMutation} = AddQrApi
-
