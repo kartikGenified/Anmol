@@ -117,10 +117,11 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "add user"){
             navigation.navigate('ListUsers')
         }
-        else if(data.toLowerCase() === "customer support" || data.toLowerCase() === "help and support"){
+        else if(data.toLowerCase() === "report an issue"){
+            navigation.navigate('SupportQueries')
+        }
+        else if(data.toLowerCase() === "customer support"){
             navigation.navigate('HelpAndSupport')
-            // navigation.navigate('RequestAppointment')
-
         }
         else if(data.toLowerCase() === "request appointment"){
         //  else if(data.toLowerCase() === "report an issue"){

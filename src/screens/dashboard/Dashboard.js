@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, Platform, TouchableOpacity,Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, TouchableOpacity, Image } from 'react-native';
 import MenuItems from '../../components/atoms/MenuItems';
 import { BaseUrl } from '../../utils/BaseUrl';
 import { useGetAppDashboardDataMutation } from '../../apiServices/dashboard/AppUserDashboardApi';
@@ -36,6 +36,7 @@ import FastImage from 'react-native-fast-image';
 import ScannedDetailsBox from '../../components/organisms/ScannedDetailsBox';
 import moment from 'moment';
 import AnimatedDots from '../../components/animations/AnimatedDots';
+import { useGetTransactionStatsMutation } from '../../apiServices/transactionStatsApi/transactionStatsApi';
 
 const Dashboard = ({ navigation }) => {
   const [dashboardItems, setDashboardItems] = useState()
@@ -55,21 +56,30 @@ const Dashboard = ({ navigation }) => {
   )
     ? useSelector(state => state.apptheme.ternaryThemeColor)
     : '#FFB533';
-  
-    const gifUri = Image.resolveAssetSource(
-      require("../../../assets/gif/loader.gif")
-    ).uri;
+
+  const gifUri = Image.resolveAssetSource(
+    require("../../../assets/gif/loader.gif")
+  ).uri;
   console.log("pointSharingData", JSON.stringify(pointSharingData), userData)
   console.log("user id is from dashboard", userId)
-    console.log(focused)
-    let startDate,endDate
-    const [getActiveMembershipFunc, {
-      data: getActiveMembershipData,
-      error: getActiveMembershipError,
-      isLoading: getActiveMembershipIsLoading,
-      isError: getActiveMembershipIsError
-    }] = useGetActiveMembershipMutation()
-  
+  console.log(focused)
+  let startDate, endDate
+
+  const [getActiveMembershipFunc, {
+    data: getActiveMembershipData,
+    error: getActiveMembershipError,
+    isLoading: getActiveMembershipIsLoading,
+    isError: getActiveMembershipIsError
+  }] = useGetActiveMembershipMutation()
+
+
+  const [getTransactionStatsFunct, {
+    data: getTransactionStatsData,
+    error: getTransactionStatsError,
+    isLoading: getTransactionStatsIsLoading,
+    isError: getTransactionStatsIsError
+  }] = useGetTransactionStatsMutation()
+
 
   const [getDashboardFunc, {
     data: getDashboardData,
@@ -115,7 +125,7 @@ const Dashboard = ({ navigation }) => {
     isLoading: getWorkflowIsLoading,
     isError: getWorkflowIsError
   }] = useGetWorkflowMutation()
-  
+
   const [getFormFunc, {
     data: getFormData,
     error: getFormError,
@@ -129,6 +139,7 @@ const Dashboard = ({ navigation }) => {
     isError: extraPointEntriesIsError,
     isLoading: extraPointEntriesIsLoading
   }] = useExtraPointEnteriesMutation()
+
   const id = useSelector(state => state.appusersdata.id);
 
   const fetchPoints = async () => {
@@ -139,8 +150,19 @@ const Dashboard = ({ navigation }) => {
       token: token
     }
     userPointFunc(params)
+    getTransactionStatsFunct(token)
 
   }
+
+  useEffect(() => {
+    if (getTransactionStatsData) {
+      console.log("getTransactionStatsData", getTransactionStatsData)
+    }
+    else {
+      console.log("getTransactionStatsData", getTransactionStatsError)
+
+    }
+  }, [getTransactionStatsError, getTransactionStatsData])
 
   useEffect(() => {
     fetchPoints()
@@ -181,25 +203,22 @@ const Dashboard = ({ navigation }) => {
     }
   }, [extraPointEntriesData, extraPointEntriesError])
 
-  useEffect(()=>{
-    if(fetchAllQrScanedListData)
-    {
-      console.log("fetchAllQrScanedListData",JSON.stringify(fetchAllQrScanedListData))
-      if(fetchAllQrScanedListData.success)
-      {
+  useEffect(() => {
+    if (fetchAllQrScanedListData) {
+      console.log("fetchAllQrScanedListData", JSON.stringify(fetchAllQrScanedListData))
+      if (fetchAllQrScanedListData.success) {
         seScanningDetails(fetchAllQrScanedListData.body)
       }
     }
-    else if(fetchAllQrScanedListError)
-    {
-console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
-    }  },[fetchAllQrScanedListData],fetchAllQrScanedListError)
+    else if (fetchAllQrScanedListError) {
+      console.log("fetchAllQrScanedListError", fetchAllQrScanedListError)
+    }
+  }, [fetchAllQrScanedListData], fetchAllQrScanedListError)
 
   useEffect(() => {
     if (getActiveMembershipData) {
       console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
-      if(getActiveMembershipData.success)
-      {
+      if (getActiveMembershipData.success) {
         setMembership(getActiveMembershipData.body?.tier.name)
       }
     }
@@ -213,7 +232,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
       console.log("getKycStatusData", getKycStatusData)
       if (getKycStatusData.success) {
         const tempStatus = Object.values(getKycStatusData.body)
-        
+
         setShowKyc(tempStatus.includes(false))
 
         dispatch(
@@ -238,7 +257,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
     }
   }, [getDashboardData, getDashboardError])
 
-  
+
 
   useEffect(() => {
     let lat = ''
@@ -351,7 +370,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           token && getBannerFunc(token)
           token && getWorkflowFunc({ userId, token })
           token && getFormFunc({ form_type, token })
-         getMembership()
+          getMembership()
         } else {
           console.log('No credentials stored');
         }
@@ -432,76 +451,106 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
     console.log("hello")
   };
 
-  
+
 
   return (
     <View style={{ alignItems: "center", justifyContent: "center", backgroundColor: "#F7F9FA", flex: 1, height: '100%' }}>
-     
-      
+
+
       <ScrollView style={{ width: '100%', marginBottom: platformMarginScroll, height: '100%' }}>
-      <DrawerHeader></DrawerHeader>
-      <View style={{width:'100%',alignItems:'center',justifyContent:'flex-start',flexDirection:'row',marginBottom:10}}>
-      <PoppinsTextLeftMedium style={{color:ternaryThemeColor, fontWeight:'bold', fontSize:19,marginLeft:20}} content={`Welcome ${userData?.name}`}></PoppinsTextLeftMedium>
-      {getActiveMembershipData?.body!==null && <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginLeft:10
-              }}>
-                 <TouchableOpacity style={{alignItems:'center',justifyContent:'center',flexDirection:'row',backgroundColor:ternaryThemeColor,padding:4,borderRadius:4}} onPress={
-                showSuccessModal
-              }>
+        <DrawerHeader></DrawerHeader>
+        <View style={{ width: '100%', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', marginBottom: 10 }}>
+          <PoppinsTextLeftMedium style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize: 19, marginLeft: 20 }} content={`Welcome ${userData?.name}`}></PoppinsTextLeftMedium>
+          {getActiveMembershipData?.body !== null && <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 10
+            }}>
+            <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', backgroundColor: ternaryThemeColor, padding: 4, borderRadius: 4 }} onPress={
+              showSuccessModal
+            }>
               <Image
                 style={{ height: 16, width: 16, resizeMode: 'contain', }}
                 source={require('../../../assets/images/reward.png')}></Image>
-             
-                <PoppinsTextMedium
-                  style={{ color: 'white', fontSize: 14 }}
-                  content={membership}></PoppinsTextMedium>
-              </TouchableOpacity>
 
-            </View>}
-            <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
+              <PoppinsTextMedium
+                style={{ color: 'white', fontSize: 14 }}
+                content={membership}></PoppinsTextMedium>
+            </TouchableOpacity>
 
-      </View>
-        <View style={{ width: '100%', alignItems: "center", justifyContent: "center", height: "90%" }}>
+          </View>}
+          <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
+
+        </View>
+        <View style={{ width: '100%', alignItems: "center", justifyContent: "center", height: "90%", flex:1 }}>
           <View style={{ height: 200, width: '100%', marginBottom: 20 }}>
             {bannerArray &&
               <Banner images={bannerArray}></Banner>
             }
 
-            <CampaignVideoModal isVisible={CampainVideoVisible} onClose={()=>{
+            {/* <CampaignVideoModal isVisible={CampainVideoVisible} onClose={()=>{
               setCmpainVideoVisible(false)
-            }} />
+            }} /> */}
           </View>
-          {/* <View style={{ width: "90%", height: 50, backgroundColor: 'white', marginBottom: 20, flexDirection: 'row', alignItems: 'center', borderColor: '#808080', borderWidth: 0.3, borderRadius: 10 }}>
+
+
+          <View style={{ width: "95%", height: 50, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', borderColor: '#808080', borderWidth: 0.3, borderRadius: 10 }}>
 
             <View style={{ backgroundColor: 'white', width: '42%', marginHorizontal: 20 }}>
-             {userPointData?.body?.point_balance ? <PoppinsText content={`Balance Points ${userPointData?.body?.point_balance ? userPointData?.body?.point_balance : "loading"}`} style={{ color: ternaryThemeColor, fontWeight: 'bold' }}></PoppinsText> : <AnimatedDots color={'black'}/>} 
+              
+              <PoppinsTextMedium content={`Transfered Amount:`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium> 
+              <PoppinsTextMedium content={`${getTransactionStatsData?.body?.[0]?.total_uploaded_amount_transfer ? getTransactionStatsData?.body?.[0]?.total_uploaded_amount_transfer  : "0"}`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium> 
+
+              
             </View>
 
             <View style={{ height: '100%', borderWidth: 0.4, color: "#808080", opacity: 0.3, width: 0.2 }}>
             </View>
 
-            <View style={{ backgroundColor: 'white', paddingLeft: '8%' }}>
-              <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, padding: 10, borderRadius: 5, width: 120, alignItems: 'center' }} onPress={() => { navigation.navigate("RedeemedHistory") }}>
-                <PoppinsTextLeftMedium style={{ color: 'white', fontWeight: '800' }} content="Reedem"  ></PoppinsTextLeftMedium>
-              </TouchableOpacity>
+            <View style={{ width: '50%', flexWrap:'wrap', marginHorizontal:5, }}>
+              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14, }} content={`Approved Transactions:  `}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14, }} content={`${getTransactionStatsData?.body?.[0]?.success_cnt ? getTransactionStatsData?.body?.[0]?.success_cnt : "0"} `}></PoppinsTextMedium>
+
             </View>
 
-          </View> */}
-         {/* {scanningDetails &&  <ScannedDetailsBox lastScannedDate={moment(scanningDetails.data.scanned_at).format("DD MMM YYYY")} scanCount={scanningDetails.total}></ScannedDetailsBox>} */}
+          </View>
+
+
+          <View style={{ width: "95%", height: 50, backgroundColor: 'white', marginBottom: 10, flexDirection: 'row', alignItems: 'center', borderColor: '#808080', borderWidth: 0.3, borderRadius: 10 }}>
+
+            <View style={{ backgroundColor: 'white', width: '42%', marginHorizontal: 20 }}>
+              
+                <PoppinsTextMedium content={`Pending Amount:`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium>
+                <PoppinsTextMedium content={`${getTransactionStatsData?.body?.[0]?.total_uploaded_amount_left ? getTransactionStatsData?.body?.[0]?.total_uploaded_amount_left : "0"}`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium>
+              
+              
+            </View>
+
+            <View style={{ height: '100%', borderWidth: 0.4, color: "#808080", opacity: 0.3, width: 0.2 }}> 
+            </View>
+
+            <View style={{ width: '50%', marginLeft:-8 }}>
+              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold',width:'100%',  fontSize:14  }} content={`Pending Transactions:`}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold',width:'100%',  fontSize:14  }} content={`${getTransactionStatsData?.body?.[0]?.not_initiated_cnt ? getTransactionStatsData?.body?.[0]?.not_initiated_cnt  : "0"} `}></PoppinsTextMedium>
+            </View>
+
+          </View>
+
+
+
+          {/* {scanningDetails &&  <ScannedDetailsBox lastScannedDate={moment(scanningDetails.data.scanned_at).format("DD MMM YYYY")} scanCount={scanningDetails.total}></ScannedDetailsBox>} */}
           <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 4 }}>
             {/* <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox>
           <DashboardDataBox header="Total Points"  data="5000" image={require('../../../assets/images/coin.png')} ></DashboardDataBox> */}
 
           </ScrollView>
           {dashboardItems && <DashboardMenuBox navigation={navigation} data={dashboardItems}></DashboardMenuBox>}
-          <View style={{ width: '100%', alignItems: "center", justifyContent: "center", marginBottom:60 }}>
+          <View style={{ width: '100%', alignItems: "center", justifyContent: "center", marginBottom: 60 }}>
             {showKyc && <KYCVerificationComponent buttonTitle="Complete Your KYC" title="Your KYC is not completed"></KYCVerificationComponent>}
           </View>
-          {userData.user_type==="influencer" &&<View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center" }}>
+          {userData.user_type === "influencer" && <View style={{ flexDirection: "row", width: '100%', alignItems: "center", justifyContent: "center" }}>
             <DashboardSupportBox text="Rewards" backgroundColor="#D9C7B6" borderColor="#FEE8D4" image={require('../../../assets/images/info.png')} ></DashboardSupportBox>
             <DashboardSupportBox text="Customer support" backgroundColor="#BCB5DC" borderColor="#E4E0FC" image={require('../../../assets/images/support.png')} ></DashboardSupportBox>
             <DashboardSupportBox text="Feedback" backgroundColor="#D8C8C8" borderColor="#FDDADA" image={require('../../../assets/images/feedback.png')} ></DashboardSupportBox>
@@ -509,7 +558,7 @@ console.log("fetchAllQrScanedListError",fetchAllQrScanedListError)
           </View>}
         </View>
       </ScrollView>
-       {
+      {
         getActiveMembershipIsLoading && getFormIsLoading && getWorkflowIsLoading && getBannerIsLoading && getDashboardIsLoading && fetchAllQrScanedListIsLoading && getKycStatusIsLoading && userPointIsLoading && <FastImage
           style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
           source={{

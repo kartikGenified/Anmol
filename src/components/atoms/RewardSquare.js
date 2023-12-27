@@ -12,7 +12,7 @@ const RewardSquare = (props) => {
     const imageWidth = title === "Cashback" ? 60 : 40
     console.log("RewardSquare", amount)
     return (
-        <View style={{ height: 130, width: 130, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: color, margin: 8 }}>
+        <View style={{ height: 135, width: 130, borderRadius: 20, alignItems: "center", justifyContent: "center", backgroundColor: color, margin: 8 }}>
             <Image style={{ height: imageHeight, width: imageWidth, resizeMode: "contain", margin: 10 }} source={image}></Image>
             {
            amount ?  <PoppinsText content={amount} style={{ fontSize: 18, color: 'black' }}></PoppinsText> : <AnimatedDots color={'black'}/>

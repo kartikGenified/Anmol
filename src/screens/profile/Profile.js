@@ -22,7 +22,7 @@ import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import ModalWithBorder from '../../components/modals/ModalWithBorder';
 import Close from 'react-native-vector-icons/Ionicons';
-
+import { gifUri } from '../../utils/GifUri';
 
 
 const Profile = ({ navigation }) => {
@@ -35,6 +35,7 @@ const Profile = ({ navigation }) => {
   const [openModalWithBorder, setModalBorder] = useState(false)
   const [profileData, setProfileData] = useState()
 
+  const kycData = useSelector(state => state.kycDataSlice.kycData)
 
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -79,7 +80,7 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     if (getActiveMembershipData) {
-      // console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
+      console.log("getActiveMembershipData", JSON.stringify(getActiveMembershipData))
     }
     else if (getActiveMembershipError) {
       // console.log("getActiveMembershipError", getActiveMembershipError)
@@ -112,7 +113,7 @@ const Profile = ({ navigation }) => {
       console.log('Form Field Error', getFormError);
     }
     else if (fetchProfileData) {
-      console.log('fetchProfileData', fetchProfileData);
+      console.log('fetchProfileData', fetchProfileData.body.profile_pic);
       if(fetchProfileData.success)
       {
       setProfileData(fetchProfileData)
@@ -201,8 +202,8 @@ const Profile = ({ navigation }) => {
 
   const name = profileName ? fetchProfileData?.body.name : '';
   const membership = getActiveMembershipData && getActiveMembershipData.body?.tier.name
-  const accountVerified = true;
-  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+  const accountVerified = !Object.values(kycData).includes(false);
+  // const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
 
 
   const ProfileBox = (props) => {
@@ -304,6 +305,8 @@ const Profile = ({ navigation }) => {
                   style={{ height: 60, width: 60, resizeMode: 'contain' }}
                   source={require('../../../assets/images/userGrey.png')}></Image>
               )}
+         
+
             </TouchableOpacity>
           )}
           <View
@@ -317,7 +320,7 @@ const Profile = ({ navigation }) => {
             <PoppinsText
               style={{ color: 'white', fontSize: 20 }}
               content={name}></PoppinsText>
-            {getActiveMembershipData && <View
+            {membership && <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -353,13 +356,7 @@ const Profile = ({ navigation }) => {
 
 
                 <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
-
-
-
               </TouchableOpacity>
-
-
-
             )}
             <View style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 8 }}>
               <PoppinsTextMedium
@@ -492,7 +489,7 @@ const Profile = ({ navigation }) => {
             <View style={{ height: 100, width: '90%', backgroundColor: "white", alignItems: "flex-start", justifyContent: 'center', flexDirection: 'row', marginTop: 20 }}>
 
               <ProfileBox buttonTitle="+ Add" title="Payment Methods" image={require('../../../assets/images/money.png')}></ProfileBox>
-              <ProfileBox buttonTitle="View" title="Check Passbook" image={require('../../../assets/images/gift.png')}></ProfileBox>
+              <ProfileBox buttonTitle="View" title="Check Passbook" image={require('../../../assets/images/passbook_icon.png')}></ProfileBox>
             </View>
           </View>
         </>}
@@ -507,7 +504,7 @@ const Profile = ({ navigation }) => {
               resizeMode={FastImage.resizeMode.contain}
             />
 
-            <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', fontSize: 12, marginTop: 30 }} content="No Form Field Available Yet!"></PoppinsTextMedium>
+            {/* <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', fontSize: 12, marginTop: 30 }} content="No Form Field Available Yet!"></PoppinsTextMedium> */}
           </View>
 
         }

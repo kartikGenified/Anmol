@@ -38,7 +38,7 @@ const label = props.label
           "pan":value
           }
         verifyPanFunc(data)
-        console.log(value)
+        // console.log(value)
         setValue(value)
           
         }

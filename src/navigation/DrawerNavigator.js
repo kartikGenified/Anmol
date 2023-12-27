@@ -34,9 +34,6 @@ const CustomDrawer = () => {
   const [KnowledgeHubVisible, setKnowledgeHubVisible] = useState(false);
 
 
-
-
-
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
   )
@@ -125,51 +122,51 @@ const CustomDrawer = () => {
     fetchFaq()
   }, [])
 
-  useEffect(() => {
-    if (getTermsData) {
-      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
+  useEffect(()=>{
+    if(getTermsData){
+      console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
     }
-    else if (getTermsError) {
+    else if(getTermsError){
       console.log("gettermserror", getTermsError)
     }
-  }, [getTermsData, getTermsError])
+  },[getTermsData,getTermsError])
 
-  useEffect(() => {
-    if (getPolicyData) {
-      console.log("getPolicyData123>>>>>>>>>>>>>>>>>>>", getPolicyData);
+  useEffect(()=>{
+    if(getPolicyData){
+      console.log("getPolicyData123>>>>>>>>>>>>>>>>>>>",getPolicyData);
     }
-    else if (getPolicyError) {
+    else if(getPolicyError){
       console.log("getPolicyError>>>>>>>>>>>>>>>", getPolicyError)
     }
-  }, [getPolicyData, getPolicyError])
+  },[getPolicyData,getPolicyError])
 
-  useEffect(() => {
-    if (getFAQData) {
-      console.log("getFAQData Here i am ", getFAQData.body.data?.[0]?.files[0]);
+  useEffect(()=>{
+    if(getFAQData){
+      console.log("getFAQData Here i am ",getFAQData.body.data?.[0]?.files[0]);
     }
-    else if (getFAQError) {
+    else if(getFAQError){
       console.log("getFAQError", getFAQError)
     }
-  }, [getFAQData, getFAQError]);
+  },[getFAQData,getFAQError]);
 
-  const handleLogout = async () => {
-
-    try {
-      await AsyncStorage.removeItem('loginData')
-      navigation.reset({ index: '0', routes: [{ name: 'SelectUser' }] })
-    } catch (e) {
-      console.log("error deleting loginData", e)
-    }
-
-    console.log('Done.')
-
+  const handleLogout=async()=>{
+    
+      try {
+        await AsyncStorage.removeItem('loginData')
+        navigation.reset({ index: '0', routes: [{ name: 'SelectUser' }] })
+      } catch(e) {
+        console.log("error deleting loginData",e)
+      }
+    
+      console.log('Done.')
+    
   }
 
   const fetchTerms = async () => {
     // const credentials = await Keychain.getGenericPassword();
     // const token = credentials.username;
     const params = {
-      type: "term-and-condition"
+      type:"term-and-condition"
     }
     getTermsAndCondition(params)
   }
@@ -178,17 +175,17 @@ const CustomDrawer = () => {
     // const credentials = await Keychain.getGenericPassword();
     // const token = credentials.username;
     const params = {
-      type: "privacy-policy"
+      type:"privacy-policy"
     }
     getPolicies(params)
   }
 
-
+  
   const fetchFaq = async () => {
     // const credentials = await Keychain.getGenericPassword();
     // const token = credentials.username;
     const params = {
-      type: "faq"
+      type:"faq"
     }
     getFAQ(params)
   }
@@ -206,7 +203,7 @@ const CustomDrawer = () => {
     }
   }
 
-
+  
 
 
   useEffect(() => {
@@ -245,14 +242,14 @@ const CustomDrawer = () => {
     // fetchTerms();
   }, [])
 
-  useEffect(() => {
-    if (getTermsData) {
-      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
+  useEffect(()=>{
+    if(getTermsData){
+      console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
     }
-    else if (getTermsError) {
+    else if(getTermsError){
       console.log("gettermserror", getTermsError)
     }
-  }, [getTermsData, getTermsError]);
+  },[getTermsData,getTermsError]);
 
 
   useEffect(() => {
@@ -282,7 +279,7 @@ const CustomDrawer = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: "white",
+          backgroundColor:"white",
           marginTop: 1,
           borderBottomWidth: 1,
           borderColor: '#DDDDDD',
@@ -361,6 +358,9 @@ const CustomDrawer = () => {
               else if (props.title.toLowerCase() === "add user") {
                 navigation.navigate('ListUsers')
               }
+              else if (props.title.toLowerCase() === "query list") {
+                navigation.navigate('QueryList')
+              }
               else if (props.title.toLowerCase() === "share app") {
                 const options = {
                   title: "Share APP",
@@ -375,8 +375,8 @@ const CustomDrawer = () => {
                   });
               }
             }}>
-            {console.log("props.title", props.title)}
-            <Text style={{ color: primaryThemeColor, fontSize: 15 }}>{props.title == "Passbook" ? "My Loyalty" : props.title == "Profile" ? "My Profile" : props.title == "Rewards" ? "My Reward" : props.title}</Text>
+              {console.log("props.title", props.title)}
+            <Text style={{ color: primaryThemeColor, fontSize: 15 }}>{props.title == "Passbook" ? "My Loyalty" : props.title == "Profile" ? "My Profile" : props.title == "Rewards" ? "My Rewards" : props.title}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -437,14 +437,15 @@ const CustomDrawer = () => {
     <View style={{ backgroundColor: '#DDDDDD' }}>
       <View
         style={{
-          height: 125,
+                    height: 125,
           backgroundColor: ternaryThemeColor,
           borderBottomLeftRadius: 30,
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        {profileImage ?
+          {console.log("profile image is ------->>>>>>>>>>>>>>>>", profileImage)}
+      {profileImage ?
           <Image
             style={{
               height: 60,
@@ -456,7 +457,9 @@ const CustomDrawer = () => {
               resizeMode: 'contain'
             }}
             source={{ uri: BaseUrlImages + profileImage }}></Image>
+
           :
+
           <View style={{
         
             paddingHorizontal: 10,
@@ -480,7 +483,6 @@ const CustomDrawer = () => {
 
 
         }
-
         <View style={{ justifyContent: 'center', marginLeft: 50 }}>
           {userData && <Text
             style={{
@@ -491,7 +493,7 @@ const CustomDrawer = () => {
             }}>
             {userData.name}
           </Text>}
-          {userData && <Text style={{ color: 'white', margin: 0 }}>{userData.user_type} Account</Text>}
+          {userData && <Text style={{ color: 'white', margin: 0,textTransform:"capitalize" }}>{userData.user_type} Account</Text>}
 
           {!Object.values(kycData).includes(false) ? <View style={{ flexDirection: 'row', marginTop: 4 }}>
             <View
@@ -545,11 +547,11 @@ const CustomDrawer = () => {
           })
         }
 
-
-        <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, height: 50, justifyContent: 'center', width: '100%', position: 'absolute', bottom: 10, }} onPress={() => {
-          handleLogout()
-
-        }}>
+       
+  <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, height: 50, justifyContent: 'center', width: '100%', position: 'absolute', bottom: 10, }} onPress={() => {
+                   handleLogout()
+          
+                  }}>
           <PoppinsTextLeftMedium style={{ color: 'white', marginLeft: 90 }} content="LOG OUT -->"></PoppinsTextLeftMedium>
         </TouchableOpacity>
 

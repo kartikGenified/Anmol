@@ -8,7 +8,7 @@ import BottomModal from './BottomModal';
 import { useSelector } from 'react-redux';
 
 // create a component
-const FilterModal = ({modalClose, message, openModal,handleFilter}) => {
+const FilterModal = ({modalClose, message, openModal,handleFilter, onSubmit}) => {
 
     const ternaryThemeColor = useSelector(
         state => state.apptheme.ternaryThemeColor,
@@ -39,6 +39,8 @@ const FilterModal = ({modalClose, message, openModal,handleFilter}) => {
         const fetchDataAccToFilter=()=>{
             console.log(startDate,endDate)
             // setOpenBottomModal(!openModal)
+            console.log("Filtering--->")
+            onSubmit()
             modalClose()
           }
 

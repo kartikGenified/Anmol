@@ -3,6 +3,8 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Dimensions } from 'rea
 import { useSelector } from "react-redux";
 import { useFetchAllPushNotificationDumpListByAppUserIdMutation } from "../../apiServices/pushNotification/fetchAllPushNotificationDumpListByAppUserId";
 import PoppinsTextLeftMedium from "../../components/electrons/customFonts/PoppinsTextLeftMedium";
+import DataNotFound from "../data not found/DataNotFound";
+import PoppinsTextMedium from "../../components/electrons/customFonts/PoppinsTextMedium";
 
 
 const Notification = ({ route, navigation }) => {
@@ -73,10 +75,15 @@ const Notification = ({ route, navigation }) => {
             </View>
             <View style={{ paddingBottom: 120, height: height, backgroundColor: 'white', width: '100%', borderTopLeftRadius: 30, borderTopRightRadius: 30, marginTop: 20 }}>
                 {
-                    notifData?.body?.data?.map((item, index) => {
+                   notifData?.body?.length > 0 ?  notifData?.body?.data?.map((item, index) => {
                         return <Notificationbar notification={item?.title} body={item?.body} key={item?.id} ></Notificationbar>
 
                     })
+                        :
+                    <View style={{height:'100%', alignItems:'center', justifyContent:'center'}}>
+                    <PoppinsTextMedium style={{}} content={"Notifications haven't recieved yet"}></PoppinsTextMedium>
+
+                    </View>
                 }
             </View>
         </ScrollView>

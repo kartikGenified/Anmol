@@ -64,7 +64,7 @@ const ErrorModal = (props) => {
         <View style={styles.centeredView}>
           <View style={{ ...styles.modalView, borderWidth: 2, borderColor: ternaryThemeColor }}>
             {/* <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={require('../../../assets/images/failed.png')}></Image> */}
-            <Text style={{ color: '#FF5D5D', fontSize: 24, fontWeight: '700' }}>SORRY</Text>
+            <Text style={{ color: '#FF5D5D', fontSize: 24, fontWeight: '700' }}>Sorry</Text>
 
             <Text style={{ ...styles.modalText, fontSize: 20, fontWeight: '600', color: 'black' }}>{props.message}</Text>
             <Pressable

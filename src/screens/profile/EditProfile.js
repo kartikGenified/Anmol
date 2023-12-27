@@ -16,6 +16,8 @@ import InputDateProfile from '../../components/atoms/input/InputDateProfile';
 import RectangularUnderlinedDropDown from '../../components/atoms/dropdown/RectangularUnderlinedDropDown';
 import ProfileDropDown from '../../components/atoms/dropdown/ProfileDropDown';
 import moment from 'moment';
+import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
+import FastImage from 'react-native-fast-image';
 
 const EditProfile = ({ navigation, route }) => {
   const [changedFormValues, setChangedFormValues] = useState([])
@@ -29,6 +31,8 @@ const EditProfile = ({ navigation, route }) => {
   const [error, setError] = useState(false);
   const [marginB, setMarginB] = useState(0)
   const [isValidEmail,setIsValidEmail] = useState(true)
+
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
   // const userData = useSelector(state=>state.appusersdata.userData)
   console.log("saved image", route.params?.savedImage)
   // console.log("route.params.savedImage",route.params.savedImage)
@@ -103,7 +107,7 @@ const EditProfile = ({ navigation, route }) => {
   }, [uploadImageData, uploadImageError]);
 
   const handleData = (data, title) => {
-    console.log(data, title)
+    // console.log("djnjbdhdndddjj",data, title)
 
     let submissionData = [...changedFormValues]
     let removedValues = submissionData.filter((item, index) => {
@@ -115,7 +119,7 @@ const EditProfile = ({ navigation, route }) => {
       const checkEmail = emailRegex.test(data)
       setIsValidEmail(checkEmail);
     }
-
+    
     removedValues.push({
       "value": data,
       "name": title
@@ -172,7 +176,7 @@ const EditProfile = ({ navigation, route }) => {
       }
       else{
         setError(true)
-        setMessage("Please enter valid email")
+        setMessage("Please enter a valid email")
       }
     
     }
@@ -231,9 +235,10 @@ const EditProfile = ({ navigation, route }) => {
             </View>
             <View style={{ height: 150, width: 150, borderRadius: 75, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderColor: '#DDDDDD', borderWidth: 0.6, marginTop: 20 }}>
               <View style={{ height: 130, width: 130, borderRadius: 65, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderColor: '#DDDDDD', borderWidth: 0.6 }}>
+             
+              {profileImage==undefined && <Image style={{ height: 100, width: 130, borderRadius: 60, resizeMode: 'contain', marginTop:'100%' }} source={require('../../../assets/images/userGrey.png')}></Image>}
                 {profileImage !== route.params?.savedImage && <Image style={{ height: 130, width: 130, borderRadius: 65, resizeMode: "contain" }} source={{ uri: profileImage?.uri }}></Image>}
                 {profileImage === route.params?.savedImage && <Image style={{ height: 130, width: 130, borderRadius: 65, resizeMode: 'contain' }} source={{ uri: BaseUrlImages + profileImage }}></Image>}
-
               </View>
             </View>
             <TouchableOpacity onPress={() => {
@@ -286,6 +291,7 @@ const EditProfile = ({ navigation, route }) => {
 
       </View>
       <View style={{ height: '70%', width: "100%", borderTopLeftRadius: 40, borderTopRightRadius: 40, alignItems: "center", justifyContent: "flex-start", backgroundColor: "white", marginTop: 20, paddingTop: 20 }}>
+        {console.log("form value", formFields)}
         {/* data goes here */}
         <ScrollView showsVerticalScrollIndicator={false} style={{ width: '90%' }}>
           {
@@ -294,12 +300,12 @@ const EditProfile = ({ navigation, route }) => {
               if (item.type === "text") {
                 return (
 
-                  <RectanglarUnderlinedTextInput pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : "data not available"}></RectanglarUnderlinedTextInput>
+                  <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label } pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
                 )
               }
               else if (item.type === "date") {
                 return (
-                  <InputDateProfile key={index} data={moment(formValues[index]).format("DD-MMM-YYYY")} title={item.name} handleData={handleData}></InputDateProfile>
+                  <InputDateProfile label={formFields?.[index]?.label} key={index} data={moment(formValues[index]).format("DD-MMM-YYYY")} title={item.name} handleData={handleData}></InputDateProfile>
 
                 )
               }
@@ -310,9 +316,6 @@ const EditProfile = ({ navigation, route }) => {
                 )
               }
             })
-
-
-
           }
         </ScrollView>
 
@@ -325,6 +328,18 @@ const EditProfile = ({ navigation, route }) => {
         </View>
 
       </View>
+
+      {
+        uploadImageIsLoading && 
+        <FastImage
+        style={{ width: 100, height: 100, alignSelf: 'center', }}
+        source={{
+          uri: gifUri, // Update the path to your GIF
+          priority: FastImage.priority.normal
+        }}
+        resizeMode={FastImage.resizeMode.contain}
+      />
+      }
 
     </View>
 

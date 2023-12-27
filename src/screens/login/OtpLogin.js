@@ -401,12 +401,12 @@ import { useIsFocused } from '@react-navigation/native';
 import PoppinsTextLeftMedium from '../../components/electrons/customFonts/PoppinsTextLeftMedium';
 import Checkbox from '../../components/atoms/checkbox/Checkbox';
 import { useFetchLegalsMutation } from '../../apiServices/fetchLegal/FetchLegalApi';
-import * as Keychain from 'react-native-keychain';  
+import * as Keychain from 'react-native-keychain';
 
 
 const OtpLogin = ({ navigation, route }) => {
-  const [mobile, setMobile] = useState()
-  const [name, setName] = useState()
+  const [mobile, setMobile] = useState("")
+  const [name, setName] = useState("")
   const [success, setSuccess] = useState(false)
   const [message, setMessage] = useState()
   const [error, setError] = useState(false)
@@ -476,24 +476,24 @@ const OtpLogin = ({ navigation, route }) => {
   const width = Dimensions.get('window').width;
   const navigationParams = { "needsApproval": needsApproval, "user_type_id": user_type_id, "user_type": user_type, "mobile": mobile, "name": name }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchTerms();
-  },[])
+  }, [])
 
-  useEffect(()=>{
-    if(getTermsData){
-      console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
+  useEffect(() => {
+    if (getTermsData) {
+      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
     }
-    else if(getTermsError){
+    else if (getTermsError) {
       console.log("gettermserror", getTermsError)
     }
-  },[getTermsData,getTermsError])
+  }, [getTermsData, getTermsError])
 
 
 
   useEffect(() => {
     if (sendOtpData) {
-      console.log("data", sendOtpData)
+      console.log("data", sendOtpData);
       if (sendOtpData.success === true && mobile.length === 10) {
         navigation.navigate('VerifyOtp', { navigationParams })
       }
@@ -545,22 +545,28 @@ const OtpLogin = ({ navigation, route }) => {
     const credentials = await Keychain.getGenericPassword();
     const token = credentials.username;
     const params = {
-      type:"term-and-condition"
+      type: "term-and-condition"
     }
     getTermsAndCondition(params)
   }
 
 
   const getName = data => {
-    if(data!==undefined)
-    {
-    console.log("name data is",typeof data, data.length)
-     
+    const nameRegex = /^[a-zA-Z\s-]+$/;
+
+    if (data !== undefined) {
+
+      if (nameRegex.test(name)) {
         setName(data)
-      
+      }
+
+      else {
+        console.log("not allowed")
+      }
+
     }
-   
-   
+
+
   };
 
   const getCheckBoxData = (data) => {
@@ -575,21 +581,46 @@ const OtpLogin = ({ navigation, route }) => {
   const handleButtonPress = () => {
     // console.log("first",getNameData.message)
     // console.log("mobile",mobile,name.length,name,isChecked,getNameData)
-    if (getNameData && isChecked && name!==undefined && mobile!==undefined && mobile.length!==0 && name.length!==0) {
-      // console.log("mobile",mobile,name.length)
-      if (getNameData.message === "Not Found") {
-        console.log("registrationRequired", registrationRequired)
-        registrationRequired ? navigation.navigate('BasicInfo', { needsApproval: needsApproval, userType: user_type, userId: user_type_id, name: name, mobile: mobile, navigatingFrom: "OtpLogin" }) : navigateToOtp()
-        // setName('')
-        // setMobile('')
+    if (isChecked) {
+      if (getNameData && isChecked && name !== undefined && mobile !== undefined && name != "" && mobile.length !== 0 && name.length !== 0) {
+        // console.log("mobile",mobile,name.length)
+        if (getNameData.message === "Not Found") {
+          console.log("registrationRequired", registrationRequired)
+          if (mobile?.length == 10) {
+            // registrationRequired ? navigation.navigate('BasicInfo', { needsApproval: needsApproval, userType: user_type, userId: user_type_id, name: name, mobile: mobile, navigatingFrom: "OtpLogin" }) : navigateToOtp()
+            setError(true)
+            setMessage("your profile is not associated with us")
+          }
+          else {
+            setError(true)
+            setMessage("Mobile number lenght should be 10 digits")
+          }
+          // setName('')
+          // setMobile('')
+        }
+        else {
+          sendOtpFunc({ mobile, name, user_type, user_type_id })
+          // navigation.navigate('VerifyOtp',{navigationParams})
+        }
+
       }
       else {
-        sendOtpFunc({ mobile, name, user_type, user_type_id })
+        if (mobile?.length != 10) {
+          setError(true)
+          setMessage("Mobile number lenght should be 10 digits")
+        }
 
-        // navigation.navigate('VerifyOtp',{navigationParams})
-
+        else if (name == undefined || name == "") {
+          setError(true)
+          setMessage("Please enter name")
+        }
       }
     }
+    else{
+      setError(true)
+      setMessage("Please Accept Terms and condition")
+    }
+
   }
 
   const modalClose = () => {
@@ -638,7 +669,7 @@ const OtpLogin = ({ navigation, route }) => {
 
 
             }}
-            source={require('../../../assets/images/ozoneWhiteLogo.png')}></Image>
+            source={require('../../../assets/images/anmolLogo.png')}></Image>
         </View>
         <View
           style={{
@@ -670,12 +701,14 @@ const OtpLogin = ({ navigation, route }) => {
               placeHolder="Mobile No"
               handleData={getMobile}
               maxLength={10}
+              KeyboardType="numeric"
             ></TextInputRectangularWithPlaceholder>
 
             <TextInputRectangularWithPlaceholder
               placeHolder="Name"
               handleData={getName}
               value={name}
+              specialCharValidation={true}
             ></TextInputRectangularWithPlaceholder>
           </View>
         </KeyboardAvoidingView>
@@ -689,10 +722,10 @@ const OtpLogin = ({ navigation, route }) => {
           }}>
           <View style={{ flexDirection: 'row', marginHorizontal: 24, }}>
             <Checkbox CheckBoxData={getCheckBoxData} />
-            <TouchableOpacity onPress={()=>{
-                  navigation.navigate('PdfComponent',{pdf:getTermsData.body.data?.[0]?.files[0]})
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('PdfComponent', { pdf: getTermsData.body.data?.[0]?.files[0] })
             }}>
-              <PoppinsTextLeftMedium content={"I agree to the Terms & Conditions"} style={{ color: '#808080', marginHorizontal: 30, marginBottom: 20, fontSize: 15, marginLeft: 8, marginTop:16 }}></PoppinsTextLeftMedium>
+              <PoppinsTextLeftMedium content={"I agree to the Terms & Conditions"} style={{ color: '#808080', marginHorizontal: 30, marginBottom: 20, fontSize: 15, marginLeft: 8, marginTop: 16 }}></PoppinsTextLeftMedium>
             </TouchableOpacity>
           </View>
 
@@ -705,7 +738,8 @@ const OtpLogin = ({ navigation, route }) => {
             content="Login"
             navigateTo="VerifyOtp"
             navigationParams={navigationParams}
-            isChecked={isChecked}
+            mobileLength={mobile}
+            isChecked={isChecked && mobile?.length == 10 && name != ""}
           ></ButtonNavigateArrow>}
 
 
