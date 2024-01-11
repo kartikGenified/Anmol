@@ -23,6 +23,7 @@ import PoppinsTextMedium from '../components/electrons/customFonts/PoppinsTextMe
 import PoppinsTextLeftMedium from '../components/electrons/customFonts/PoppinsTextLeftMedium';
 import { useFetchLegalsMutation } from '../apiServices/fetchLegal/FetchLegalApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 const CustomDrawer = () => {
@@ -33,6 +34,7 @@ const CustomDrawer = () => {
   const [communityVisible, setCommunityVisible] = useState(false);
   const [KnowledgeHubVisible, setKnowledgeHubVisible] = useState(false);
 
+  const focused = useIsFocused();
 
   const ternaryThemeColor = useSelector(
     state => state.apptheme.ternaryThemeColor,
@@ -123,6 +125,22 @@ const CustomDrawer = () => {
   }, [])
 
   useEffect(()=>{
+    const fetchData = async () => {
+      const credentials = await Keychain.getGenericPassword();
+      if (credentials) {
+        console.log(
+          'Credentials successfully loaded for user ' + credentials.username,
+        );
+        const token = credentials.username;
+        fetchProfileFunc(token);
+
+
+      }
+    };
+    fetchData()
+  },[focused])
+
+  useEffect(()=>{
     if(getTermsData){
       console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
     }
@@ -153,7 +171,7 @@ const CustomDrawer = () => {
     
       try {
         await AsyncStorage.removeItem('loginData')
-        navigation.reset({ index: '0', routes: [{ name: 'SelectUser' }] })
+        navigation.reset({ index: '0', routes: [{ name: 'Splash' }] })
       } catch(e) {
         console.log("error deleting loginData",e)
       }
@@ -339,6 +357,9 @@ const CustomDrawer = () => {
               }
               else if (props.title.toLowerCase() === "video" || props.title.toLowerCase() === "videos") {
                 navigation.navigate('VideoGallery')
+              }
+              else if (props.title.toLowerCase() === "feedback" || props.title.toLowerCase() === "feedback") {
+                navigation.navigate('Feedback')
               }
               else if (props.title.toLowerCase() === "gallery") {
                 navigation.navigate('ImageGallery')

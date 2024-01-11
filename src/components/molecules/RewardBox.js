@@ -68,7 +68,7 @@ const RewardBox = () => {
             {userPointData && userPointData?.body &&
                 <ScrollView contentContainerStyle={{ height: '100%' }} style={{ borderRadius: 20, padding: 4, height: 150 }} showsHorizontalScrollIndicator={false} horizontal={true}>
                     {
-                        userPointData && userPointData && userPointData.body?.[0]?.success_cnt && <RewardSquare amount={userPointData?.body?.[0]?.total_uploaded_amount_transfer} color="#DCFCE7" image={require('../../../assets/images/points.png')} title="transfered Amount"></RewardSquare>
+                        userPointData && userPointData && userPointData.body?.[0]?.success_cnt && <RewardSquare amount={userPointData?.body?.[0]?.total_uploaded_amount_transfer} color="#DCFCE7" image={require('../../../assets/images/points.png')} title="Transfered Amount"></RewardSquare>
                     }
                     {
                         userPointData && userPointData.body?.[0]?.total_uploaded_amount_left && <RewardSquare amount={userPointData.body?.[0]?.total_uploaded_amount_left} color="#DCFCE7" image={require('../../../assets/images/points.png')} title="Pending Amount"></RewardSquare>

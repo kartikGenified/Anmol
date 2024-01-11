@@ -81,8 +81,7 @@ const Notification = ({ route, navigation }) => {
                     })
                         :
                     <View style={{height:'100%', alignItems:'center', justifyContent:'center'}}>
-                    <PoppinsTextMedium style={{}} content={"Notifications haven't recieved yet"}></PoppinsTextMedium>
-
+                    <DataNotFound/>
                     </View>
                 }
             </View>

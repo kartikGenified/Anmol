@@ -5,12 +5,14 @@ import PoppinsTextLeftMedium from '../../electrons/customFonts/PoppinsTextLeftMe
 const TextInputRectangularWithPlaceholder = (props) => {
     const [value, setValue] = useState(props.value)
     const [keyboardType, setKeyboardType] = useState('default')
+    const [maxLength, setMaxlength] = useState(props.maxLength)
     const [error, setError] = useState(false);
     // console.log("value", props)
     const placeHolder = props.placeHolder
-    const maxLength = props.maxLength
     const required = props.required
     const specialChar = props.specialCharValidation
+    const validationType = props.validationType
+    const title  = props.title
 
     useEffect(() => {
         setValue(props.value)
@@ -20,25 +22,49 @@ const TextInputRectangularWithPlaceholder = (props) => {
     useEffect(() => {
         if (placeHolder === "Mobile No") {
             setKeyboardType('numeric')
+            setMaxlength(10)
+        }
+        if(title?.split("_").includes("mobile"))
+        {
+            setKeyboardType('numeric')
+            setMaxlength(10)
+
         }
     }, [])
 
     const handleInput = (text, placeHolder) => {
         if (specialChar) {
-            const nameRegex = /^[a-zA-Z\s-]+$/;
-            if (nameRegex.test(text)) {
-                setValue(text)
-                props.handleData(text, props.title)
-                setError(false)
-            }
-            else {
-                setValue("")
-                if (text != "") {
-                    setError(true)
-                }else{
+            if(validationType!="numeric"){
+                const nameRegex = /^[a-zA-Z\s-]+$/;
+                if (nameRegex.test(text)) {
+                    setValue(text)
+                    props.handleData(text, props.title)
                     setError(false)
                 }
+                else {
+                    setValue("")
+                    if (text != "") {
+                        setError(true)
+                    }else{
+                        setError(false)
+                    }
+                }
             }
+            else{
+             
+                // var numberRegex = /^((\(){1}(\+?\d{3}(\)){1})|(\+)?\d{3})(\d){2,17}$/g;
+                // const numberRegex = /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i;
+            
+                    if(!text.includes(".") && !text.includes("-") && !text.includes(",") && !text.includes(" ")){
+                        setValue(text)
+                        props.handleData(text, props.title)
+                        setError(false)
+                    }
+                 
+                
+               
+            }
+          
 
         }
         else {

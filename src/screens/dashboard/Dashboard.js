@@ -461,7 +461,7 @@ const Dashboard = ({ navigation }) => {
         <DrawerHeader></DrawerHeader>
         <View style={{ width: '100%', alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'row', marginBottom: 10 }}>
           <PoppinsTextLeftMedium style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize: 19, marginLeft: 20 }} content={`Welcome ${userData?.name}`}></PoppinsTextLeftMedium>
-          {getActiveMembershipData?.body !== null && <View
+          {/* {getActiveMembershipData?.body !== null && <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -480,7 +480,7 @@ const Dashboard = ({ navigation }) => {
                 content={membership}></PoppinsTextMedium>
             </TouchableOpacity>
 
-          </View>}
+          </View>} */}
           <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
 
         </View>
@@ -500,7 +500,7 @@ const Dashboard = ({ navigation }) => {
 
             <View style={{ backgroundColor: 'white', width: '42%', marginHorizontal: 20 }}>
               
-              <PoppinsTextMedium content={`Transfered Amount:`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium> 
+              <PoppinsTextMedium content={`Transfered Amount`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:13 }}></PoppinsTextMedium> 
               <PoppinsTextMedium content={`${getTransactionStatsData?.body?.[0]?.total_uploaded_amount_transfer ? getTransactionStatsData?.body?.[0]?.total_uploaded_amount_transfer  : "0"}`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium> 
 
               
@@ -510,7 +510,7 @@ const Dashboard = ({ navigation }) => {
             </View>
 
             <View style={{ width: '50%', flexWrap:'wrap', marginHorizontal:5, }}>
-              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14, }} content={`Approved Transactions:  `}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold',width:'100%',  fontSize:13,marginLeft:-5  }} content={`Approved Transactions  `}></PoppinsTextMedium>
               <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14, }} content={`${getTransactionStatsData?.body?.[0]?.success_cnt ? getTransactionStatsData?.body?.[0]?.success_cnt : "0"} `}></PoppinsTextMedium>
 
             </View>
@@ -522,7 +522,7 @@ const Dashboard = ({ navigation }) => {
 
             <View style={{ backgroundColor: 'white', width: '42%', marginHorizontal: 20 }}>
               
-                <PoppinsTextMedium content={`Pending Amount:`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium>
+                <PoppinsTextMedium content={`Pending Amount`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:13 }}></PoppinsTextMedium>
                 <PoppinsTextMedium content={`${getTransactionStatsData?.body?.[0]?.total_uploaded_amount_left ? getTransactionStatsData?.body?.[0]?.total_uploaded_amount_left : "0"}`} style={{ color: ternaryThemeColor, fontWeight: 'bold', fontSize:14 }}></PoppinsTextMedium>
               
               
@@ -532,7 +532,7 @@ const Dashboard = ({ navigation }) => {
             </View>
 
             <View style={{ width: '50%', marginLeft:-8 }}>
-              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold',width:'100%',  fontSize:14  }} content={`Pending Transactions:`}></PoppinsTextMedium>
+              <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold',width:'100%',  fontSize:13  }} content={`Pending Transactions`}></PoppinsTextMedium>
               <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold',width:'100%',  fontSize:14  }} content={`${getTransactionStatsData?.body?.[0]?.not_initiated_cnt ? getTransactionStatsData?.body?.[0]?.not_initiated_cnt  : "0"} `}></PoppinsTextMedium>
             </View>
 

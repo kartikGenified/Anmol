@@ -118,11 +118,12 @@ const DashboardMenuBox=(props)=>{
             navigation.navigate('ListUsers')
         }
         else if(data.toLowerCase() === "report an issue"){
-            navigation.navigate('SupportQueries')
+            navigation.navigate('QueryList')
         }
         else if(data.toLowerCase() === "customer support"){
             navigation.navigate('HelpAndSupport')
         }
+        
         else if(data.toLowerCase() === "request appointment"){
         //  else if(data.toLowerCase() === "report an issue"){
             navigation.navigate('RequestAppointment')

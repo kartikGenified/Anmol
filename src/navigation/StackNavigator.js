@@ -75,6 +75,7 @@ import ListUsers from '../screens/addUser/ListUsers';
 import AddedUserScanList from '../screens/addUser/AddedUserScanList';
 import RequestAppointment from '../screens/requestAppointment/RequestAppointment';
 import SupportQueries from '../screens/helpAndSupport/SupportQueries';
+import QueryList from '../screens/queryList/QueryList';
 const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
@@ -100,6 +101,13 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="RequestAppointment" component={RequestAppointment}></Stack.Screen>
+
+
+                <Stack.Screen options={
+                    {
+                        headerShown: false
+                    }
+                } name="QueryList" component={QueryList}></Stack.Screen>
 
                 <Stack.Screen options={
                     {
@@ -286,7 +294,7 @@ const StackNavigator = () => {
                         headerShown: false
                     }
                 } name="HelpAndSupport" component={HelpAndSupport}></Stack.Screen>
-                    <Stack.Screen options={
+                <Stack.Screen options={
                     {
                         headerShown: false
                     }

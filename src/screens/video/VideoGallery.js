@@ -64,13 +64,13 @@ const VideoGallery = ({ navigation }) => {
     const type = props.type
     const date = props.date
     return (
-      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 180, width: '40%', borderRadius: 10, backgroundColor: 'white', elevation: 10, margin: 10, alignItems: 'center', justifyContent: 'flex-end' }}>
-        <View style={{ width: '100%', backgroundColor: "#DDDDDD", alignItems: "center", justifyContent: 'center', height: '50%' }}>
+      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 200, width: "80%", borderRadius: 10, backgroundColor: 'white', elevation: 10, margin: 10, alignItems: 'center', justifyContent: 'flex-end', alignSelf:'center' }}>
+        <View style={{ width: '100%', backgroundColor: "#DDDDDD", alignItems: "center", justifyContent: 'center', height: '50%',  }}>
           <Logo name="youtube" size={60} color="red"></Logo>
         </View>
 
         <View style={{ backgroundColor: 'black', width: '100%', alignItems: 'flex-start', height: '50%', justifyContent: "center" }}>
-          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8 }} content={`Title : ${title.substring(0, 16)}`}></PoppinsTextMedium>
+          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8, backgroundColor:'black' }} content={`Title : ${title.substring(0, 16)}`}></PoppinsTextMedium>
           <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8 }} content={`Type : ${type}`}></PoppinsTextMedium>
           <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginBottom: 6, marginLeft: 8 }} content={`Date : ${moment(date).format("DD MMM YYYY")}`}></PoppinsTextMedium>
 
@@ -96,7 +96,7 @@ const VideoGallery = ({ navigation }) => {
           flexDirection: 'row',
           width: '100%',
           marginTop: 10,
-          height: '10%',
+          // height: '10%',
           marginLeft: 20,
         }}>
         <TouchableOpacity
@@ -129,7 +129,7 @@ const VideoGallery = ({ navigation }) => {
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             backgroundColor: 'white',
-            minHeight: height - 100,
+            minHeight: height-200,
             marginTop: 10,
             alignItems: 'flex-start',
             justifyContent: 'center',
@@ -153,7 +153,7 @@ const VideoGallery = ({ navigation }) => {
           {
             videoData != undefined && videoData.length > 0 ? videoData.map((item, index) => {
               return (
-                <View>
+                <View style={{width:'100%',}}>
                   {(videoData.length > 0) ? <VideoComp key={index} title={item.title} type={item.type} video={item.link} date={item.updated_at}></VideoComp> : <DataNotFound />}
                 </View>
               )

@@ -17,7 +17,8 @@ import RectangularUnderlinedDropDown from '../../components/atoms/dropdown/Recta
 import ProfileDropDown from '../../components/atoms/dropdown/ProfileDropDown';
 import moment from 'moment';
 import TextInputRectangularWithPlaceholder from '../../components/atoms/input/TextInputRectangularWithPlaceholder';
-import FastImage from 'react-native-fast-image';
+import DisplayOnlyTextInput from '../../components/atoms/DisplayOnlyTextInput';
+
 
 const EditProfile = ({ navigation, route }) => {
   const [changedFormValues, setChangedFormValues] = useState([])
@@ -30,9 +31,10 @@ const EditProfile = ({ navigation, route }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [marginB, setMarginB] = useState(0)
-  const [isValidEmail,setIsValidEmail] = useState(true)
+  const [isValidEmail, setIsValidEmail] = useState(true)
 
-  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+  const editable = true;
+
   // const userData = useSelector(state=>state.appusersdata.userData)
   console.log("saved image", route.params?.savedImage)
   // console.log("route.params.savedImage",route.params.savedImage)
@@ -119,7 +121,7 @@ const EditProfile = ({ navigation, route }) => {
       const checkEmail = emailRegex.test(data)
       setIsValidEmail(checkEmail);
     }
-    
+
     removedValues.push({
       "value": data,
       "name": title
@@ -169,16 +171,24 @@ const EditProfile = ({ navigation, route }) => {
       const token = credentials.username
       const params = { token: token, data: tempData }
       console.log("params from submitProfile", params)
-      if(isValidEmail){
-        setTimeout(() => {
-          updateProfileFunc(params)
-        }, 2000);
+
+
+      if (params.data?.email !== null) {
+        if (isValidEmail) {
+          setTimeout(() => {
+            updateProfileFunc(params)
+          }, 2000);
+        }
+        else {
+          setError(true)
+          setMessage("Please enter a valid email")
+        }
       }
-      else{
-        setError(true)
-        setMessage("Please enter a valid email")
+      else {
+        updateProfileFunc(params)
       }
-    
+
+
     }
   }
 
@@ -235,10 +245,9 @@ const EditProfile = ({ navigation, route }) => {
             </View>
             <View style={{ height: 150, width: 150, borderRadius: 75, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderColor: '#DDDDDD', borderWidth: 0.6, marginTop: 20 }}>
               <View style={{ height: 130, width: 130, borderRadius: 65, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', borderColor: '#DDDDDD', borderWidth: 0.6 }}>
-             
-              {profileImage==undefined && <Image style={{ height: 100, width: 130, borderRadius: 60, resizeMode: 'contain', marginTop:'100%' }} source={require('../../../assets/images/userGrey.png')}></Image>}
                 {profileImage !== route.params?.savedImage && <Image style={{ height: 130, width: 130, borderRadius: 65, resizeMode: "contain" }} source={{ uri: profileImage?.uri }}></Image>}
                 {profileImage === route.params?.savedImage && <Image style={{ height: 130, width: 130, borderRadius: 65, resizeMode: 'contain' }} source={{ uri: BaseUrlImages + profileImage }}></Image>}
+
               </View>
             </View>
             <TouchableOpacity onPress={() => {
@@ -280,7 +289,7 @@ const EditProfile = ({ navigation, route }) => {
         <View style={{ backgroundColor: "white", height: 110, width: 110, borderRadius: 50, alignItems: "center", justifyContent: "center", flexDirection: "row", borderWidth: 1, borderColor: '#DDDDDD', marginBottom: 40, marginLeft: 20 }}>
           {profileImage !== route.params?.savedImage && profileImage !== null && <Image style={{ height: 98, width: 98, borderRadius: 49, resizeMode: "contain" }} source={{ uri: profileImage.uri }}></Image>}
           {profileImage === route.params?.savedImage && <Image style={{ height: 98, width: 98, borderRadius: 49, resizeMode: "contain" }} source={{ uri: BaseUrlImages + profileImage }}></Image>}
-          {(profileImage === null || profileImage == undefined) && <Image style={{ height: 58, width: 58, resizeMode: "contain", marginRight:'92%' }} source={(require('../../../assets/images/userGrey.png'))}></Image>}
+          {(profileImage === null || profileImage == undefined) && <Image style={{ height: 58, width: 58, resizeMode: "contain", marginRight: '92%' }} source={(require('../../../assets/images/userGrey.png'))}></Image>}
 
         </View>
         <TouchableOpacity onPress={() => {
@@ -298,10 +307,54 @@ const EditProfile = ({ navigation, route }) => {
 
             formFields && formValues && formFields.map((item, index) => {
               if (item.type === "text") {
-                return (
+                if (item.name === "aadhar") {
+                  return (
+                    <DisplayOnlyTextInput
+                      key={index}
+                      data={formValues[index] === null || formValues[index] === undefined ? 'No data available' : formValues[index]}
+                      title={item.label}
+                      photo={require('../../../assets/images/eye.png')}>
 
-                  <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label } pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
-                )
+                    </DisplayOnlyTextInput>
+                  )
+                }
+                else if (item.name === "pan") {
+                  return (
+                    <DisplayOnlyTextInput
+                      key={index}
+                      data={formValues[index] === null || formValues[index] === undefined ? 'No data available' : formValues[index]}
+                      title={item.label}
+                      photo={require('../../../assets/images/eye.png')}>
+
+                    </DisplayOnlyTextInput>
+                  )
+                }
+                else if (item.name === "enrollment_date") {
+                  return (
+                    <DisplayOnlyTextInput
+                      key={index}
+                      data={formValues[index] === null || formValues[index] === undefined ? 'No data available' : formValues[index]}
+                      title={item.label}
+                      photo={require('../../../assets/images/eye.png')}>
+
+                    </DisplayOnlyTextInput>
+                  )
+                }
+                else if (item.name.split("_").includes("mobile")) {
+                  return (
+                    <TextInputRectangularWithPlaceholder editable={editable} placeHolder={formFields?.[index]?.label} pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
+
+                  )
+                }
+                else {
+                  return (
+
+                    // <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label } pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
+                    <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label} pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} editable={editable} title={item.name} value={formValues[index] != undefined ? item.label == "D.O.B" ? moment(formValues[index]).format("MMM DD YYYY") : formValues[index] : ""}></TextInputRectangularWithPlaceholder>
+
+                  )
+                }
+
               }
               else if (item.type === "date") {
                 return (
@@ -328,18 +381,6 @@ const EditProfile = ({ navigation, route }) => {
         </View>
 
       </View>
-
-      {
-        uploadImageIsLoading && 
-        <FastImage
-        style={{ width: 100, height: 100, alignSelf: 'center', }}
-        source={{
-          uri: gifUri, // Update the path to your GIF
-          priority: FastImage.priority.normal
-        }}
-        resizeMode={FastImage.resizeMode.contain}
-      />
-      }
 
     </View>
 

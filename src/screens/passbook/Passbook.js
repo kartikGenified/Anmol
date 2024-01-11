@@ -226,14 +226,14 @@ const Passbook = ({ navigation }) => {
                     {/* --------------------------- */}
                     <View style={{ flexDirection: "row", height: 50, width: '100%', alignItems: "center", justifyContent: "flex-start" }}>
                         <PoppinsText content={name} style={{ color: 'white', fontSize: 20, marginLeft: 20 }}></PoppinsText>
-                        <View style={{ height: 20, width: 2, backgroundColor: "white", marginLeft: 10 }}></View>
-
+                        {/* <View style={{ height: 20, width: 2, backgroundColor: "white", marginLeft: 10 }}></View> */}
+{/* 
                         <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => {
                             setPlatinumModal(true)
                         }}>
                             <Image style={{ height: 20, width: 20, resizeMode: 'contain', marginLeft: 10 }} source={require('../../../assets/images/reward.png')}></Image>
                             <PoppinsTextMedium style={{ color: "white" }} content={membership}></PoppinsTextMedium>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                     </View>
                     {workflowProgram?.length !== 0 && <View style={{ alignItems: "center", justifyContent: "center", width: '100%', top: 10 }}>
@@ -251,18 +251,18 @@ const Passbook = ({ navigation }) => {
                     listView &&
                     <View style={{ width: '90%', alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: '#EEEEEE', borderRadius: 20, marginTop: 100 }}>
 
-                        <View style={{ width: '100%', height: 50, flexDirection: "row", alignItems: "center", justifyContent: 'space-between', borderBottomWidth: 1, borderColor: '#EEEEEE', }}>
+                        <View style={{ width: '100%', height: 50, flexDirection: "row", alignItems: "center", justifyContent: 'center', borderBottomWidth: 1, borderColor: '#EEEEEE', }}>
                             {(getPointSharingData?.body?.total !== "0") ? <PoppinsTextMedium style={{ color: ternaryThemeColor, fontWeight: 'bold' }} content={`Registration Bonus : ${getPointSharingData?.body?.data?.[0]?.points ? getPointSharingData?.body?.data?.[0]?.points + "Points" : "loading"} `}></PoppinsTextMedium >
-                                : <PoppinsTextMedium style={{ fontWeight: 'bold' }} content="What do you want to do?"></PoppinsTextMedium>
+                                : <PoppinsTextMedium style={{ fontWeight: 'bold',  }} content="What do you want to do?"></PoppinsTextMedium>
                             }
                             <View style={{ flexDirection: 'row' }}>
-
-                                <TouchableOpacity style={{ backgroundColor: listView ? ternaryThemeColor : 'white', marginRight: 10, paddingHorizontal: 7, paddingVertical: 4 }} onPress={() => {
+{/* 
+                                <View style={{ backgroundColor: listView ? ternaryThemeColor : 'white', marginRight: 10, paddingHorizontal: 7, paddingVertical: 4 }} onPress={() => {
                                     setListView(true)
                                 }}>
                                     <Image style={{ height: 15, width: 15, resizeMode: 'contain', }} source={require('../../../assets/images/listwhite.png')}></Image>
 
-                                </TouchableOpacity>
+                                </View> */}
 
                                 {/* <TouchableOpacity onPress={() => {
                                     setListView(!listView)

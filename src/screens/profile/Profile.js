@@ -22,7 +22,7 @@ import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import ModalWithBorder from '../../components/modals/ModalWithBorder';
 import Close from 'react-native-vector-icons/Ionicons';
-import { gifUri } from '../../utils/GifUri';
+
 
 
 const Profile = ({ navigation }) => {
@@ -124,7 +124,7 @@ const Profile = ({ navigation }) => {
   }, [getFormData, getFormError, focused,fetchProfileData, fetchProfileError,profileData]);
 
 
- 
+
   useEffect(() => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -160,7 +160,7 @@ const Profile = ({ navigation }) => {
   
 
   const filterNameFromFormFields = data => {
-   console.log("filterNameFromFormFields")
+  console.log("filterNameFromFormFields")
     const nameFromFormFields = data.map(item => {
       if (item.name === 'name') {
         setProfileName(true);
@@ -195,7 +195,7 @@ const Profile = ({ navigation }) => {
         setProfileData(fetchProfileData)
       }
     }
-   
+  
   };
 
   
@@ -203,7 +203,7 @@ const Profile = ({ navigation }) => {
   const name = profileName ? fetchProfileData?.body.name : '';
   const membership = getActiveMembershipData && getActiveMembershipData.body?.tier.name
   const accountVerified = !Object.values(kycData).includes(false);
-  // const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
+  const gifUri = Image.resolveAssetSource(require('../../../assets/gif/loader.gif')).uri;
 
 
   const ProfileBox = (props) => {
@@ -305,7 +305,7 @@ const Profile = ({ navigation }) => {
                   style={{ height: 60, width: 60, resizeMode: 'contain' }}
                   source={require('../../../assets/images/userGrey.png')}></Image>
               )}
-         
+        
 
             </TouchableOpacity>
           )}
@@ -356,7 +356,13 @@ const Profile = ({ navigation }) => {
 
 
                 <PlatinumModal isVisible={isSuccessModalVisible} onClose={hideSuccessModal} getActiveMembershipData={getActiveMembershipData} />
+
+
+
               </TouchableOpacity>
+
+
+
             )}
             <View style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 8 }}>
               <PoppinsTextMedium
@@ -476,7 +482,6 @@ const Profile = ({ navigation }) => {
                       data={formValues[index] === null || formValues[index] === undefined   ? 'No data available' : formValues[index]}
                       title={item.label}
                       photo={require('../../../assets/images/eye.png')}>
-
                     </DisplayOnlyTextInput>
                   );
                 }
@@ -504,7 +509,7 @@ const Profile = ({ navigation }) => {
               resizeMode={FastImage.resizeMode.contain}
             />
 
-            {/* <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', fontSize: 12, marginTop: 30 }} content="No Form Field Available Yet!"></PoppinsTextMedium> */}
+            <PoppinsTextMedium style={{ color: 'black', fontWeight: '600', fontSize: 12, marginTop: 30 }} content="No Form Field Available Yet!"></PoppinsTextMedium>
           </View>
 
         }

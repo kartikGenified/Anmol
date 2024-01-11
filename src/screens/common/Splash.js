@@ -120,7 +120,9 @@ const Splash = ({ navigation }) => {
           dispatch(setUserData(parsedJsonValue))
           dispatch(setId(parsedJsonValue.id))
           
-          navigation.navigate('Dashboard');
+          // navigation.navigate('Dashboard');
+          navigation.reset({ index: '0', routes: [{ name: 'Dashboard' }] })
+
 
          
         }
