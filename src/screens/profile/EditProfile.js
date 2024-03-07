@@ -97,6 +97,7 @@ const EditProfile = ({ navigation, route }) => {
     if (uploadImageData) {
       console.log(uploadImageData);
       if (uploadImageData.success) {
+        console.log("uploadImageData",uploadImageData)
         setFilename(uploadImageData.body[0].filename)
         setModalVisible(false)
         //  setMessage(uploadImageData.message)
@@ -340,6 +341,12 @@ const EditProfile = ({ navigation, route }) => {
                     </DisplayOnlyTextInput>
                   )
                 }
+                else if (item.type === "date") {
+                  return (
+                    <InputDateProfile label={formFields?.[index]?.label} key={index} data={moment(formValues[index]).format("DD-MMM-YYYY")} title={item.name} handleData={handleData}></InputDateProfile>
+  
+                  )
+                }
                 else if (item.name.split("_").includes("mobile")) {
                   return (
                     <TextInputRectangularWithPlaceholder editable={editable} placeHolder={formFields?.[index]?.label} pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
@@ -350,7 +357,7 @@ const EditProfile = ({ navigation, route }) => {
                   return (
 
                     // <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label } pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} title={item.name} value={formValues[index] != undefined ? formValues[index] : ""}></TextInputRectangularWithPlaceholder>
-                    <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label} pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} editable={editable} title={item.name} value={formValues[index] != undefined ? item.label == "D.O.B" ? moment(formValues[index]).format("MMM DD YYYY") : formValues[index] : ""}></TextInputRectangularWithPlaceholder>
+                    <TextInputRectangularWithPlaceholder placeHolder={formFields?.[index]?.label} pressedSubmit={pressedSubmit} key={index} handleData={handleData} label={item.label} editable={editable} title={item.name} value={formValues[index] != undefined ? item.label == "DOB" ? moment(formValues[index]).format("MMM DD YYYY") : formValues[index] : ""}></TextInputRectangularWithPlaceholder>
 
                   )
                 }

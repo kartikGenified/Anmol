@@ -17,10 +17,14 @@ const CashbackDetails = ({navigation,route}) => {
     const data = route.params.data
     const date = moment(data.transaction_on).format("DD MMM YYYY")
     const amount =data.cash;
-    const beneName = data.bene_details?.bene_name
-    const beneUpi = data.bene_details?.upi_id
+    const beneName = data?.bene_name
+    const beneUpi = data.bene_details?.vpa
     const beneMobile = data.bene_mobile
+
+    console.log("Dataaah",data)
     return (
+
+
         <View style={{alignItems:"center",justifyContent:"flex-start",height:'100%'}}>
             <View style={{alignItems:"center",justifyContent:"flex-start",flexDirection:"row",width:'100%',marginTop:10,height:40,marginLeft:20}}>
             <TouchableOpacity onPress={()=>{
@@ -44,7 +48,7 @@ const CashbackDetails = ({navigation,route}) => {
             <PoppinsTextMedium style={{color:'black',fontSize:34,fontWeight:'700'}} content={`₹ ${amount}`}></PoppinsTextMedium>
              </View>
              <View style={{alignItems:"center",justifyContent:"center",marginTop:20}}>
-                <PoppinsTextMedium style={{color:'black',fontSize:18,fontWeight:'700'}} content={data.approval_status==="1"?"Credited Date":"Declined Date"}></PoppinsTextMedium>
+                <PoppinsTextMedium style={{color:'black',fontSize:18,fontWeight:'700'}} content={data.status==="1"?"Credited Date":"Declined Date"}></PoppinsTextMedium>
                 <PoppinsTextMedium style={{color:'black',fontSize:18,fontWeight:'500'}} content={date}></PoppinsTextMedium>
 
              </View>

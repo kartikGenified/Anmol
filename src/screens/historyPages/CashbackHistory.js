@@ -393,7 +393,7 @@ const CashbackHistory = ({ navigation }) => {
           }}
         >
           <PoppinsTextMedium
-            style={{ color: props.items.approval_status === "1" ? "green" : props.items.approval_status === "2" ? "grey" : "red", fontWeight: "600", fontSize: 18 }}
+            style={{ color: props.items.status === "1" ? "green" : props.items.approval_status === "2" ? "grey" : "red", fontWeight: "600", fontSize: 18 }}
             content={
               props.items.status === "1"
                 ? "Credited to cash balance"
@@ -423,11 +423,11 @@ const CashbackHistory = ({ navigation }) => {
             >
               <PoppinsTextMedium
                 style={{ color: "black", fontWeight: "600", fontSize: 14 }}
-                content={`Beneficiary Details : ${props.items?.bene_details?.bene_name} `}
+                content={`Beneficiary Details : ${props.items?.bene_name} `}
               ></PoppinsTextMedium>
               <PoppinsTextMedium
                 style={{ color: "black", fontWeight: "600", fontSize: 14 }}
-                content={`Beneficiary Account : ${props.items?.bene_details?.upi_id} `}
+                content={`Beneficiary Account : ${props.items?.bene_details?.vpa} `}
               ></PoppinsTextMedium>
               <PoppinsTextMedium
                 style={{ color: "#91B406", fontWeight: "600", fontSize: 14 }}
@@ -537,11 +537,11 @@ const CashbackHistory = ({ navigation }) => {
         <FlatList
           initialNumToRender={20}
           contentContainerStyle={{
-            alignItems: "flex-start",
-            justifyContent: "center",
+
+
 
           }}
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: '80%' }}
           data={cashbackList}
           renderItem={({ item, index }) => (
             <CashbackListItem items={item}></CashbackListItem>
@@ -549,10 +549,10 @@ const CashbackHistory = ({ navigation }) => {
           keyExtractor={(item, index) => index}
         />
         :
-        <View style={{ width: '100%', alignItems: "center", marginBottom: 200 }}>
+        <View style={{ width: '100%', alignItems: "center" }}>
           {
             getCashTransactionsData?.body?.length == 0 && cashbackList.length == 0 ? <DataNotFound />
-            : cashTransactionsWithFilterData?.body?.data.length <= 0 ? <DataNotFound/> : <View></View>
+              : cashTransactionsWithFilterData?.body?.data.length <= 0 ? <DataNotFound /> : <View></View>
           }
         </View>
 

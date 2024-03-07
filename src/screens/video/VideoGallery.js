@@ -64,13 +64,13 @@ const VideoGallery = ({ navigation }) => {
     const type = props.type
     const date = props.date
     return (
-      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 200, width: "80%", borderRadius: 10, backgroundColor: 'white', elevation: 10, margin: 10, alignItems: 'center', justifyContent: 'flex-end', alignSelf:'center' }}>
-        <View style={{ width: '100%', backgroundColor: "#DDDDDD", alignItems: "center", justifyContent: 'center', height: '50%',  }}>
+      <TouchableOpacity onPress={() => { Linking.openURL(video) }} style={{ height: 200, width: "80%", borderRadius: 10, backgroundColor: 'white', elevation: 10, margin: 10, alignItems: 'center', justifyContent: 'flex-end', alignSelf: 'center' }}>
+        <View style={{ width: '100%', backgroundColor: "#DDDDDD", alignItems: "center", justifyContent: 'center', height: '50%', }}>
           <Logo name="youtube" size={60} color="red"></Logo>
         </View>
 
         <View style={{ backgroundColor: 'black', width: '100%', alignItems: 'flex-start', height: '50%', justifyContent: "center" }}>
-          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8, backgroundColor:'black' }} content={`Title : ${title.substring(0, 16)}`}></PoppinsTextMedium>
+          <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8, backgroundColor: 'black' }} content={`Title : ${title.substring(0, 16)}`}></PoppinsTextMedium>
           <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginLeft: 8 }} content={`Type : ${type}`}></PoppinsTextMedium>
           <PoppinsTextMedium style={{ color: 'white', fontSize: 13, marginBottom: 6, marginLeft: 8 }} content={`Date : ${moment(date).format("DD MMM YYYY")}`}></PoppinsTextMedium>
 
@@ -121,7 +121,7 @@ const VideoGallery = ({ navigation }) => {
             color: 'white',
           }}></PoppinsTextMedium>
       </View>
-      <ScrollView style={{ width: '100%', height: '90%' }}>
+      <ScrollView style={{ width: '100%', height: '90%',backgroundColor:'white',marginTop:18, borderTopLeftRadius:15, borderTopRightRadius:10 }}>
 
 
         <View
@@ -129,38 +129,45 @@ const VideoGallery = ({ navigation }) => {
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             backgroundColor: 'white',
-            minHeight: height-200,
+            minHeight: height - 400,
             marginTop: 10,
             alignItems: 'flex-start',
             justifyContent: 'center',
             width: '100%',
+            height: '100%',
             paddingBottom: 40,
             flexDirection: "row",
             flexWrap: 'wrap'
           }}>
 
           {appVideoIsLoading &&
-            <FastImage
-              style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
-              source={{
-                uri: gifUri, // Update the path to your GIF
-                priority: FastImage.priority.normal,
-              }}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+            <View style={{ height: height }}>
+              <FastImage
+                style={{ width: 100, height: 100, alignSelf: 'center', marginTop: '50%' }}
+                source={{
+                  uri: gifUri, // Update the path to your GIF
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            </View>
+
           }
 
           {
             videoData != undefined && videoData.length > 0 ? videoData.map((item, index) => {
               return (
-                <View style={{width:'100%',}}>
+                <View style={{ width: '100%', }}>
                   {(videoData.length > 0) ? <VideoComp key={index} title={item.title} type={item.type} video={item.link} date={item.updated_at}></VideoComp> : <DataNotFound />}
                 </View>
               )
             })
               :
-               appVideoData &&   <DataNotFound />
-            
+              appVideoData && appVideoData?.body?.length == 0  &&
+              <View>
+                <DataNotFound />
+              </View>
+
           }
 
 
