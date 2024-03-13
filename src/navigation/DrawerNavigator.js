@@ -124,7 +124,7 @@ const CustomDrawer = () => {
     fetchFaq()
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
@@ -138,53 +138,53 @@ const CustomDrawer = () => {
       }
     };
     fetchData()
-  },[focused])
+  }, [focused])
 
-  useEffect(()=>{
-    if(getTermsData){
-      console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
+  useEffect(() => {
+    if (getTermsData) {
+      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
     }
-    else if(getTermsError){
+    else if (getTermsError) {
       console.log("gettermserror", getTermsError)
     }
-  },[getTermsData,getTermsError])
+  }, [getTermsData, getTermsError])
 
-  useEffect(()=>{
-    if(getPolicyData){
-      console.log("getPolicyData123>>>>>>>>>>>>>>>>>>>",getPolicyData);
+  useEffect(() => {
+    if (getPolicyData) {
+      console.log("getPolicyData123>>>>>>>>>>>>>>>>>>>", getPolicyData);
     }
-    else if(getPolicyError){
+    else if (getPolicyError) {
       console.log("getPolicyError>>>>>>>>>>>>>>>", getPolicyError)
     }
-  },[getPolicyData,getPolicyError])
+  }, [getPolicyData, getPolicyError])
 
-  useEffect(()=>{
-    if(getFAQData){
-      console.log("getFAQData Here i am ",getFAQData.body.data?.[0]?.files[0]);
+  useEffect(() => {
+    if (getFAQData) {
+      console.log("getFAQData Here i am ", getFAQData.body.data?.[0]?.files[0]);
     }
-    else if(getFAQError){
+    else if (getFAQError) {
       console.log("getFAQError", getFAQError)
     }
-  },[getFAQData,getFAQError]);
+  }, [getFAQData, getFAQError]);
 
-  const handleLogout=async()=>{
-    
-      try {
-        await AsyncStorage.removeItem('loginData')
-        navigation.reset({ index: '0', routes: [{ name: 'Splash' }] })
-      } catch(e) {
-        console.log("error deleting loginData",e)
-      }
-    
-      console.log('Done.')
-    
+  const handleLogout = async () => {
+
+    try {
+      await AsyncStorage.removeItem('loginData')
+      navigation.reset({ index: '0', routes: [{ name: 'Splash' }] })
+    } catch (e) {
+      console.log("error deleting loginData", e)
+    }
+
+    console.log('Done.')
+
   }
 
   const fetchTerms = async () => {
     // const credentials = await Keychain.getGenericPassword();
     // const token = credentials.username;
     const params = {
-      type:"term-and-condition"
+      type: "term-and-condition"
     }
     getTermsAndCondition(params)
   }
@@ -193,17 +193,17 @@ const CustomDrawer = () => {
     // const credentials = await Keychain.getGenericPassword();
     // const token = credentials.username;
     const params = {
-      type:"privacy-policy"
+      type: "privacy-policy"
     }
     getPolicies(params)
   }
 
-  
+
   const fetchFaq = async () => {
     // const credentials = await Keychain.getGenericPassword();
     // const token = credentials.username;
     const params = {
-      type:"faq"
+      type: "faq"
     }
     getFAQ(params)
   }
@@ -221,7 +221,7 @@ const CustomDrawer = () => {
     }
   }
 
-  
+
 
 
   useEffect(() => {
@@ -260,14 +260,14 @@ const CustomDrawer = () => {
     // fetchTerms();
   }, [])
 
-  useEffect(()=>{
-    if(getTermsData){
-      console.log("getTermsData",getTermsData.body.data?.[0]?.files[0]);
+  useEffect(() => {
+    if (getTermsData) {
+      console.log("getTermsData", getTermsData.body.data?.[0]?.files[0]);
     }
-    else if(getTermsError){
+    else if (getTermsError) {
       console.log("gettermserror", getTermsError)
     }
-  },[getTermsData,getTermsError]);
+  }, [getTermsData, getTermsError]);
 
 
   useEffect(() => {
@@ -297,7 +297,7 @@ const CustomDrawer = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor:"white",
+          backgroundColor: "white",
           marginTop: 1,
           borderBottomWidth: 1,
           borderColor: '#DDDDDD',
@@ -396,7 +396,7 @@ const CustomDrawer = () => {
                   });
               }
             }}>
-              {console.log("props.title", props.title)}
+            {console.log("props.title", props.title)}
             <Text style={{ color: primaryThemeColor, fontSize: 15 }}>{props.title == "Passbook" ? "My Loyalty" : props.title == "Profile" ? "My Profile" : props.title == "Rewards" ? "My Rewards" : props.title}</Text>
           </TouchableOpacity>
         </View>
@@ -458,15 +458,15 @@ const CustomDrawer = () => {
     <View style={{ backgroundColor: '#DDDDDD' }}>
       <View
         style={{
-                    height: 125,
+          height: 125,
           backgroundColor: ternaryThemeColor,
           borderBottomLeftRadius: 30,
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          {console.log("profile image is ------->>>>>>>>>>>>>>>>", profileImage)}
-      {profileImage ?
+        {console.log("profile image is ------->>>>>>>>>>>>>>>>", profileImage)}
+        {profileImage ?
           <Image
             style={{
               height: 60,
@@ -482,7 +482,7 @@ const CustomDrawer = () => {
           :
 
           <View style={{
-        
+
             paddingHorizontal: 10,
             paddingVertical: 10,
             borderRadius: 30,
@@ -496,7 +496,7 @@ const CustomDrawer = () => {
               style={{
                 height: 40,
                 width: 40,
-                
+
 
               }}
               source={require('../../assets/images/userGrey.png')}></Image>
@@ -514,7 +514,7 @@ const CustomDrawer = () => {
             }}>
             {userData.name}
           </Text>}
-          {userData && <Text style={{ color: 'white', margin: 0,textTransform:"capitalize" }}>{userData.user_type} Account</Text>}
+          {userData && <Text style={{ color: 'white', margin: 0, textTransform: "capitalize" }}>{userData.user_type} Account</Text>}
 
           {!Object.values(kycData).includes(false) ? <View style={{ flexDirection: 'row', marginTop: 4 }}>
             <View
@@ -568,11 +568,66 @@ const CustomDrawer = () => {
           })
         }
 
-       
-  <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, height: 50, justifyContent: 'center', width: '100%', position: 'absolute', bottom: 10, }} onPress={() => {
-                   handleLogout()
-          
-                  }}>
+        {/* Trgetvs list Starting */}
+        <View
+          style={{
+            minHeight: 54,
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 1,
+            paddingBottom: 10,
+            // zIndex:1,
+            borderBottomWidth: 1,
+            borderColor: '#DDDDDD',
+            backgroundColor: "white"
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+
+            }}
+            style={{
+              width: '20%',
+              alignItems: 'center',
+              // justifyContent: 'center',
+              height: '100%',
+              marginTop: 10
+            }}>
+
+            {/* <SvgUri width={40} height={40} uri={image}></SvgUri> */}
+            {/* <Icon size={size} name="bars" color={ternaryThemeColor}></Icon> */}
+            {/* {!myProgramVisible && <Image style={{ height: 20, width: 20, resizeMode: 'contain',transform: [{ rotate: '270deg' }],marginTop:4 }} source={require('../../assets/images/arrowDown.png')}></Image>} */}
+            {<Image style={{ height: 20, width: 20, resizeMode: 'contain', marginTop: 7 }} source={require('../../assets/images/userGrey.png')}></Image>}
+          </TouchableOpacity>
+
+
+          <View
+            style={{
+              width: '80%',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              flexDirection: 'column',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("TargetVsAchievement")
+              }}>
+              <Text style={{ color: primaryThemeColor, fontSize: 15 }}>{"Target Vs Achievement"}</Text>
+            </TouchableOpacity>
+
+
+
+          </View>
+        </View>
+
+        {/*targetvs Retailer ending*/}
+
+
+        <TouchableOpacity style={{ backgroundColor: ternaryThemeColor, height: 50, justifyContent: 'center', width: '100%', position: 'absolute', bottom: 10, }} onPress={() => {
+          handleLogout()
+
+        }}>
           <PoppinsTextLeftMedium style={{ color: 'white', marginLeft: 90 }} content="LOG OUT -->"></PoppinsTextLeftMedium>
         </TouchableOpacity>
 

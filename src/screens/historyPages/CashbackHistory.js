@@ -589,13 +589,13 @@ const CashbackHistory = ({ navigation }) => {
         ></FilterModal>
       )}
 
-      {/* {cashTransactionsWithFilterData?.body?.data.length <= 0 &&
+      {getCashTransactionsData?.body?.count == 0 &&
         <View style={{ width: '100%', }}>
-          <View style={{ marginBottom: "15%", }}>
+          <View style={{ marginBottom: "65%", }}>
             <DataNotFound />
           </View>
         </View>
-      } */}
+      }
 
 
     </View>
