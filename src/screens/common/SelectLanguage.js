@@ -29,7 +29,7 @@ const SelectLanguage = () => {
         
         <LinearGradient colors={[ternaryThemeColor,secondaryThemeColor]} style={{height:'100%',width:'100%'}}>
             <View style={{height:'20%',width:'100%',alignItems:'center',justifyContent:"center"}}>
-                <Image style={{height:110,width:140,resizeMode:'contain'}} source={{uri:`${BaseUrl}/api/images/${icon}`}}></Image>
+                <Image style={{height:110,width:140,resizeMode:'contain'}} source={{uri:icon}}></Image>
             </View>
             <View style={{height:'30%',width:'100%',alignItems:'center',justifyContent:"center"}}>
                 <PoppinsText style={{color:'white',fontSize:24}} content="Choose" />

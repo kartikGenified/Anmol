@@ -286,7 +286,7 @@ const CustomDrawer = () => {
   }, [getAppMenuData, getAppMenuError])
 
   const DrawerItems = (props) => {
-    const image = BaseUrlImages + props.image
+    const image =  props.image
     const size = props.size
     console.log("image", image)
     return (
@@ -405,7 +405,7 @@ const CustomDrawer = () => {
   };
 
   const DrawerSections = (props) => {
-    const image = BaseUrlImages + props.image
+    const image =  props.image
     const size = props.size
     console.log("image", image)
     return (
@@ -477,7 +477,7 @@ const CustomDrawer = () => {
               left: 4,
               resizeMode: 'contain'
             }}
-            source={{ uri: BaseUrlImages + profileImage }}></Image>
+            source={{ uri:  profileImage }}></Image>
 
           :
 

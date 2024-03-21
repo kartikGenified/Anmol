@@ -253,7 +253,7 @@
 //         // navigation.navigate('ScannedDetails', { data: data })
 //       }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 4, width: '100%', backgroundColor: 'white', marginTop: 10, borderBottomWidth: 1, borderColor: '#DDDDDD', paddingBottom: 10 }}>
 //         {/* <View style={{ height: 70, width: 70, alignItems: "center", justifyContent: "center", borderRadius: 10, borderColor: '#DDDDDD' }}>
-//           {image !== null && <Image style={{ height: 60, width: 60, resizeMode: "contain" }} source={{ uri: BaseUrlImages + image }}></Image>}
+//           {image !== null && <Image style={{ height: 60, width: 60, resizeMode: "contain" }} source={{ uri:  image }}></Image>}
 //         </View> */}
 //         <View style={{ alignItems: "flex-start", justifyContent: "center", marginLeft: 10, width: 200 }}>
 //           <PoppinsTextMedium style={{ fontWeight: '600', fontSize: 14, textAlign: 'auto', color: 'black' }} content={description}></PoppinsTextMedium>
@@ -606,7 +606,7 @@ const SharedPointsHistory = ({ navigation }) => {
         // navigation.navigate('ScannedDetails', { data: data })
       }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 4, width: '100%', backgroundColor: 'white', marginTop: 10, borderBottomWidth: 1, borderColor: '#DDDDDD', paddingBottom: 10 }}>
         {/* <View style={{ height: 70, width: 70, alignItems: "center", justifyContent: "center", borderRadius: 10, borderColor: '#DDDDDD' }}>
-          {image !== null && <Image style={{ height: 60, width: 60, resizeMode: "contain" }} source={{ uri: BaseUrlImages + image }}></Image>}
+          {image !== null && <Image style={{ height: 60, width: 60, resizeMode: "contain" }} source={{ uri:  image }}></Image>}
         </View> */}
         <View style={{ alignItems: "flex-start", justifyContent: "center", marginLeft: 10, width: 200 }}>
           <PoppinsTextMedium style={{ fontWeight: '600', fontSize: 14, textAlign: 'auto', color: 'black' }} content={description}></PoppinsTextMedium>

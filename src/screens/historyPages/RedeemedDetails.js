@@ -234,7 +234,7 @@ const RedeemedDetails = ({ navigation, route }) => {
           >
             <Image
               style={{ height: 80, width: 80, resizeMode: "contain" }}
-              source={{ uri: BaseUrlImages + image }}
+              source={{ uri:  image }}
             ></Image>
             <PoppinsTextMedium
               style={{ fontSize: 16, fontWeight: "700", color: "#171717" }}
@@ -307,7 +307,7 @@ const RedeemedDetails = ({ navigation, route }) => {
             >
               <Image
                 style={{ height: 40, width: 40, resizeMode: "contain" }}
-                source={require("../../../assets/images/greenTick.png")}
+                source={require('../../../assets/images/greenTick.png')}
               ></Image>
               <PoppinsTextMedium
                 style={{

@@ -444,7 +444,7 @@ const PointHistory = ({ navigation }) => {
         return (
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 8, borderBottomWidth: 1, borderColor: '#DDDDDD', paddingBottom: 10,width:'100%',height:80,backgroundColor:'white' }}>
                 <View style={{ height: 60, width: '14%', alignItems: "center", justifyContent: "center", borderRadius: 10, borderWidth: 1, borderColor: '#DDDDDD',position:'absolute',left:10,}}>
-                    <Image style={{ height: 40, width: 40, resizeMode: "contain" }} source={{uri:BaseUrlImages+image}}></Image>
+                    <Image style={{ height: 40, width: 40, resizeMode: "contain" }} source={{uri:image}}></Image>
                 </View>
                 <View style={{ alignItems: "flex-start", justifyContent: "center",position:'absolute',left:80,width:'50%' }}>
                     <PoppinsTextMedium style={{ fontWeight: '700', fontSize: 14, color: 'black' }} content={description}></PoppinsTextMedium>

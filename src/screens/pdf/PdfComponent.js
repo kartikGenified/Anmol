@@ -5,7 +5,7 @@ import { BaseUrlImages } from '../../utils/BaseUrlImages';
 
 const PdfComponent = ({route}) => {
     const pdf = route.params.pdf
-    const pdfLink = BaseUrlImages+pdf
+    const pdfLink = pdf
     const source = { uri: pdfLink, cache: true };
     return (
         <View style={styles.container}>

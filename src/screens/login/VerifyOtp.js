@@ -363,7 +363,7 @@ const VerifyOtp = ({ navigation, route }) => {
 
 
             }}
-            source={{ uri: `${BaseUrl}/api/images/${icon}` }}></Image>
+            source={{ uri: icon }}></Image>
         </View>
         <View
           style={{
