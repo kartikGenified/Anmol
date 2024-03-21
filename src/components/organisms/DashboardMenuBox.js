@@ -92,6 +92,9 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "profile"){
             navigation.navigate('Profile')
         }
+        else if (data.toLowerCase() === "query list") {
+            navigation.navigate('QueryList')
+          }
         else if(data.toLowerCase() === "warranty list"){
             navigation.navigate('WarrantyHistory')
         }
@@ -99,16 +102,16 @@ const DashboardMenuBox=(props)=>{
             navigation.navigate('BankAccounts')
         }
         else if(data.toLowerCase().substring(0,5) === "check"){
-            if(data.toLowerCase().split(" ")[1]==="genuinity")
+            if(data?.toLowerCase().split(" ")[1]==="genuinity")
             navigation.navigate('ScanAndRedirectToGenuinity')
 
-            else if(data.toLowerCase().split(" ")[1]==="warranty")
+            else if(data?.toLowerCase().split(" ")[1]==="warranty")
             navigation.navigate('ScanAndRedirectToWarranty')
         }
-        else if(data.toLowerCase().substring(0,8) === "activate"){
-            if(data.toLowerCase().split(" ")[1]==="genuinity")
+        else if(data?.toLowerCase().substring(0,8) === "activate"){
+            if(data?.toLowerCase().split(" ")[1]==="genuinity")
             navigation.navigate('ScanAndRedirectToGenuinity')
-            else if(data.toLowerCase().split(" ")[1]==="warranty")
+            else if(data?.toLowerCase().split(" ")[1]==="warranty")
             navigation.navigate('ScanAndRedirectToWarranty')
         }
         else if(data.toLowerCase() === "product catalogue"){
@@ -117,34 +120,30 @@ const DashboardMenuBox=(props)=>{
         else if(data.toLowerCase() === "add user"){
             navigation.navigate('ListUsers')
         }
-        else if(data.toLowerCase() === "report an issue"){
-            navigation.navigate('QueryList')
-        }
-        else if(data.toLowerCase() === "customer support"){
+        else if(data.toLowerCase() === "customer support" || data.toLowerCase() === "help and support"){
             navigation.navigate('HelpAndSupport')
         }
-        
-        else if(data.toLowerCase() === "request appointment"){
-        //  else if(data.toLowerCase() === "report an issue"){
-            navigation.navigate('RequestAppointment')
+        else if(data.toLowerCase() === "report an issue"){
+            navigation.navigate('QueryList')
         }
     }
 
     return(
-        <View style={{borderColor:'#DDDDDD',borderRadius:20,borderWidth:1.2,width:'90%',alignItems:"center",justifyContent:"center",backgroundColor:'white',padding:10,marginBottom:30}}>
-        <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{width:width,flexWrap:"wrap",flexDirection:"row"}} horizontal={true}>
+        <View style={{borderColor:'#DDDDDD',borderRadius:20,borderWidth:1.2,width:width-20,alignItems:"center",justifyContent:"center",backgroundColor:'white',padding:4,marginBottom:30}}>
+        <View style={{width:'100%',flexWrap:"wrap",flexDirection:"row",alignItems:"center",justifyContent:'center', marginBottom:25}}>
         {
             data.map((item,index)=>{
                 return(
                    
-                    <MenuItems handlePress={handleMenuItemPress} key={index} image={item.icon} content={item.name}></MenuItems>
+                    <MenuItems handlePress={handleMenuItemPress} key={index} image={item?.icon} content={item?.name}></MenuItems>
                    
                 )
             })
         }
-        </ScrollView>
+        </View>
         </View>
     )
 }
 
 export default DashboardMenuBox;
+
